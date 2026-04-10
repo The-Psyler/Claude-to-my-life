@@ -403,12 +403,12 @@ function renderVault() {
     if (!tbody) return;
     tbody.innerHTML = '';
 
-    state.vault.forEach(idea => {
+    state.vault.forEach((idea, idx) => {
         const stateClass = idea.state.toLowerCase().replace(/\s+/g, '-');
         const logCount   = (idea.workLog || []).length;
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td>${escapeHtml(String(idea.id))}</td>
+            <td>${idx + 1}</td>
             <td>${escapeHtml(idea.title)}</td>
             <td>${escapeHtml(idea.category)}</td>
             <td><span class="badge ${stateClass}">${escapeHtml(idea.state)}</span></td>
@@ -852,14 +852,29 @@ function applyLockedState() {
     const karmaPill      = document.getElementById('today-karma-pill');
     const backBtn        = document.getElementById('evening-back-btn');
 
+    // Home screen banner
+    const homeBanner     = document.getElementById('home-day-closed');
+    const homeBannerKarma = document.getElementById('home-day-closed-karma');
+    const morningCard    = document.getElementById('mode-card-morning');
+
     if (state.dayLocked) {
+        // Evening screen
         if (eveningHeading) eveningHeading.textContent  = 'Day is closed.';
         if (karmaDisplay)   karmaDisplay.textContent    = 'Today is complete';
         if (karmaPill)      karmaPill.style.display     = 'none';
         if (closeDayBtn)  { closeDayBtn.disabled = true;  closeDayBtn.style.opacity  = '0.4'; }
         if (unlockBtn)      unlockBtn.style.display     = 'block';
         if (backBtn)      { backBtn.disabled = true;      backBtn.style.opacity      = '0.3'; backBtn.style.cursor = 'not-allowed'; }
+
+        // Home screen
+        if (homeBanner)     homeBanner.style.display    = 'block';
+        if (homeBannerKarma) {
+            const earned = state.karma - (state.karmaAtDayStart ?? state.karma);
+            homeBannerKarma.textContent = earned + ' karma earned today';
+        }
+        if (morningCard)    morningCard.style.opacity   = '0.45';
     } else {
+        // Evening screen
         if (eveningHeading) eveningHeading.textContent  = 'Good work. What are you taking into tomorrow?';
         if (karmaDisplay) {
             const earned = state.karma - (state.karmaAtDayStart ?? state.karma);
@@ -869,6 +884,10 @@ function applyLockedState() {
         if (closeDayBtn)  { closeDayBtn.disabled = false; closeDayBtn.style.opacity  = '1'; }
         if (unlockBtn)      unlockBtn.style.display     = 'none';
         if (backBtn)      { backBtn.disabled = false;     backBtn.style.opacity      = '1'; backBtn.style.cursor = 'pointer'; }
+
+        // Home screen
+        if (homeBanner)     homeBanner.style.display    = 'none';
+        if (morningCard)    morningCard.style.opacity   = '1';
     }
 }
 

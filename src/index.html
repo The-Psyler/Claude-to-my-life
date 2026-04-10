@@ -22,8 +22,15 @@
                 </div>
             </div>
 
+            <!-- Day closed banner (visible only when dayLocked) -->
+            <div id="home-day-closed" style="display:none;background:rgba(129,199,132,0.1);border:1px solid rgba(129,199,132,0.3);border-radius:12px;padding:14px 16px;margin-bottom:16px;text-align:center;">
+                <div style="font-size:14px;font-weight:600;color:var(--green);margin-bottom:4px;">Day complete</div>
+                <div style="font-size:12px;color:var(--muted);margin-bottom:10px;" id="home-day-closed-karma"></div>
+                <button class="btn" style="background:transparent;border:1px solid rgba(255,255,255,0.15);font-size:12px;padding:6px 14px;margin:0;" onclick="unlockDay()">Unlock day →</button>
+            </div>
+
             <div class="mode-grid">
-                <div class="mode-card" onclick="navigateTo('morning')">
+                <div class="mode-card" id="mode-card-morning" onclick="navigateTo('morning')">
                     <div class="mode-icon">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="12" cy="12" r="5"></circle>
