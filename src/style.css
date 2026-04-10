@@ -1,0 +1,772 @@
+/* ============================================================
+   CTML — Claude to My Life
+   Style Sheet
+   ============================================================ */
+
+:root {
+    --purple: #7C6FF2;
+    --teal: #4DB6AC;
+    --amber: #FFB74D;
+    --coral: #E57373;
+    --green: #81C784;
+    --bg: #121212;
+    --surface: #1E1E1E;
+    --muted: #B0B0B0;
+    --text: #E0E0E0;
+    --border: 1px solid rgba(255,255,255,0.1);
+    --radius-card: 12px;
+    --radius-input: 8px;
+}
+
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding-bottom: 80px;
+}
+
+/* ── Screens ── */
+
+.screen {
+    display: none;
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.screen.active { display: block; }
+
+/* ── Typography ── */
+
+h1 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text);
+}
+
+p {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+/* ── Karma pill ── */
+
+.karma-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--purple);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.karma-icon {
+    width: 16px;
+    height: 16px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+}
+
+/* ── Cards ── */
+
+.card {
+    background: var(--surface);
+    border: var(--border);
+    border-radius: var(--radius-card);
+    padding: 16px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: transform 0.1s, background-color 0.15s;
+}
+
+.card:active { transform: scale(0.98); }
+
+.card-title {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 4px;
+    color: var(--text);
+}
+
+/* ── Mode grid (Home) ── */
+
+.mode-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.mode-card {
+    background: var(--surface);
+    border: var(--border);
+    border-radius: var(--radius-card);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: transform 0.1s, background-color 0.15s;
+}
+
+.mode-card:active { transform: scale(0.98); }
+
+.mode-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mode-title { font-size: 14px; font-weight: 500; }
+.mode-hint  { font-size: 12px; color: var(--muted); }
+
+/* ── Buttons ── */
+
+.btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: var(--radius-input);
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-bottom: 12px;
+}
+
+.btn-primary  { background: var(--purple); color: white; }
+.btn-teal     { background: var(--teal);   color: white; }
+.btn-coral    { background: var(--coral);  color: white; }
+.btn-green    { background: var(--green);  color: var(--bg); font-size: 12px; }
+
+.btn-secondary {
+    background: transparent;
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 8px;
+}
+
+/* ── Form inputs ── */
+
+.input, textarea {
+    width: 100%;
+    padding: 12px;
+    border: var(--border);
+    border-radius: var(--radius-input);
+    font-size: 14px;
+    margin-bottom: 12px;
+    font-family: inherit;
+    background: var(--surface);
+    color: var(--text);
+}
+
+.textarea {
+    resize: vertical;
+    min-height: 60px;
+}
+
+/* ── Category chips ── */
+
+.chip {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 16px;
+    font-size: 12px;
+    cursor: pointer;
+    margin-right: 6px;
+    margin-bottom: 6px;
+    border: 1px solid transparent;
+    background: var(--surface);
+    color: var(--muted);
+}
+
+.chip.selected {
+    background: rgba(124, 111, 242, 0.3);
+    border-color: var(--purple);
+    color: var(--text);
+}
+
+/* ── Potential buttons ── */
+
+.potential-btn {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    border: 1px solid transparent;
+    background: var(--surface);
+    color: var(--muted);
+}
+
+.potential-btn.selected                       { background: rgba(124, 111, 242, 0.3); color: var(--text); }
+.potential-btn.selected[data-value="low"]     { background: rgba(255, 183,  77, 0.3); color: var(--amber); }
+.potential-btn.selected[data-value="medium"]  { background: rgba( 77, 182, 172, 0.3); color: var(--teal); }
+.potential-btn.selected[data-value="high"]    { background: rgba(229, 115, 115, 0.3); color: var(--coral); }
+
+/* ── Stats row ── */
+
+.stat-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.stat-card {
+    flex: 1;
+    background: var(--surface);
+    border: var(--border);
+    border-radius: var(--radius-card);
+    padding: 12px;
+    text-align: center;
+}
+
+.stat-value { font-size: 20px; font-weight: 600; color: var(--purple); }
+.stat-label { font-size: 11px; color: var(--muted); }
+
+/* ── Vault table ── */
+
+.vault-table {
+    width: 100%;
+    overflow-x: auto;
+    margin-bottom: 16px;
+}
+
+.vault-table table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+
+.vault-table th {
+    text-align: left;
+    padding: 8px;
+    color: var(--muted);
+    font-weight: 500;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.vault-table td {
+    padding: 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+/* ── Badges ── */
+
+.badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.badge.active   { background: rgba( 77, 182, 172, 0.2); color: var(--teal); }
+.badge.new      { background: rgba(124, 111, 242, 0.2); color: var(--purple); }
+.badge.future   { background: rgba(255, 183,  77, 0.2); color: var(--amber); }
+.badge.on-hold  { background: rgba(176, 176, 176, 0.2); color: var(--muted); }
+.badge.high     { background: rgba(229, 115, 115, 0.2); color: var(--coral); }
+.badge.medium   { background: rgba( 77, 182, 172, 0.2); color: var(--teal); }
+.badge.low      { background: rgba(255, 183,  77, 0.2); color: var(--amber); }
+
+/* ── Vault toolbar ── */
+
+.vault-toolbar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.vault-toolbar .btn {
+    margin-bottom: 0;
+    font-size: 13px;
+    padding: 10px 14px;
+    flex: 1;
+}
+
+.vault-toolbar label.btn {
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* ── Vault action buttons (Edit / Delete) ── */
+
+.vault-action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 11px;
+    padding: 3px 7px;
+    border-radius: 4px;
+    color: var(--muted);
+    transition: color 0.15s, background 0.15s;
+}
+
+.vault-action-btn:hover        { color: var(--text); background: rgba(255,255,255,0.08); }
+.vault-action-btn.delete:hover { color: var(--coral); }
+
+/* ── Nav bar ── */
+
+.nav-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--surface);
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-around;
+    border-top: var(--border);
+    z-index: 100;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+.nav-item.active { opacity: 1; }
+
+.nav-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.nav-label { font-size: 10px; font-weight: 500; }
+
+.nav-dot-purple   { color: var(--purple); }
+.nav-dot-teal     { color: var(--teal); }
+.nav-dot-amber    { color: var(--amber); }
+.nav-label-purple { color: var(--purple); }
+.nav-label-teal   { color: var(--teal); }
+.nav-label-amber  { color: var(--amber); }
+
+/* ── Back button ── */
+
+.back-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: var(--surface);
+    border: var(--border);
+    color: var(--muted);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 20px;
+    transition: background 0.2s, color 0.2s;
+}
+
+.back-btn:hover { background: var(--purple); color: white; }
+
+/* ── Focus card (Morning Boot) ── */
+
+.focus-card {
+    border-left: 4px solid var(--purple);
+    padding-left: 12px;
+    margin-bottom: 16px;
+}
+
+.focus-card .focus-hint {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+    font-style: italic;
+}
+
+/* ── Moved list (Evening) ── */
+
+.moved-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 16px;
+}
+
+.moved-list li {
+    font-size: 13px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.moved-list li:last-child { border-bottom: none; }
+
+/* ── Playbook ── */
+
+.playbook-list { margin-bottom: 16px; }
+
+.playbook-card {
+    background: var(--surface);
+    border: var(--border);
+    border-radius: var(--radius-card);
+    padding: 12px;
+    margin-bottom: 8px;
+}
+
+.playbook-date {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 4px;
+}
+
+.playbook-text { font-size: 14px; }
+
+/* ── Date / time labels ── */
+
+.date-display, .date-time, .focus-display {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 8px;
+}
+
+/* ── Expanded work card ── */
+
+.expanded-card {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.expanded-title, .expanded-category, .expanded-next {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.expanded-next { margin-bottom: 4px; }
+
+.expanded-action {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.expanded-action-btn {
+    background: var(--purple);
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    margin-top: 8px;
+}
+
+.expanded-action-btn.is-focus {
+    background: var(--green);
+    color: var(--bg);
+}
+
+/* ── Karma row ── */
+
+.karma-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.karma-row-icon {
+    width: 24px;
+    height: 24px;
+    background: var(--purple);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: white;
+}
+
+.karma-row-text { font-size: 13px; color: var(--muted); }
+.karma-row-plus { color: var(--green); font-size: 11px; font-weight: 500; }
+
+/* ── Toast ── */
+
+.toast {
+    position: fixed;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%) translateY(12px);
+    background: #2A2A2A;
+    color: var(--text);
+    padding: 10px 18px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 200;
+    border: 1px solid rgba(255,255,255,0.12);
+}
+
+.toast.show     { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast.success  { border-color: var(--green); }
+.toast.error    { border-color: var(--coral); }
+.toast.info     { border-color: var(--purple); }
+
+/* ── Edit modal ── */
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.72);
+    z-index: 300;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-overlay.active { display: flex; }
+
+.modal {
+    background: var(--surface);
+    border: var(--border);
+    border-radius: var(--radius-card);
+    padding: 20px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.modal h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--text);
+}
+
+.modal select {
+    width: 100%;
+    padding: 10px 12px;
+    border: var(--border);
+    border-radius: var(--radius-input);
+    font-size: 14px;
+    margin-bottom: 12px;
+    font-family: inherit;
+    background: var(--bg);
+    color: var(--text);
+    appearance: none;
+}
+
+.modal-actions { display: flex; gap: 8px; margin-top: 4px; }
+.modal-actions .btn { margin-bottom: 0; flex: 1; }
+
+/* ── Focus outline ── */
+
+:focus-visible {
+    outline: 2px solid var(--purple);
+    outline-offset: 2px;
+}
+
+/* ── Morning Boot: yesterday's focus block ── */
+
+.morning-yesterday {
+    background: rgba(124, 111, 242, 0.07);
+    border: 1px solid rgba(124, 111, 242, 0.2);
+    border-radius: var(--radius-card);
+    padding: 10px 14px;
+    margin-bottom: 16px;
+}
+
+.morning-yesterday-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    margin-bottom: 4px;
+}
+
+.morning-yesterday-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+}
+
+.morning-yesterday-action {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+}
+
+/* ── Morning Boot: vault picker ── */
+
+.morning-picker-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-bottom: 8px;
+}
+
+.morning-picker-card {
+    background: var(--surface);
+    border: var(--border);
+    border-radius: var(--radius-card);
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: border-color 0.15s, transform 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.morning-picker-card:active { transform: scale(0.98); }
+
+.morning-picker-card.selected {
+    border-color: var(--purple);
+    background: rgba(124, 111, 242, 0.08);
+}
+
+.morning-picker-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 4px;
+}
+
+/* ── Work on It: work log ── */
+
+.work-log-section {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.work-log-section-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-bottom: 8px;
+}
+
+.work-log-input {
+    min-height: 48px;
+    font-size: 13px;
+    margin-bottom: 8px;
+    resize: none;
+}
+
+.work-log-btn {
+    background: var(--teal);
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.work-log-entries {
+    max-height: 140px;
+    overflow-y: auto;
+}
+
+.work-log-entry {
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.work-log-entry:last-child { border-bottom: none; }
+
+.work-log-date {
+    display: block;
+    color: var(--muted);
+    font-size: 10px;
+    margin-bottom: 2px;
+}
+
+.work-log-note { color: var(--text); font-size: 12px; }
+
+.work-log-empty {
+    color: var(--muted);
+    font-size: 12px;
+    font-style: italic;
+}
+
+/* ── Evening Wrap: attach option ── */
+
+.evening-attach-section {
+    background: rgba(77, 182, 172, 0.07);
+    border: 1px solid rgba(77, 182, 172, 0.22);
+    border-radius: var(--radius-card);
+    padding: 14px;
+    margin-bottom: 16px;
+}
+
+.evening-attach-label {
+    font-size: 13px;
+    color: var(--text);
+    margin-bottom: 12px;
+    display: block;
+}
+
+.evening-attach-actions { display: flex; gap: 8px; }
+
+.evening-attach-yes {
+    flex: 1;
+    background: var(--teal);
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.evening-attach-no {
+    flex: 1;
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+}

@@ -1,0 +1,85 @@
+CTML - Claude to My Life (index.html) Code Review
+================================================
+
+OVERVIEW
+--------
+A Progressive Web App (PWA) style productivity/task manager called "CTML Pipeline"
+with a karma/points gamification system. Dark-themed mobile-first interface with
+multiple screens for daily focus management, idea capture, and work tracking.
+
+
+FUNCTIONALITY ASSESSMENT
+-------------------------
+✓ Home screen with 4 mode cards (Morning boot, Capture idea, Work on it, Evening wrap)
+✓ Morning boot screen with focus card and day statistics
+✓ Capture idea form with title, note, category chips, potential rating
+✓ Work/Vault screen showing saved ideas in table format with expandable cards
+✓ Evening wrap for end-of-day reflection
+✓ Navigation bar with 3 tabs: Home, Vault, Playbook
+✓ Playbook screen showing logged AI prompts/insights
+✓ Karma points system (+5 start day, +8 save idea, +3 quick save, +18 close day)
+
+
+CODE QUALITY NOTES
+------------------
+POSITIVE:
+- Clean HTML structure with clear section comments
+- Consistent CSS variable naming (--purple, --teal, --amber, etc.)
+- Mobile-first responsive design (touch-friendly tap highlights, no scrollbars)
+- Inline SVG icons are self-contained and accessible
+- JavaScript state management is simple and readable
+- Form validation before save operations
+- DOM manipulation is explicit and safe
+
+AREAS FOR IMPROVEMENT:
+1. No external CSS/JS separation - entire app in single file (acceptable for PWA)
+2. Comments like "LIVE SERVER CONFIRMED" are dev notes that should be removed
+3. No accessibility attributes on buttons (aria-label, role, etc.)
+4. Input elements lack aria-label or placeholder fallbacks
+5. No focus management when navigating screens
+6. Vault data is stored only in memory - no persistence mechanism
+
+
+SECURITY NOTES
+--------------
+- No XSS vulnerabilities detected (all content rendered from controlled state)
+- No external scripts/CDN dependencies
+- Form inputs use type="text" (not untrusted HTML)
+- Event handlers are inline with onclick attributes (acceptable for this scale)
+
+RECOMMENDATIONS:
+1. Add aria-label to nav-item elements for screen reader support
+2. Add role="navigation" to nav-bar element
+3. Use semantic HTML5 where possible (<ul>/<li> instead of <div> lists)
+4. Consider adding simple localStorage persistence for vault data
+5. Remove inline comments that reference development setup
+6. Add a meta description tag for SEO/browser tabs
+
+
+ACCESSIBILITY CHECKLIST
+-----------------------
+[x] Has charset/meta viewport tags
+[x] Uses semantic heading hierarchy (one h1 per screen)
+[ ] Buttons need aria-labels or visible text content
+[ ] Focus indicators would be better defined (:focus-visible styles)
+[ ] Color contrast appears adequate on dark background
+[ ] No skip-to-main-content link for mobile navigation
+
+
+STANDARDS COMPLIANCE
+--------------------
+- Valid HTML5 structure ✓
+- CSS is internally consistent with no errors
+- JavaScript has no obvious syntax errors
+- SVG icons are valid and properly scoped
+- Theme-color meta tag set for PWA chrome integration
+
+
+FINAL ASSESSMENT
+----------------
+This is a well-crafted single-file Progressive Web App. The code is clean,
+functional, and demonstrates good mobile UX awareness. For a productivity
+tool of this scope, it's production-ready with minor accessibility improvements.
+
+Estimated complexity: Low-medium
+Recommended for deployment: Yes (after accessibility fixes)

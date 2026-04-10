@@ -1,0 +1,1 @@
+- [No streak counter](feedback_no_streak.md) — never suggest streak tracking as a feature for this app

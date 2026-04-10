@@ -1,0 +1,240 @@
+"You are my patient guide, strategist and executor for CTML — Claude to My Life. Here is my full context: 
+📦 CTML HANDOFF — April 9, 2026
+SYSTEM REMINDER 3-layer system. Google Docs = Layer 1 (permanent vault). Hub chat = Layer 2 (thinking + capture). New chats = Layer 3 (execution only). Abbreviation is CTML = Claude to My Life.
+VAULT SNAPSHOT — current state
+Idea #1 — CTML Pipeline · Active · High System fully live. 3 layers running. Daily cycle in progress.
+Idea #2 — OnTime App · New · High Social punctuality app. Penalty drinks, rep scores, venue partnerships. Waiting.
+Idea #3 — AI Experience Presentation · New · Medium Share CTML workflow with colleagues. Synergy with Idea #1. Waiting.
+Idea #4 — CTML Web App · Future · High First real Claude Code project. Build the CTML system as a PWA (works Android, Windows, iOS). Full product foundation defined today.
+IDEA #4 FULL SPEC — what we built today
+Platform: Progressive Web App. Browser-based, cross-platform, no install needed.
+Home screen: Intent selector — "What are we doing?" with 4 modes: Morning boot / Capture idea / Work on something / Evening wrap.
+Karma system: Points grow with every meaningful action. Tied to a mascot character that visibly reacts and grows prouder. Serious design decision — treat the mascot with Apple-level care when the time comes.
+Design references: Duolingo (habit loop, reward), Revolut (confident hierarchy, clean density), Yazio (personal progress, low friction).
+Four design principles:
+1. One action at a time
+2. Data without noise
+3. Progress feels alive
+4. Zero guilt design
+Soul statement — these two lines override everything:
+"Any use is a good use." "Built by someone who actually uses it."
+Design tone: Sophisticated and warm. Intentional, not cute. Think Apple restraint, not cartoon playfulness.
+BUILD ROADMAP V0 — Static HTML prototype. Vault visible in browser. V1 — Working Vault. Add/edit ideas. Local storage or Google Sheet sync. V2 — AI inside. Anthropic API chat panel. Claude reads your Vault live. V3 — Full system. Auto handoffs, Playbook search, synergy suggestions.
+AI PLAYBOOK UPDATES — today
+* CTML abbreviation confirmed (not CTMY)
+* Focus shifted from advancing ideas to building the runway toward Claude Code
+* Prompt fluency identified as the key skill to develop now
+* CTML Web App defined as the first Claude Code project
+* Design DNA fully established — soul statement locked
+RUNWAY REMINDER Stage 1 (now) — Get fluent with Claude via daily Hub use Stage 2 (when hitting limits) — Upgrade to Pro Stage 3 (curiosity kicks in) — Start thinking in plain language about what to build Stage 4 — Claude Code install. You'll arrive ready. 
+
+Today I want to go deeper on Idea #4 — the CTML Web App. Let's start by turning the V0 spec into something concrete enough to hand to Claude Code when the time comes. Where do we begin?"
+
+Show less
+12:34 PM
+Great — you've got the full context and I'm locked in as your guide. Let's make V0 real.
+
+The best starting point isn't writing code — it's turning the spec into a component map: what screens exist, what each one does, and what data it touches. Once that's clear, Claude Code has something concrete to execute against. Vague specs produce vague code.
+
+Here's a visual blueprint of V0 — the static HTML prototype:
+
+
+
+Click any block to go deeper on it. Here's what the map tells us:
+
+V0 is simpler than it sounds. It's one HTML file with five "screens" — really just five <div> blocks that JS shows and hides. The Vault is a hardcoded table. The Karma widget is a number and a placeholder shape. No server, no API, no storage. Its only job is to prove the design DNA feels right when you're looking at a real screen, not a spec.
+
+What makes this Claude Code-ready is writing it down precisely enough that there's no ambiguity. The blueprint above is 80% of the way there. The remaining 20% is: picking the design tokens (colors, fonts, spacing), writing one sentence per screen about what success looks like, and deciding what seed data goes in the Vault table (you already have Ideas #1–4).
+
+Your one tiny next action:
+
+Write 1–2 sentences for each of the 4 mode screens answering: "What does the user feel when they land here?" For example — Morning boot: "Grounded. They see today's date, one thing to do, and their karma. Nothing else." That emotional brief is what separates a Claude Code prompt that produces soul from one that produces just structure.
+
+Do that here and I'll turn it into a complete Claude Code prompt for V0, ready to paste.
+
+What should the Morning boot screen show in CTML V0?
+
+12:54 PM
+Good — let's nail this screen completely, because Morning boot sets the emotional tone for the whole app.
+
+The job of Morning boot is simple: replace the feeling of "ugh, where do I start" with "okay, I know exactly what I'm doing today." It should take under 10 seconds to read and leave the user ready to act.
+
+Here's what it should show, and why:
+
+
+
+Here's the reasoning behind every element:
+
+The greeting ("Good morning. One thing today.") sets the contract immediately — this is not a dashboard of everything, it's a permission slip to focus on one thing. The Focus card shows that one thing with its next action already populated from the Vault, so there's zero thinking required.
+
+The Vault snapshot (3 tiny stat cards) gives peripheral awareness — you know where things stand without having to go look. Not a full list, just three numbers.
+
+Karma sits below the stats, not above — it's a reward for showing up, not a pressure metric. The mascot placeholder (the person silhouette) is already in position for when it grows into the full character later.
+
+"Start the day" is the only real button. It takes you straight into Work mode with the focus idea pre-selected. One tap, zero friction.
+
+A few design decisions worth locking in for the spec:
+
+The purple accent on the Focus card's left border is a deliberate nod to the soul statement — warm, intentional, not decorative. It says "this matters" without a label.
+
+The greeting text changes by time of day in V1 but for V0 it's hardcoded. That's fine — the structure matters more than the dynamism right now.
+
+Your tiny next action: does this feel right emotionally, or is something missing / off-tone? One sentence reaction and we move to the next screen.
+
+Tell me more about the Home intent selector screen for CTML V0
+
+1:02 PM
+Great question — the Home screen is the most important screen in the whole app, because it's the one you see every single time you open it.
+
+
+
+The cards are clickable — tap any one to go deeper on that screen.
+
+Here's why every decision is made the way it is:
+
+"What are we doing?" is the only copy that matters on this screen. It's a question, not a label. It puts you in the driver's seat immediately — the app is asking you, not presenting to you. "Pick a mode and let's go" does the same job in the subtitle: zero friction, no explanation needed.
+
+The karma pill sits top-right, small and quiet. It's always visible but never the focus. You glance at it the way you glance at your battery level — ambient awareness, not pressure.
+
+Four cards, not a list. A list implies priority order. A 2×2 grid implies equivalence — all four modes are always available, none is more important than another. That matches the soul: "any use is a good use."
+
+Each card has a sun/plus/doc/moon icon that communicates the mode before you read the label. In V0 these are simple SVG shapes. In a later version the mascot character could live inside these — reacting differently per mode.
+
+The hints are written in first person from the user's perspective, not from the app's: "Log it before it disappears" not "Create a new idea entry." That tone is load-bearing — it's what makes the app feel like a collaborator.
+
+This is the one screen where the design DNA lives or dies. If this feels right, everything else follows from it.
+
+Your tiny next action: do the four mode names feel right, or does any one of them need renaming to feel more like you?
+
+they feel allright for now, I will probably come up with something else later, but for now they are perfect. In the idea capture icon I'd imagine a lighting bulb with a plus sign not just the  + sign. And the work on it could be something else as well then a list icon, but I have to think on that as I have no good idea right now.
+
+1:13 PM
+Noted and logged — these go straight into the design decisions record.
+
+The lightbulb + plus is a sharp call. It's more honest to what the action actually is — capturing a spark, not just adding an entry. That's a meaningful distinction for an app built around ideas.
+
+Let me update the capture icon now:
+
+
+
+Lightbulb with a small plus sign in the top-right corner — the spark of an idea, with the intention to add it. That's the right visual language.
+
+The "Work on it" icon stays as a list for now with a placeholder note. When the right idea hits you — a tool, a hand, a rocket, something that feels like momentum rather than administration — we swap it in. No rush, that's exactly how good design decisions should happen.
+
+AI Playbook log entry for today:
+
+Capture icon: lightbulb + plus — "a spark, not an entry"
+Work icon: TBD — needs to feel like momentum, not a to-do list
+Decision process: sit with it, don't force it
+Your tiny next action: whenever the "Work on it" icon idea comes to you — even at 2am, even mid-conversation about something else — drop it here. That's what the Capture mode is for.
+
+I'll let you know when it comes to me :) Let's pick another tiny next action to think about.
+
+1:20 PM
+Love it. Here's where we stand on the V0 spec:
+
+Home screen — done ✓
+Morning boot — done ✓
+Capture idea — structure clear, needs emotional brief
+Work on it — structure clear, needs emotional brief + icon
+Evening wrap — structure clear, needs emotional brief
+Vault view — columns defined, needs seed data confirmed
+Karma widget — concept locked, mascot placeholder agreed
+The two most valuable things to think about next are quite different in nature — so let me ask:
+
+Pick the one that feels right and we'll go deep on it.
+
+Q: What feels most alive to work on right now?
+A: Write the emotional brief for Evening wrap — it's the mirror of Morning boot, completing the daily loop
+
+1:36 PM
+Perfect choice. The daily loop only closes if the evening screen earns it.
+
+Here's the core tension to solve: Morning boot gives you permission to focus. Evening wrap needs to give you permission to stop. That's harder to design, because most productivity apps make you feel like you never did enough. CTML's soul statement — "any use is a good use" — means the evening screen has one job: make you feel like today counted, whatever happened.
+
+Let's write the emotional brief together. Three questions, one at a time:
+
+Q: When you close a day well, what's the feeling you're after?
+A: all of the above feels right. setteled and honest as I know what happened, good or not, but I am okay with my decisions. Also proud that I was able to move something forward and relieved but excited knowing that tomorrow is another  day with new opportunities.
+
+1:40 PM
+That's a beautiful brief. And it's more nuanced than any single word — it's a specific emotional cocktail:
+
+Settled + honest + proud + relieved + quietly excited about tomorrow.
+
+That's not "good job today" energy. That's the feeling of a person who takes their work seriously, made peace with the day as it was, and is already looking forward with low-key anticipation. That's rare to design for. Most apps either celebrate too loudly or guilt-trip you. CTML needs to do neither.
+
+Two more quick ones to finish the brief:
+
+Q: Should bad days feel different from good ones on this screen?
+A: No — same calm screen regardless, that's the zero guilt design
+
+1:42 PM
+That's the right call. The screen never judges. It just shows up, the same way every evening, and gives you a quiet place to land.
+
+Now the closing question:
+
+Q: What should the evening screen ask you — one honest question to close the day?
+A: the "what moved today" and "what are you taking into tomorrow" seems like equially good questions. but probably looking forward is better.
+
+1:43 PM
+That instinct is exactly right. Looking forward is better because it transforms the evening screen from a report into a handoff. You're not filing what happened — you're loading tomorrow's starting point. That's a completely different emotional act.
+
+And it connects perfectly back to Morning boot. Tomorrow's "What are you taking into tomorrow?" becomes the seed for tomorrow's "One thing today." The loop closes and reopens in the same breath.
+
+The Evening wrap emotional brief — locked:
+
+The screen is calm and identical every night, regardless of how the day went. It asks one forward-looking question: "What are you taking into tomorrow?" The user answers, banks their karma, and closes. They leave feeling settled, honest, proud of whatever moved, and quietly excited. The app never judges the size of the day. Any day you showed up counted.
+
+Let me sketch the screen:
+
+
+
+A few deliberate choices worth noting:
+
+The greeting is "Good work." — not "Great job!" or "You crushed it!" Just a quiet, unconditional acknowledgement. Works the same whether you moved mountains or just opened the app. Zero guilt design in two words.
+
+"What moved today" is auto-populated from whatever was logged during the day. In V0 it's hardcoded. In V1 it pulls from the Vault. The user never has to remember — the app remembers for them.
+
+The coral accent on "Close the day" mirrors the Evening mode card color from the Home screen. The loop has its own visual identity, distinct from morning's amber warmth.
+
+The karma gain is always shown as a positive number. Even on the quietest day, showing up earns points. That's the contract.
+
+AI Playbook update — Evening wrap brief locked:
+
+Core feeling: settled + honest + proud + relieved + quietly excited
+Central question: "What are you taking into tomorrow?"
+Tone: unconditional, never judges the size of the day
+Design rule: identical screen every night — zero guilt, zero noise
+Your tiny next action: the loop is now complete — morning opens, evening closes. When you're ready, we either sketch Capture or lock the Vault seed data, and V0 starts feeling like something you could actually hand to Claude Code.
+
+let's do that. sketch the Capture.
+
+2:00 PM
+The Capture screen has one job: get the idea out of your head and into the Vault before it evaporates. Speed is the design principle here. The more fields, the more friction, the more ideas die in the form.
+
+
+
+The chips and potential buttons are interactive — try tapping them.
+
+Here's the thinking behind every decision:
+
+"What's the idea? / Name it. The rest can wait." sets the contract in two lines. The name is the only required field. Everything else is optional, and the screen says so explicitly. This is the zero friction principle made visible.
+
+The note field is optional and labelled as such. One sentence is enough — the placeholder says exactly that. No pressure to write an essay at 2am when the idea hits.
+
+Category as chips, not a dropdown. A dropdown asks you to think. Chips let you tap. The difference in cognitive load is real, especially when you're trying to capture something fast before it slips away. The chips are also interactive in V0 — multi-select is intentional, some ideas span categories.
+
+Potential as three buttons with colour feedback. Low gets amber, Medium gets teal, High gets purple. The colour isn't decorative — it carries the meaning forward into the Vault table where the same colours will appear.
+
+"Just save the name for now →" is the escape hatch. The fastest possible capture path: type a name, tap this, done. Everything else gets filled in later during a Work session. This is the line that makes "any use is a good use" real in the UI.
+
+AI Playbook update — Capture screen brief locked:
+
+Only required field: the name
+Everything else optional, and says so
+Fastest path: name + "just save" = two taps
+Potential colours carry forward into Vault (amber / teal / purple)
+Three screens fully sketched now. Morning boot, Evening wrap, Capture — all done. Home was locked earlier. That leaves only Work on it before the full V0 spec is ready to hand to Claude Code.
+
+Your tiny next action: whenever that "Work on it" icon idea comes to you, drop it here and we'll finish the last screen the same day.

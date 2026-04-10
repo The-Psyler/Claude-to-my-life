@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#534AB7">
+    <meta name="description" content="CTML - Claude to My Life: A productivity app for capturing ideas and managing daily focus">
+    <title>CTML - Claude to My Life</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+
+        <!-- Screen 1: Home -->
+        <div id="screen-home" class="screen active">
+            <div style="display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:20px;">
+                <h1>What are we doing?</h1>
+                <p>Pick a mode and let's go.</p>
+                <div class="karma-pill">
+                    <div class="karma-icon" aria-hidden="true">👤</div>
+                    <span id="karma-display">— pts</span>
+                </div>
+            </div>
+
+            <div class="mode-grid">
+                <div class="mode-card" onclick="navigateTo('morning')">
+                    <div class="mode-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1"     x2="12" y2="3"></line>
+                            <line x1="12" y1="21"    x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22"   x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1"  y1="12"    x2="3"  y2="12"></line>
+                            <line x1="21" y1="12"    x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78"  x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64"  x2="19.78" y2="4.22"></line>
+                        </svg>
+                    </div>
+                    <div class="mode-title">Morning boot</div>
+                    <div class="mode-hint">Set your focus for the day</div>
+                </div>
+
+                <div class="mode-card" onclick="navigateTo('capture')">
+                    <div class="mode-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 18h6"></path>
+                            <path d="M10 22h4"></path>
+                            <path d="M12 2v4"></path>
+                            <path d="M4.93 4.93l2.83 2.83"></path>
+                            <path d="M16.24 16.24l2.83 2.83"></path>
+                            <path d="M2 12h4"></path>
+                            <path d="M18 12h4"></path>
+                            <path d="M4.93 19.07l2.83-2.83"></path>
+                            <path d="M16.24 7.76l2.83-2.83"></path>
+                        </svg>
+                    </div>
+                    <div class="mode-title">Capture idea</div>
+                    <div class="mode-hint">Log it before it disappears</div>
+                </div>
+
+                <div class="mode-card" onclick="navigateTo('work')">
+                    <div class="mode-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                            <path d="M2 17l10 5 10-5"></path>
+                            <path d="M2 12l10 5 10-5"></path>
+                        </svg>
+                    </div>
+                    <div class="mode-title">Work on it</div>
+                    <div class="mode-hint">Pick an idea and make progress</div>
+                </div>
+
+                <div class="mode-card" onclick="navigateTo('evening')">
+                    <div class="mode-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </div>
+                    <div class="mode-title">Evening wrap</div>
+                    <div class="mode-hint">Close the day, bank the karma</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 2: Morning Boot -->
+        <div id="screen-morning" class="screen">
+            <button class="back-btn" onclick="goBack()" aria-label="Back">←</button>
+            <div class="date-display" id="morning-date"></div>
+            <h1>Good morning. One thing today.</h1>
+
+            <!-- Yesterday's focus — shown only if prior focus exists from a different day -->
+            <div id="morning-yesterday-focus" class="morning-yesterday" style="display:none;">
+                <div class="morning-yesterday-label">Yesterday's focus</div>
+                <div class="morning-yesterday-title" id="morning-yesterday-title"></div>
+                <div class="morning-yesterday-action" id="morning-yesterday-action"></div>
+            </div>
+
+            <!-- Today's focus input -->
+            <div style="margin-bottom:12px;">
+                <div style="font-size:12px;font-weight:500;margin-bottom:8px;">What's your focus today?</div>
+                <input type="text" class="input" id="morning-focus-input"
+                       placeholder="Type it, or pick from your vault below..."
+                       aria-label="Today's focus"
+                       oninput="clearMorningVaultSelection()"
+                       style="margin-bottom:0;">
+            </div>
+
+            <!-- Vault picker -->
+            <div style="margin-bottom:16px;">
+                <div class="morning-picker-label">Or pick from vault</div>
+                <div id="morning-vault-picker">
+                    <!-- Populated by renderMorningVaultPicker() -->
+                </div>
+            </div>
+
+            <div class="stat-row">
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-ideas">—</div>
+                    <div class="stat-label">ideas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-active">—</div>
+                    <div class="stat-label">active</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-waiting">—</div>
+                    <div class="stat-label">waiting</div>
+                </div>
+            </div>
+
+            <div class="karma-row">
+                <div class="karma-row-icon" aria-hidden="true">👤</div>
+                <div class="karma-row-text" id="morning-karma-text">— karma</div>
+            </div>
+
+            <button class="btn btn-primary" onclick="startDay()">Start the day</button>
+        </div>
+
+        <!-- Screen 3: Capture Idea -->
+        <div id="screen-capture" class="screen">
+            <button class="back-btn" onclick="goBack()" aria-label="Back">←</button>
+            <h1>What's the idea?</h1>
+            <p>Name it. The rest can wait.</p>
+
+            <input type="text" class="input" id="idea-title" placeholder="Give it a name..." aria-label="Idea title">
+            <textarea class="textarea" id="idea-note" placeholder="One sentence is enough." aria-label="Idea note"></textarea>
+
+            <div style="margin-bottom:12px;">
+                <div style="font-size:12px;font-weight:500;margin-bottom:8px;">Category</div>
+                <div id="category-chips">
+                    <span class="chip" onclick="toggleChip(this)">App</span>
+                    <span class="chip" onclick="toggleChip(this)">System</span>
+                    <span class="chip" onclick="toggleChip(this)">Business</span>
+                    <span class="chip" onclick="toggleChip(this)">Creative</span>
+                    <span class="chip" onclick="toggleChip(this)">People</span>
+                    <span class="chip" onclick="toggleChip(this)">Other</span>
+                </div>
+            </div>
+
+            <div style="margin-bottom:12px;">
+                <div style="font-size:12px;font-weight:500;margin-bottom:8px;">Potential</div>
+                <div>
+                    <span class="potential-btn" data-value="low"    onclick="togglePotential(this)">Low</span>
+                    <span class="potential-btn" data-value="medium" onclick="togglePotential(this)">Med</span>
+                    <span class="potential-btn" data-value="high"   onclick="togglePotential(this)">High</span>
+                </div>
+            </div>
+
+            <button class="btn btn-teal" onclick="saveIdea()" aria-label="Save idea">Save to Vault</button>
+            <a href="#" class="btn btn-secondary" onclick="saveIdeaQuick()" role="button" aria-label="Quick save">Just save the name →</a>
+        </div>
+
+        <!-- Screen 4: Work on It -->
+        <div id="screen-work" class="screen">
+            <button class="back-btn" onclick="goBack()" aria-label="Back">←</button>
+            <h1>What are we working on?</h1>
+            <p>Pick an idea and set it as today's focus.</p>
+            <div id="vault-list">
+                <!-- Populated by renderWorkList() -->
+            </div>
+        </div>
+
+        <!-- Screen 5: Evening Wrap -->
+        <div id="screen-evening" class="screen">
+            <button class="back-btn" onclick="goBack()" id="evening-back-btn" aria-label="Back">←</button>
+            <div class="date-time" id="evening-date"></div>
+            <div class="date-time" id="evening-time"></div>
+            <h1 id="evening-heading">Good work. What are you taking into tomorrow?</h1>
+
+            <div style="margin-bottom:16px;">
+                <div style="font-size:12px;font-weight:500;margin-bottom:8px;">What moved today</div>
+                <ul class="moved-list">
+                    <!-- Populated by renderEveningMoved() -->
+                </ul>
+            </div>
+
+            <textarea class="textarea" id="evening-reflection-textarea"
+                      placeholder="One thing, or a few words. Whatever feels true."
+                      aria-label="Evening reflection"></textarea>
+
+            <!-- Opt-in: attach reflection to vault idea (shown only if focus is vault-linked) -->
+            <div id="evening-attach-section" class="evening-attach-section" style="display:none;">
+                <span class="evening-attach-label" id="evening-attach-label"></span>
+                <div class="evening-attach-actions">
+                    <button class="evening-attach-yes" onclick="attachReflectionToIdea()">Yes, attach it</button>
+                    <button class="evening-attach-no"  onclick="skipAttachment()">No thanks</button>
+                </div>
+            </div>
+
+            <div class="karma-row">
+                <div class="karma-row-icon" aria-hidden="true">👤</div>
+                <div class="karma-row-text" id="today-karma-display">0 karma</div>
+                <div class="karma-row-pill" id="today-karma-pill">+18 pts</div>
+            </div>
+
+            <button id="unlock-day-btn" class="btn btn-green" onclick="unlockDay()" style="display:none;">
+                ⚠️ Day is locked — need to add something? Unlock it →
+            </button>
+            <button class="btn btn-coral" onclick="closeDay()" id="close-day-btn">Close the day</button>
+        </div>
+
+        <!-- Screen 6: Vault -->
+        <div id="screen-vault" class="screen">
+            <h1>Vault</h1>
+            <div class="vault-toolbar">
+                <button class="btn btn-primary" onclick="exportVault()">Export JSON</button>
+                <label class="btn btn-secondary" style="border:1px solid rgba(255,255,255,0.1);">
+                    Import JSON
+                    <input type="file" accept=".json" onchange="importVault(event)" style="display:none;">
+                </label>
+            </div>
+            <div class="vault-table">
+                <table role="table" aria-label="Saved ideas list">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">State</th>
+                            <th scope="col">Potential</th>
+                            <th scope="col">Next action</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Log</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="vault-table-body" role="rowgroup">
+                        <!-- Populated by renderVault() -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Screen 7: Playbook -->
+        <div id="screen-playbook" class="screen">
+            <h1>AI Playbook</h1>
+            <p>Log insights, decisions, and prompts worth keeping.</p>
+
+            <textarea class="textarea" id="playbook-input" placeholder="Log an insight or decision..." aria-label="Playbook entry" style="min-height:72px;"></textarea>
+            <button class="btn" style="background:var(--amber);color:var(--bg);margin-bottom:20px;" onclick="addPlaybookEntry()">Add to Playbook</button>
+
+            <div class="playbook-list" id="playbook-list">
+                <!-- Populated by renderPlaybook() -->
+            </div>
+        </div>
+
+        <!-- Toast -->
+        <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+        <!-- Edit Modal -->
+        <div id="edit-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="edit-modal-title" onclick="closeEditModal()">
+            <div class="modal" onclick="event.stopPropagation()">
+                <h2 id="edit-modal-title">Edit idea</h2>
+                <input type="hidden" id="idea-edit-id">
+                <input type="text" class="input" id="idea-edit-title" placeholder="Title" aria-label="Idea title">
+                <select id="idea-edit-state" aria-label="State">
+                    <option value="New">New</option>
+                    <option value="Active">Active</option>
+                    <option value="Future">Future</option>
+                    <option value="On Hold">On Hold</option>
+                </select>
+                <select id="idea-edit-potential" aria-label="Potential">
+                    <option value="Low">Low potential</option>
+                    <option value="Medium">Medium potential</option>
+                    <option value="High">High potential</option>
+                </select>
+                <input type="text" class="input" id="idea-edit-next" placeholder="Next action" aria-label="Next action">
+                <div class="modal-actions">
+                    <button class="btn btn-primary" onclick="saveEdit()">Save</button>
+                    <button class="btn btn-secondary" onclick="closeEditModal()" style="border:1px solid rgba(255,255,255,0.1);margin-top:0;">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Bar -->
+        <nav class="nav-bar" role="navigation" aria-label="Main navigation">
+            <div class="nav-item active" onclick="navigateTo('home')" id="nav-home" role="button" tabindex="0" aria-label="Home">
+                <div class="nav-dot nav-dot-purple"></div>
+                <div class="nav-label nav-label-purple">Home</div>
+            </div>
+            <div class="nav-item" onclick="navigateTo('vault')" id="nav-vault" role="button" tabindex="0" aria-label="Vault">
+                <div class="nav-dot nav-dot-teal"></div>
+                <div class="nav-label nav-label-teal">Vault</div>
+            </div>
+            <div class="nav-item" onclick="navigateTo('playbook')" id="nav-playbook" role="button" tabindex="0" aria-label="Playbook">
+                <div class="nav-dot nav-dot-amber"></div>
+                <div class="nav-label nav-label-amber">Playbook</div>
+            </div>
+        </nav>
+
+    </div><!-- /#app -->
+
+    <script src="dexie.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

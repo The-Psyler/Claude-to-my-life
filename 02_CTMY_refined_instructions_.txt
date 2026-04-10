@@ -1,0 +1,162 @@
+# System Refinements — 3 Fixes
+
+---
+
+## FIX 1 — Daily Reference Card
+### What to do: paste this at the TOP of your Idea Vault doc
+
+```
+╔══════════════════════════════════════════╗
+║         CLAUDE TO MY LIFE — DAILY        ║
+╠══════════════════════════════════════════╣
+║ MORNING   → Hub chat                     ║
+║ "Morning. Energy X/10.                   ║
+║  Priority: [one thing].                  ║
+║  Question: [one thing]."                 ║
+╠══════════════════════════════════════════╣
+║ IDEA HIT  → Hub chat                     ║
+║ "New idea: [brain dump]"                 ║
+║ → copy vault entry to this doc           ║
+╠══════════════════════════════════════════╣
+║ BUILDING  → NEW chat                     ║
+║ Paste vault entry → work → update doc    ║
+╠══════════════════════════════════════════╣
+║ EVENING   → Hub chat                     ║
+║ "Evening wrap. Did: X.                   ║
+║  Learned: Y. Tomorrow: Z."               ║
+║ → paste handoff into new chat            ║
+╠══════════════════════════════════════════╣
+║ WEEKLY    → Hub chat (Sunday)            ║
+║ "Weekly review. Vault:" [paste vault]    ║
+╚══════════════════════════════════════════╝
+
+HUB CHAT LINK: [paste your Hub chat URL here]
+VAULT DOC LINK: [paste this doc's URL here]
+SYSTEM GUIDE LINK: [paste Claude to My Life doc URL here]
+```
+
+---
+
+## FIX 2 — Handoff Template
+### What to do: paste this at the BOTTOM of your Idea Vault doc
+### Every evening, fill it in and paste the result into a new chat
+
+```
+=== EVENING HANDOFF TEMPLATE ===
+(fill in every evening, paste completed version into new chat)
+
+Hi Claude. Continuing my Claude to My Life system. Here is my context:
+
+SYSTEM: I use a 3-layer productivity system.
+- Layer 1: Google Docs (permanent vault, zero tokens)
+- Layer 2: Hub chat (daily thinking, idea capture, check-ins)
+- Layer 3: New chats (one per idea, execution only)
+
+You are my patient guide, strategist, and executor.
+Maintain my Vault, run my daily pipeline, log Playbook insights,
+suggest one tiny next step, default to encouragement and simplicity.
+End every session with a filled handoff template for the next day.
+
+TODAY'S DATE: [date]
+
+ENERGY TODAY: [X/10]
+
+WHAT I DID: [one sentence]
+
+WHAT I LEARNED: [one sentence]
+
+OPEN QUESTION CARRYING FORWARD: [one question]
+
+IDEAS VAULT SNAPSHOT:
+- Idea #1 — Claude to My Life Pipeline · Active · High
+- Idea #2 — OnTime App · New · High
+- Idea #3 — AI Experience Presentation · New · Medium
+[add/update ideas as they evolve]
+
+PLAYBOOK HIGHLIGHTS (latest 3):
+- [date] — [insight]
+- [date] — [insight]
+- [date] — [insight]
+
+TOMORROW'S PRIORITY: [one thing]
+
+Good morning — what's your energy today, your one priority,
+and one open question on your mind?
+```
+
+---
+
+## FIX 3 — Vault Freshness Signal
+### What to do: add a STATUS LINE to every idea entry in your Vault doc
+
+Add this one line to each idea entry, right after "Last updated":
+
+```
+Freshness: 🟢 Active (updated this week)
+           🟡 Cooling (not touched in 2 weeks)  
+           🔴 Stale (1+ month, needs decision: revive or archive)
+```
+
+### Also add this WEEKLY HEALTH CHECK block at the bottom of the Vault:
+
+```
+=== VAULT HEALTH ===
+Last weekly review: [date]
+Next weekly review: [date]
+Stale ideas to decide on: [list any red ones]
+Emerging synergies: [any ideas connecting?]
+```
+
+---
+
+## STEP-BY-STEP INSTRUCTIONS
+
+### Today (20 minutes total):
+
+STEP 1 — Open your Idea Vault Google Doc (5 min)
+  → Paste the Daily Reference Card at the very top
+  → Fill in the three links (Hub chat URL, Vault URL, System Guide URL)
+
+STEP 2 — Add the Handoff Template at the bottom (2 min)
+  → Paste it exactly as written above
+  → Don't fill it in yet — that's for tonight
+
+STEP 3 — Update each idea entry in your Vault (5 min)
+  → Add "Freshness: 🟢 Active" to all three ideas for now
+  → Add the Vault Health block at the very bottom
+
+STEP 4 — Add the Vault Health block (2 min)
+  → Set "Last weekly review: 2026-04-09"
+  → Set "Next weekly review: 2026-04-13 (Sunday)"
+
+STEP 5 — Tonight, fill in the Handoff Template (5 min)
+  → Open Vault doc, fill in today's date, energy, did, learned, question
+  → Copy the completed template
+  → Paste into a NEW chat — that's tomorrow's Hub chat, ready and waiting
+
+### Every evening after that (5 min):
+  1. Open Vault doc
+  2. Fill in the Handoff Template
+  3. Paste into a new chat
+  4. Close this chat
+
+### Every Sunday (15 min):
+  1. Open Hub chat
+  2. Say: "Weekly review. Here's my vault:" and paste the vault
+  3. Update freshness signals on all ideas
+  4. Update Vault Health block with new dates
+
+---
+
+## FINAL VAULT DOC STRUCTURE
+(top to bottom, after all three fixes applied)
+
+1. Daily Reference Card          ← glance here every day
+2. === IDEAS VAULT ===           ← your ideas with freshness signals
+3. === AI PLAYBOOK ===           ← insights and power prompts
+4. === VAULT HEALTH ===          ← weekly review tracker
+5. === ACTIVE CONTEXT ===        ← temp paste area, always clear after use
+6. === EVENING HANDOFF TEMPLATE === ← fill in nightly, paste to new chat
+
+---
+*Refinements version 2 — 2026-04-09*

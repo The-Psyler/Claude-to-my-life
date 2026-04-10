@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rm -rf .claude/agents)",
+      "Bash(rm -rf .claude/skills)",
+      "Bash(curl -sL \"https://unpkg.com/dexie@3.2.7/dist/dexie.min.js\" -o \"C:\\\\Users\\\\PsyPC\\\\Desktop\\\\AI\\\\Claude to my life\\\\src\\\\dexie.min.js\")",
+      "WebFetch(domain:docs.anthropic.com)",
+      "WebSearch"
+    ]
+  }
+}
