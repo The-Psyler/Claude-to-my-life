@@ -5,7 +5,9 @@
       "Bash(rm -rf .claude/skills)",
       "Bash(curl -sL \"https://unpkg.com/dexie@3.2.7/dist/dexie.min.js\" -o \"C:\\\\Users\\\\PsyPC\\\\Desktop\\\\AI\\\\Claude to my life\\\\src\\\\dexie.min.js\")",
       "WebFetch(domain:docs.anthropic.com)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(rm \"00_ Scripted by Grok.txt\" \"01_hadndoff.txt\" \"02_CTMY_refined_instructions_.txt\" \"03_ handoff..txt\" \"9999newestchat without handoff.txt\" \"claude_to_my_life_system.md\" \"index_html_review.txt\" \"review_summary.txt\" \"docs/BUILD.md\")",
+      "Bash(rm -rf \".claude/agent-memory\")"
     ]
   }
 }
