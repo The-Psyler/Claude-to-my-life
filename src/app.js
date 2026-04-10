@@ -56,8 +56,9 @@ let state = {
         isVaultLinked: false,
         date:          null       // ISO YYYY-MM-DD
     },
-    dayLocked:    false,
-    lastBootDate: null            // ISO YYYY-MM-DD
+    dayLocked:       false,
+    lastBootDate:    null,        // ISO YYYY-MM-DD
+    karmaAtDayStart: 0            // karma snapshot at day start — used for today's earned delta
 };
 
 // Temp vars — not persisted
@@ -72,11 +73,12 @@ async function saveState() {
     try {
         await db.transaction('rw', db.ideas, db.settings, async () => {
             await db.settings.bulkPut([
-                { key: 'karma',        value: state.karma },
-                { key: 'focus',        value: state.focus },
-                { key: 'dayLocked',    value: state.dayLocked },
-                { key: 'lastBootDate', value: state.lastBootDate },
-                { key: 'reflections',  value: state.reflections }
+                { key: 'karma',           value: state.karma },
+                { key: 'focus',           value: state.focus },
+                { key: 'dayLocked',       value: state.dayLocked },
+                { key: 'lastBootDate',    value: state.lastBootDate },
+                { key: 'reflections',     value: state.reflections },
+                { key: 'karmaAtDayStart', value: state.karmaAtDayStart }
             ]);
             // Clear + re-put handles deletions atomically
             await db.ideas.clear();
@@ -119,6 +121,9 @@ async function loadState() {
         }
         if (Array.isArray(settings.reflections)) {
             state.reflections = settings.reflections;
+        }
+        if (typeof settings.karmaAtDayStart === 'number') {
+            state.karmaAtDayStart = settings.karmaAtDayStart;
         }
     } catch (e) {
         console.warn('loadState failed:', e);
@@ -201,6 +206,8 @@ function navigateTo(screen) {
         _attachDecision = null;
         renderEveningMoved();
         renderEveningAttachOption();
+        renderEveningKarma();
+        renderReflectionHistory();
     }
 
     setTimeout(() => {
@@ -349,7 +356,19 @@ function renderWorkList() {
             </div>
             <div class="expanded-card" style="display:none;">
                 <div class="expanded-title">Category: ${escapeHtml(idea.category)}</div>
-                <div class="expanded-next">Next action: ${escapeHtml(idea.nextAction)}</div>
+                <div class="expanded-next">
+                    <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">Next action</div>
+                    <input type="text" class="input"
+                           style="margin:0 0 4px;font-size:13px;padding:6px 10px;"
+                           id="next-action-input-${idea.id}"
+                           value="${escapeHtml(idea.nextAction)}"
+                           placeholder="What's the next action?"
+                           onclick="event.stopPropagation()">
+                    <button class="work-log-btn"
+                            onclick="event.stopPropagation(); saveNextAction(${idea.id})">
+                        Update next action
+                    </button>
+                </div>
                 <div class="expanded-action">
                     <button class="expanded-action-btn ${isFocused ? 'is-focus' : ''}"
                             onclick="event.stopPropagation(); setFocus(${idea.id})">
@@ -466,6 +485,28 @@ function renderEveningAttachOption() {
     }
 }
 
+function renderEveningKarma() {
+    const karmaDisplay = document.getElementById('today-karma-display');
+    if (!karmaDisplay || state.dayLocked) return;
+    const earned = state.karma - (state.karmaAtDayStart ?? state.karma);
+    karmaDisplay.textContent = earned + ' karma earned today';
+}
+
+function renderReflectionHistory() {
+    const list = document.getElementById('reflection-history-list');
+    if (!list) return;
+    const entries = [...state.reflections].reverse().slice(0, 30);
+    if (entries.length === 0) {
+        list.innerHTML = '<p style="color:var(--muted);font-size:13px;margin:8px 0 0;">No past reflections yet.</p>';
+        return;
+    }
+    list.innerHTML = entries.map(e => `
+        <div style="padding:8px 0;border-bottom:var(--border);">
+            <div style="font-size:11px;color:var(--muted);">${escapeHtml(e.date)}</div>
+            <div style="font-size:13px;margin-top:2px;">${escapeHtml(e.text)}</div>
+        </div>`).join('');
+}
+
 // ============================================================
 // KARMA
 // ============================================================
@@ -481,6 +522,13 @@ async function startDay() {
     const inputEl    = document.getElementById('morning-focus-input');
     const inputTitle = inputEl?.value.trim() || '';
 
+    // Guard: prevent same-day re-start
+    if (state.lastBootDate === today && !state.dayLocked) {
+        showToast('Day already started', 'info');
+        navigateTo('home');
+        return;
+    }
+
     // Auto-unlock if a new day has started
     if (state.dayLocked && state.lastBootDate !== today) {
         state.dayLocked = false;
@@ -495,8 +543,9 @@ async function startDay() {
             newFocus = { ideaId: idea.id, title: idea.title, nextAction: idea.nextAction, isVaultLinked: true, date: today };
         }
     }
-    state.focus      = newFocus;
-    state.lastBootDate = today;
+    state.focus           = newFocus;
+    state.lastBootDate    = today;
+    state.karmaAtDayStart = state.karma; // snapshot before awarding +5
     _pendingMorningIdeaId = null;
 
     await updateKarma(5);
@@ -517,7 +566,8 @@ async function saveIdea() {
 
     const note      = document.getElementById('idea-note')?.value.trim() || '';
     const category  = Array.from(document.querySelectorAll('.chip.selected')).map(c => c.textContent).join(', ') || 'Other';
-    const potential = Array.from(document.querySelectorAll('.potential-btn.selected')).map(b => b.dataset.value).join(',') || 'Medium';
+    const potentialRaw = Array.from(document.querySelectorAll('.potential-btn.selected')).map(b => b.dataset.value)[0] || 'Medium';
+    const potential    = potentialRaw.charAt(0).toUpperCase() + potentialRaw.slice(1).toLowerCase();
 
     const newIdea = {
         id:         Date.now(),
@@ -575,7 +625,11 @@ function clearCaptureForm() {
 // VAULT ACTIONS
 // ============================================================
 
-function toggleChip(chip)     { chip.classList.toggle('selected'); }
+function toggleChip(chip) {
+    const isSelected = chip.classList.contains('selected');
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+    if (!isSelected) chip.classList.add('selected');
+}
 
 function togglePotential(btn) {
     document.querySelectorAll('.potential-btn').forEach(b => b.classList.remove('selected'));
@@ -680,6 +734,20 @@ function setMorningFocus(ideaId) {
 function clearMorningVaultSelection() {
     _pendingMorningIdeaId = null;
     renderMorningVaultPicker();
+}
+
+async function saveNextAction(ideaId) {
+    const input = document.getElementById('next-action-input-' + ideaId);
+    const val   = input?.value.trim();
+    if (!val) { showToast('Next action cannot be empty', 'error'); return; }
+
+    const idea = state.vault.find(v => v.id === ideaId);
+    if (!idea) return;
+    idea.nextAction = val;
+    if (state.focus.ideaId === ideaId) state.focus.nextAction = val;
+
+    await saveState();
+    showToast('Next action updated', 'success');
 }
 
 // ============================================================
@@ -793,7 +861,10 @@ function applyLockedState() {
         if (backBtn)      { backBtn.disabled = true;      backBtn.style.opacity      = '0.3'; backBtn.style.cursor = 'not-allowed'; }
     } else {
         if (eveningHeading) eveningHeading.textContent  = 'Good work. What are you taking into tomorrow?';
-        if (karmaDisplay)   karmaDisplay.textContent    = '0 karma';
+        if (karmaDisplay) {
+            const earned = state.karma - (state.karmaAtDayStart ?? state.karma);
+            karmaDisplay.textContent = earned + ' karma earned today';
+        }
         if (karmaPill)      karmaPill.style.display     = 'inline-block';
         if (closeDayBtn)  { closeDayBtn.disabled = false; closeDayBtn.style.opacity  = '1'; }
         if (unlockBtn)      unlockBtn.style.display     = 'none';
@@ -847,7 +918,12 @@ async function importVault(event) {
             if (!Array.isArray(data.vault)) throw new Error('Invalid format');
 
             state.vault = data.vault.map(idea => ({ workLog: [], ...idea }));
-            if (Array.isArray(data.playbook))    state.playbook    = data.playbook;
+            if (Array.isArray(data.playbook)) {
+                await db.playbook.clear();
+                const pbEntries = data.playbook.map(({ id: _, ...e }) => e);
+                const pbIds     = await db.playbook.bulkAdd(pbEntries, { allKeys: true });
+                state.playbook  = data.playbook.map((e, i) => ({ ...e, id: pbIds[i] }));
+            }
             if (Array.isArray(data.reflections)) state.reflections = data.reflections;
             if (typeof data.karma === 'number' && !isNaN(data.karma)) state.karma = data.karma;
             if (data.lastBootDate !== undefined) state.lastBootDate = data.lastBootDate;

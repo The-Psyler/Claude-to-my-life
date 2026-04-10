@@ -161,9 +161,9 @@
             <div style="margin-bottom:12px;">
                 <div style="font-size:12px;font-weight:500;margin-bottom:8px;">Potential</div>
                 <div>
-                    <span class="potential-btn" data-value="low"    onclick="togglePotential(this)">Low</span>
-                    <span class="potential-btn" data-value="medium" onclick="togglePotential(this)">Med</span>
-                    <span class="potential-btn" data-value="high"   onclick="togglePotential(this)">High</span>
+                    <span class="potential-btn" data-value="Low"    onclick="togglePotential(this)">Low</span>
+                    <span class="potential-btn" data-value="Medium" onclick="togglePotential(this)">Med</span>
+                    <span class="potential-btn" data-value="High"   onclick="togglePotential(this)">High</span>
                 </div>
             </div>
 
@@ -198,6 +198,12 @@
             <textarea class="textarea" id="evening-reflection-textarea"
                       placeholder="One thing, or a few words. Whatever feels true."
                       aria-label="Evening reflection"></textarea>
+
+            <!-- Past reflections (collapsible) -->
+            <details style="margin-bottom:16px;">
+                <summary style="font-size:12px;color:var(--muted);cursor:pointer;user-select:none;">Past reflections</summary>
+                <div id="reflection-history-list" style="margin-top:8px;"></div>
+            </details>
 
             <!-- Opt-in: attach reflection to vault idea (shown only if focus is vault-linked) -->
             <div id="evening-attach-section" class="evening-attach-section" style="display:none;">
