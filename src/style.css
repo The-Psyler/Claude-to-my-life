@@ -18,6 +18,14 @@
     --radius-input: 8px;
 }
 
+[data-theme="light"] {
+  --bg:      #F5F5F5;
+  --surface: #FFFFFF;
+  --muted:   #757575;
+  --text:    #212121;
+  --border:  1px solid rgba(0,0,0,0.1);
+}
+
 * {
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
@@ -375,6 +383,20 @@ p {
 .nav-label-purple { color: var(--purple); }
 .nav-label-teal   { color: var(--teal); }
 .nav-label-amber  { color: var(--amber); }
+
+.nav-theme-btn {
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+.nav-theme-btn:hover { color: var(--text); }
 
 /* ── Back button ── */
 

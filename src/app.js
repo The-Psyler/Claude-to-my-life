@@ -934,6 +934,21 @@ async function importVault(event) {
 // UTILITY
 // ============================================================
 
+function toggleTheme() {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'light' ? 'dark' : 'light';
+    applyTheme(next);
+    localStorage.setItem('ctml_theme', next);
+}
+
+function applyTheme(theme) {
+    if (theme === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+    } else {
+        document.documentElement.removeAttribute('data-theme');
+    }
+}
+
 function todayISO() {
     return new Date().toISOString().split('T')[0];
 }
@@ -1001,6 +1016,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('evening-date').textContent = dateStr;
     document.getElementById('evening-time').textContent = 'Evening';
 
+    applyTheme(localStorage.getItem('ctml_theme') || 'dark');
     await loadState();
     renderAll();
 
