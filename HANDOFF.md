@@ -1,7 +1,7 @@
-# HANDOFF — 2026-04-11
+# HANDOFF — 2026-04-12
 
 ## Status
-Phase 3 complete. Phase 4 in progress. Vault idea detail screen fully working.
+Phase 3 complete. Phase 4 in progress. All 11 commits ahead of origin — ready to push when desired.
 
 ## Completed this session
 - Atomic Ceremony: `_sessionDate` locked at load; drift detection toast on visibility change
@@ -17,8 +17,8 @@ Phase 3 complete. Phase 4 in progress. Vault idea detail screen fully working.
   - `src/icons/icon-192.png` (192×192 px)
   - `src/icons/icon-512.png` (512×512 px)
 
-## Phase 4 remaining
-- Claude API integration (suggest next actions, surface dormant ideas) — deferred to last
-- Build pipeline (Vite for minification + cache-busting)
-- Weekly review screen
-- Voice capture (SpeechRecognition API)
+## Phase 4 remaining (next session pick-up)
+- Weekly review screen — what moved, what stalled, karma trend
+- Voice capture — SpeechRecognition API, no server needed
+- Claude API integration — suggest next actions, surface dormant ideas (deferred to last)
+- Build pipeline — Vite for minification + cache-busting
