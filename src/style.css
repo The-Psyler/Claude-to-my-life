@@ -366,16 +366,19 @@ p {
 .nav-theme-btn {
   background: none;
   border: none;
-  color: var(--muted);
+  color: var(--text);
   cursor: pointer;
   padding: 8px;
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: color 0.2s;
+  align-self: center;
+  opacity: 0.55;
+  transition: color 0.2s, opacity 0.2s;
+  flex-shrink: 0;
 }
-.nav-theme-btn:hover { color: var(--text); }
+.nav-theme-btn:hover { opacity: 1; }
 
 /* ── Back button ── */
 
