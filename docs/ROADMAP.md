@@ -38,6 +38,10 @@
 - [x] **Capture simplification**: Category and Potential removed from Capture screen — title + optional note only.
 - [x] **Vault "Last note" column**: Renamed from "Next action"; shows last work log note, falls back to capture note.
 
+## Phase 3.5: Vault UX Polish (Completed — Apr 11)
+- [x] **Vault idea detail view**: Click any vault idea row to see full work log history in a modal.
+- [x] **Removed JSON import/export**: Toolbar and functions removed; data lives in IndexedDB.
+
 ## Phase 4: Deployment & Scaling (Planned)
 - [x] **Service Worker / PWA**: Offline capability and "Add to Home Screen"
 - [ ] **Build pipeline**: Vite for minification and cache-busting

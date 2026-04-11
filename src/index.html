@@ -216,13 +216,6 @@
         <!-- Screen 6: Vault -->
         <div id="screen-vault" class="screen">
             <h1>Vault</h1>
-            <div class="vault-toolbar">
-                <button class="btn btn-primary" onclick="exportVault()">Export JSON</button>
-                <label class="btn btn-secondary" style="border:1px solid rgba(255,255,255,0.1);">
-                    Import JSON
-                    <input type="file" accept=".json" onchange="importVault(event)" style="display:none;">
-                </label>
-            </div>
             <div class="vault-table">
                 <table role="table" aria-label="Saved ideas list">
                     <thead>
@@ -270,6 +263,16 @@
                     <button class="btn btn-primary" onclick="saveEdit()">Save</button>
                     <button class="btn btn-secondary" onclick="closeEditModal()" style="border:1px solid rgba(255,255,255,0.1);margin-top:0;">Cancel</button>
                 </div>
+            </div>
+        </div>
+
+        <!-- Idea Detail Modal -->
+        <div id="detail-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="detail-modal-title" onclick="closeDetailModal()" style="display:none;">
+            <div class="modal" onclick="event.stopPropagation()" style="max-height:80vh;overflow-y:auto;">
+                <button class="modal-close-btn" onclick="closeDetailModal()" aria-label="Close">&times;</button>
+                <h2 id="detail-modal-title" style="margin-right:24px;"></h2>
+                <div id="detail-modal-state" style="margin-bottom:16px;"></div>
+                <div id="detail-modal-log"></div>
             </div>
         </div>
 

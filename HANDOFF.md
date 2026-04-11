@@ -1,13 +1,13 @@
 # HANDOFF — 2026-04-11
 
 ## Status
-Phase 4 in progress. PWA + light/dark theme toggle implemented.
+Phase 3.5 UX polish done. Phase 4 in progress.
 
 ## Completed this session
-- PWA: added `src/manifest.json` (cache-first, standalone display, theme #534AB7)
-- PWA: added `src/sw.js` (install/activate/fetch cache-first service worker, CACHE_NAME `ctml-v1`)
-- PWA: wired manifest link and SW registration script into `src/index.html`
-- Light theme toggle: `[data-theme="light"]` block in style.css, `.nav-theme-btn` styles, sun icon button in nav bar, `toggleTheme()` + `applyTheme()` in app.js, persisted to localStorage `ctml_theme`
+- Vault idea detail view: clicking a vault table row opens a modal showing title, state badge, and full work log in chronological order (`openDetailModal` / `closeDetailModal` in app.js, `#detail-modal` in index.html, `.modal-close-btn` + `.detail-log-*` in style.css)
+- Removed JSON import/export: `exportVault()` and `importVault()` functions removed, `<div class="vault-toolbar">` removed from HTML, `.vault-toolbar` CSS rules removed
+- Edit/delete buttons in vault rows now call `event.stopPropagation()` to prevent triggering the row detail modal
+- Escape key closes detail modal if open, otherwise closes edit modal
 
 ## Pending manual step
 - Icons not yet created. Add these two files to enable install prompt:

@@ -425,6 +425,8 @@ function renderVault() {
               ).join('')
             : '<span style="color:var(--muted)">—</span>';
         const row = document.createElement('tr');
+        row.style.cursor = 'pointer';
+        row.onclick = () => openDetailModal(idea.id);
         row.innerHTML = `
             <td>${idx + 1}</td>
             <td>${escapeHtml(idea.title)}</td>
@@ -435,8 +437,8 @@ function renderVault() {
             <td>${escapeHtml(idea.date)}</td>
             <td>${logHtml}</td>
             <td style="white-space:nowrap;">
-                <button class="vault-action-btn"        onclick="editIdea(${idea.id})"   aria-label="Edit ${escapeHtml(idea.title)}">Edit</button>
-                <button class="vault-action-btn delete" onclick="deleteIdea(${idea.id})" aria-label="Delete ${escapeHtml(idea.title)}">✕</button>
+                <button class="vault-action-btn"        onclick="event.stopPropagation(); editIdea(${idea.id})"   aria-label="Edit ${escapeHtml(idea.title)}">Edit</button>
+                <button class="vault-action-btn delete" onclick="event.stopPropagation(); deleteIdea(${idea.id})" aria-label="Delete ${escapeHtml(idea.title)}">✕</button>
             </td>
         `;
         tbody.appendChild(row);
@@ -883,56 +885,40 @@ function skipAttachment() {
 }
 
 // ============================================================
-// EXPORT / IMPORT
-// ============================================================
-
-function exportVault() {
-    const data = {
-        exported:     todayISO(),
-        karma:        state.karma,
-        vault:        state.vault,
-        playbook:     state.playbook,
-        reflections:  state.reflections,
-        lastBootDate: state.lastBootDate
-    };
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url  = URL.createObjectURL(blob);
-    const a    = document.createElement('a');
-    a.href     = url;
-    a.download = 'ctml-vault-' + data.exported + '.json';
-    a.click();
-    URL.revokeObjectURL(url);
-    showToast('Vault exported', 'success');
-}
-
-async function importVault(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = async function(e) {
-        try {
-            const data = JSON.parse(e.target.result);
-            if (!Array.isArray(data.vault)) throw new Error('Invalid format');
-
-            state.vault = data.vault.map(idea => ({ workLog: [], ...idea }));
-            if (Array.isArray(data.reflections)) state.reflections = data.reflections;
-            if (typeof data.karma === 'number' && !isNaN(data.karma)) state.karma = data.karma;
-            if (data.lastBootDate !== undefined) state.lastBootDate = data.lastBootDate;
-
-            await saveState();
-            renderAll();
-            showToast('Imported — ' + state.vault.length + ' ideas loaded', 'success');
-        } catch (err) {
-            showToast('Import failed: invalid file', 'error');
-        }
-        event.target.value = '';
-    };
-    reader.readAsText(file);
-}
-
-// ============================================================
 // UTILITY
 // ============================================================
+
+function openDetailModal(ideaId) {
+    const idea = state.vault.find(i => i.id === ideaId);
+    if (!idea) return;
+
+    document.getElementById('detail-modal-title').textContent = idea.title;
+
+    const stateEl = document.getElementById('detail-modal-state');
+    stateEl.innerHTML = `<span style="font-size:12px;font-weight:600;padding:3px 10px;border-radius:12px;background:rgba(124,111,242,0.15);color:var(--purple);">${escapeHtml(idea.state || 'New')}</span>`;
+
+    const logEl = document.getElementById('detail-modal-log');
+    const entries = Array.isArray(idea.workLog) ? idea.workLog : [];
+
+    if (entries.length === 0) {
+        logEl.innerHTML = `<div class="detail-empty">No work log yet. Use "Work on it" to add entries.</div>`;
+    } else {
+        logEl.innerHTML = entries.map(entry =>
+            `<div class="detail-log-entry">
+                <div class="detail-log-date">${escapeHtml(entry.date || '')}</div>
+                <div class="detail-log-note">${escapeHtml(entry.note || '')}</div>
+            </div>`
+        ).join('');
+    }
+
+    const modal = document.getElementById('detail-modal');
+    modal.style.display = 'flex';
+    setTimeout(() => modal.querySelector('.modal-close-btn').focus(), 50);
+}
+
+function closeDetailModal() {
+    document.getElementById('detail-modal').style.display = 'none';
+}
 
 function toggleTheme() {
     const current = document.documentElement.getAttribute('data-theme');
@@ -1051,5 +1037,12 @@ document.addEventListener('keydown', (e) => {
             saveIdea();
         }
     }
-    if (e.key === 'Escape') closeEditModal();
+    if (e.key === 'Escape') {
+        const detailModal = document.getElementById('detail-modal');
+        if (detailModal && detailModal.style.display === 'flex') {
+            closeDetailModal();
+        } else {
+            closeEditModal();
+        }
+    }
 });

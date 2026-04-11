@@ -305,27 +305,6 @@ p {
 .badge.medium   { background: rgba( 77, 182, 172, 0.2); color: var(--teal); }
 .badge.low      { background: rgba(255, 183,  77, 0.2); color: var(--amber); }
 
-/* ── Vault toolbar ── */
-
-.vault-toolbar {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 16px;
-}
-
-.vault-toolbar .btn {
-    margin-bottom: 0;
-    font-size: 13px;
-    padding: 10px 14px;
-    flex: 1;
-}
-
-.vault-toolbar label.btn {
-    text-align: center;
-    cursor: pointer;
-    border: 1px solid rgba(255,255,255,0.1);
-}
-
 /* ── Vault action buttons (Edit / Delete) ── */
 
 .vault-action-btn {
@@ -568,6 +547,7 @@ p {
     padding: 20px;
     width: 100%;
     max-width: 400px;
+    position: relative;
 }
 
 .modal h2 {
@@ -592,6 +572,25 @@ p {
 
 .modal-actions { display: flex; gap: 8px; margin-top: 4px; }
 .modal-actions .btn { margin-bottom: 0; flex: 1; }
+
+.modal-close-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+.modal-close-btn:hover { color: var(--text); }
+
+.detail-log-entry { margin-bottom: 16px; }
+.detail-log-date  { font-size: 11px; color: var(--muted); margin-bottom: 4px; font-weight: 500; }
+.detail-log-note  { font-size: 14px; color: var(--text); line-height: 1.5; }
+.detail-empty     { font-size: 13px; color: var(--muted); font-style: italic; }
 
 /* ── Focus outline ── */
 
