@@ -30,10 +30,12 @@
 - [x] ~~Streak counter~~ — explicitly excluded by user preference
 - [x] **The Continuity Bridge**: Resurrect yesterday's unfinished focus during Morning Boot.
 - [ ] **The Atomic Ceremony**: Implement a session-anchored `sessionDate` to prevent midnight boundary errors.
-- [ ] **The Persistence Sentinel**: Serialize saveState() writes + visibilitychange forced-save. ← NEXT (critical: race condition risk)
+- [x] **The Persistence Sentinel**: Serialize saveState() writes + visibilitychange forced-save.
 - [ ] **The Sync Broadcast**: Use `BroadcastChannel` to synchronize all open tabs in real-current state.
 - [x] **State / next-action editing from Work screen**: Update nextAction inline, not just via Vault modal
-...
+- [ ] **Morning Boot auto-unlock**: Entering Morning Boot while day is locked should unlock immediately. Later (post Atomic Ceremony): only when it is genuinely a new calendar date.
+- [ ] **Vault work log display**: Vault items should show work log notes added during Work on It sessions.
+- [ ] **Capture simplification**: Remove Category and Potential fields from Capture — title entry only for maximum capture speed.
 
 ## Phase 4: Deployment & Scaling (Planned)
 - [ ] **Service Worker / PWA**: Offline capability and "Add to Home Screen"

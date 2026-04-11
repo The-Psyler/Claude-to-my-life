@@ -60,25 +60,30 @@ let _attachDecision       = null; // null | true | false — evening attach choi
 // PERSISTENCE
 // ============================================================
 
+let _saveQueue = Promise.resolve(); // Persistence Sentinel: serializes concurrent saves
+
 async function saveState() {
-    try {
-        await db.transaction('rw', db.ideas, db.settings, async () => {
-            await db.settings.bulkPut([
-                { key: 'karma',           value: state.karma },
-                { key: 'focus',           value: state.focus },
-                { key: 'dayLocked',       value: state.dayLocked },
-                { key: 'lastBootDate',    value: state.lastBootDate },
-                { key: 'reflections',     value: state.reflections },
-                { key: 'karmaAtDayStart', value: state.karmaAtDayStart }
-            ]);
-            // Clear + re-put handles deletions atomically
-            await db.ideas.clear();
-            await db.ideas.bulkPut(state.vault);
-        });
-    } catch (e) {
-        console.warn('saveState failed:', e);
-        showToast('Save failed', 'error');
-    }
+    _saveQueue = _saveQueue.then(async () => {
+        try {
+            await db.transaction('rw', db.ideas, db.settings, async () => {
+                await db.settings.bulkPut([
+                    { key: 'karma',           value: state.karma },
+                    { key: 'focus',           value: state.focus },
+                    { key: 'dayLocked',       value: state.dayLocked },
+                    { key: 'lastBootDate',    value: state.lastBootDate },
+                    { key: 'reflections',     value: state.reflections },
+                    { key: 'karmaAtDayStart', value: state.karmaAtDayStart }
+                ]);
+                // Clear + re-put handles deletions atomically
+                await db.ideas.clear();
+                await db.ideas.bulkPut(state.vault);
+            });
+        } catch (e) {
+            console.warn('saveState failed:', e);
+            showToast('Save failed', 'error');
+        }
+    }).catch(() => {}); // keep queue alive if a save throws unexpectedly
+    return _saveQueue;
 }
 
 async function loadState() {
@@ -943,6 +948,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     await loadState();
     renderAll();
+});
+
+// Persistence Sentinel: force-save when tab is hidden (browser switch, close, Alt+Tab)
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') saveState();
 });
 
 document.addEventListener('keydown', (e) => {
