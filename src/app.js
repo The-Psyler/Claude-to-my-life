@@ -60,6 +60,7 @@ let state = {
 // Temp vars — not persisted
 let _pendingMorningIdeaId = null; // vault picker selection during morning flow
 let _attachDecision       = null; // null | true | false — evening attach choice
+let _currentDetailId      = null; // idea id open in the detail screen
 let _sessionDate          = null; // ISO date anchored at loadState() — prevents midnight drift
 
 // ============================================================
@@ -218,6 +219,10 @@ function navigateTo(screen) {
         renderEveningAttachOption();
         renderEveningKarma();
         renderReflectionHistory();
+    } else if (screen === 'idea-detail') {
+        renderIdeaDetail();
+    } else if (screen === 'vault') {
+        renderVault();
     }
 
     setTimeout(() => {
@@ -416,26 +421,16 @@ function renderVault() {
     state.vault.forEach((idea, idx) => {
         const stateClass = idea.state.toLowerCase().replace(/\s+/g, '-');
         const workLog    = idea.workLog || [];
-        const logHtml    = workLog.length > 0
-            ? workLog.map(l =>
-                `<div style="font-size:11px;color:var(--muted);line-height:1.5;">`
-                + `<span style="opacity:0.6;">${escapeHtml(l.date.slice(5).replace('-', '/'))}</span> `
-                + escapeHtml(l.note)
-                + `</div>`
-              ).join('')
-            : '<span style="color:var(--muted)">—</span>';
+        const lastNote   = workLog.length > 0 ? workLog[workLog.length - 1].note : (idea.nextAction || '—');
         const row = document.createElement('tr');
         row.style.cursor = 'pointer';
-        row.onclick = () => openDetailModal(idea.id);
+        row.onclick = () => openIdeaDetail(idea.id);
         row.innerHTML = `
             <td>${idx + 1}</td>
             <td>${escapeHtml(idea.title)}</td>
-            <td>${escapeHtml(idea.category)}</td>
             <td><span class="badge ${stateClass}">${escapeHtml(idea.state)}</span></td>
-            <td><span class="badge ${idea.potential.toLowerCase()}">${escapeHtml(idea.potential)}</span></td>
-            <td>${escapeHtml(workLog.length > 0 ? workLog[workLog.length - 1].note : idea.nextAction)}</td>
+            <td>${escapeHtml(lastNote)}</td>
             <td>${escapeHtml(idea.date)}</td>
-            <td>${logHtml}</td>
             <td style="white-space:nowrap;">
                 <button class="vault-action-btn"        onclick="event.stopPropagation(); editIdea(${idea.id})"   aria-label="Edit ${escapeHtml(idea.title)}">Edit</button>
                 <button class="vault-action-btn delete" onclick="event.stopPropagation(); deleteIdea(${idea.id})" aria-label="Delete ${escapeHtml(idea.title)}">✕</button>
@@ -888,16 +883,22 @@ function skipAttachment() {
 // UTILITY
 // ============================================================
 
-function openDetailModal(ideaId) {
-    const idea = state.vault.find(i => i.id === ideaId);
-    if (!idea) return;
+function openIdeaDetail(ideaId) {
+    _currentDetailId = ideaId;
+    navigateTo('idea-detail');
+}
 
-    document.getElementById('detail-modal-title').textContent = idea.title;
+function renderIdeaDetail() {
+    const idea = state.vault.find(i => i.id === _currentDetailId);
+    if (!idea) { navigateTo('vault'); return; }
 
-    const stateEl = document.getElementById('detail-modal-state');
-    stateEl.innerHTML = `<span style="font-size:12px;font-weight:600;padding:3px 10px;border-radius:12px;background:rgba(124,111,242,0.15);color:var(--purple);">${escapeHtml(idea.state || 'New')}</span>`;
+    document.getElementById('idea-detail-title').textContent = idea.title;
+    document.getElementById('idea-detail-date').textContent  = 'Captured ' + (idea.date || '');
 
-    const logEl = document.getElementById('detail-modal-log');
+    const badgeEl = document.getElementById('idea-detail-state-badge');
+    badgeEl.innerHTML = `<span style="font-size:12px;font-weight:600;padding:3px 10px;border-radius:12px;background:rgba(124,111,242,0.15);color:var(--purple);">${escapeHtml(idea.state || 'New')}</span>`;
+
+    const logEl  = document.getElementById('idea-detail-log');
     const entries = Array.isArray(idea.workLog) ? idea.workLog : [];
 
     if (entries.length === 0) {
@@ -910,14 +911,6 @@ function openDetailModal(ideaId) {
             </div>`
         ).join('');
     }
-
-    const modal = document.getElementById('detail-modal');
-    modal.style.display = 'flex';
-    setTimeout(() => modal.querySelector('.modal-close-btn').focus(), 50);
-}
-
-function closeDetailModal() {
-    document.getElementById('detail-modal').style.display = 'none';
 }
 
 function toggleTheme() {
@@ -982,6 +975,8 @@ function renderCurrentScreen() {
         renderReflectionHistory();
     } else if (screen === 'vault') {
         renderVault();
+    } else if (screen === 'idea-detail') {
+        renderIdeaDetail();
     } else if (screen === 'capture') {
         // Capture form is stateless; just refresh karma
     } else if (screen === 'playbook') {
@@ -1038,9 +1033,9 @@ document.addEventListener('keydown', (e) => {
         }
     }
     if (e.key === 'Escape') {
-        const detailModal = document.getElementById('detail-modal');
-        if (detailModal && detailModal.style.display === 'flex') {
-            closeDetailModal();
+        const detailScreen = document.getElementById('screen-idea-detail');
+        if (detailScreen?.classList.contains('active')) {
+            navigateTo('vault');
         } else {
             closeEditModal();
         }

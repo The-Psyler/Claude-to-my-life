@@ -1,19 +1,24 @@
 # HANDOFF — 2026-04-11
 
 ## Status
-Phase 3.5 UX polish done. Phase 4 in progress.
+Phase 3 complete. Phase 4 in progress. Vault idea detail screen fully working.
 
 ## Completed this session
-- Vault idea detail view: clicking a vault table row opens a modal showing title, state badge, and full work log in chronological order (`openDetailModal` / `closeDetailModal` in app.js, `#detail-modal` in index.html, `.modal-close-btn` + `.detail-log-*` in style.css)
-- Removed JSON import/export: `exportVault()` and `importVault()` functions removed, `<div class="vault-toolbar">` removed from HTML, `.vault-toolbar` CSS rules removed
-- Edit/delete buttons in vault rows now call `event.stopPropagation()` to prevent triggering the row detail modal
-- Escape key closes detail modal if open, otherwise closes edit modal
+- Atomic Ceremony: `_sessionDate` locked at load; drift detection toast on visibility change
+- Sync Broadcast: `BroadcastChannel('ctml_sync')` keeps all open tabs in sync
+- PWA: `manifest.json` + `sw.js` added; SW registered in `index.html`
+- Light/dark theme toggle: sun icon in nav bar, `localStorage` preference, `[data-theme="light"]` CSS block
+- Removed JSON import/export entirely (functions, HTML, CSS)
+- Vault idea detail screen (`#screen-idea-detail`): clicking any vault row navigates to a full screen showing title, state badge, captured date, and full chronological work log. Back button returns to Vault. Escape key also returns to Vault.
+- Vault table simplified: Category, Potential, Log columns removed — now shows #, Title, State, Last note, Date, Actions
 
 ## Pending manual step
-- Icons not yet created. Add these two files to enable install prompt:
+- PWA icons not yet created. Add to enable install prompt:
   - `src/icons/icon-192.png` (192×192 px)
   - `src/icons/icon-512.png` (512×512 px)
 
 ## Phase 4 remaining
-- Claude API integration (suggest next actions, surface dormant ideas)
+- Claude API integration (suggest next actions, surface dormant ideas) — deferred to last
 - Build pipeline (Vite for minification + cache-busting)
+- Weekly review screen
+- Voice capture (SpeechRecognition API)
