@@ -1,7 +1,21 @@
+# Core Philosophy (The Manifesto)
+
+CTML is a **Continuity Engine for Creative Momentum**. It serves as a bridge between *inspiration* and *execution*, ensuring that ideas captured in the moment are not lost, but instead become the focus of future days when the right energy or tools are available.
+
+**The Identity:**
+*   **A Digital Brain:** A non-judgmental repository to catch fleeting thoughts.
+*   **A Daily Coach:** A gentle driver that inspires movement and progress outside of 9-to-5 obligations.
+
+**The Ritual Loop:**
+1.  **Morning Boot (The Intent):** Setting the "route" for the day.
+2.  **Capture (The Intake):** Frictionless, high-speed entry to prevent idea loss.
+3.  **Work/Progress (The Movement):** Reflecting on the morning's route and logging progress toward ideas.
+4.  **Evening Wrap (The Closure):** A ceremonial conclusion to the day that creates a psychological boundary between "work" and "rest."
+
 # Architecture
 
 ## File structure
-Three source files, each with one responsibility:
+...Three source files, each with one responsibility:
 - `index.html` — structure only. No inline styles, no inline scripts.
 - `style.css` — all visual rules. CSS variables in `:root` are the single source for all colors/radii.
 - `app.js` — all logic, state, persistence, render functions.

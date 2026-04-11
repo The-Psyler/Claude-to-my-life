@@ -26,12 +26,20 @@
 - [x] Unlock Day button always in DOM (show/hide) — no more dynamic DOM creation
 - [x] Escape key closes edit modal; Ctrl+S scoped to capture screen only
 
+# Project Roadmap
+
+## Phase 1: Foundation (Completed — Apr 9)
+...
+## Phase 2: Structural Cleanup (Completed — Apr 10)
+...
 ## Phase 3: Advanced Features (Planned)
 - [x] ~~Streak counter~~ — explicitly excluded by user preference
-- [ ] **State / next-action editing from Work screen**: Update nextAction inline, not just via Vault modal
-- [ ] **Evening reflection history**: Store past reflections (not just close the day)
-- [ ] **Idea aging / freshness signal**: Visual indicator for ideas not touched in N days
-- [ ] **Filter + sort in Vault**: Filter by state/potential; sort by date or potential
+- [x] **The Continuity Bridge**: Resurrect yesterday's unfinished focus during Morning Boot.
+- [ ] **The Atomic Ceremony**: Implement a session-anchored `sessionDate` to prevent midnight boundary errors.
+- [ ] **The Persistence Sentinel**: Add safeguards against data loss during rapid browser closures.
+- [ ] **The Sync Broadcast**: Use `BroadcastChannel` to synchronize all open tabs in real-current state.
+- [x] **State / next-action editing from Work screen**: Update nextAction inline, not just via Vault modal
+...
 
 ## Phase 4: Deployment & Scaling (Planned)
 - [ ] **Service Worker / PWA**: Offline capability and "Add to Home Screen"
