@@ -1,20 +1,18 @@
 # HANDOFF — 2026-04-11
 
 ## Status
-Phase 3 in progress. Sentinel implemented and tested. Three UX gaps found during test session.
+Phase 3 in progress. UX batch from test session complete.
 
 ## Completed this session
-- Persistence Sentinel: `saveState()` write queue + `visibilitychange` forced-save (src/app.js)
-- ROADMAP cleaned up, duplicate stubs removed
-
-## Next tasks (from test session, in order)
-1. **Capture simplification** — remove Category and Potential fields, title-only entry
-2. **Vault work log display** — surface workLog notes inside Vault item cards
-3. **Morning Boot auto-unlock** — unlock locked day on entering Morning Boot (date-aware version deferred to Atomic Ceremony)
+- Persistence Sentinel: `saveState()` write queue + `visibilitychange` forced-save
+- Capture simplification: Category and Potential removed, title + note only
+- Vault Log column: shows dated work log notes inline
+- Vault "Last note" column: shows most recent work log note, falls back to capture note
+- Morning Boot auto-unlock: navigating to morning screen clears dayLocked immediately
 
 ## Phase 3 remaining
-- Atomic Ceremony (sessionDate) — `memory/plan-atomic-ceremony.md`
-- Sync Broadcast (BroadcastChannel) — `memory/plan-sync-broadcast.md`
+- Atomic Ceremony (sessionDate, anti-midnight-drift) — `memory/plan-atomic-ceremony.md`
+- Sync Broadcast (BroadcastChannel multi-tab) — `memory/plan-sync-broadcast.md`
 
 ## Branch
 `checkpoint-before-upgrades` — merge into main after next batch is verified.

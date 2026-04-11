@@ -153,27 +153,6 @@
             <input type="text" class="input" id="idea-title" placeholder="Give it a name..." aria-label="Idea title">
             <textarea class="textarea" id="idea-note" placeholder="One sentence is enough." aria-label="Idea note"></textarea>
 
-            <div style="margin-bottom:12px;">
-                <div style="font-size:12px;font-weight:500;margin-bottom:8px;">Category</div>
-                <div id="category-chips">
-                    <span class="chip" onclick="toggleChip(this)">App</span>
-                    <span class="chip" onclick="toggleChip(this)">System</span>
-                    <span class="chip" onclick="toggleChip(this)">Business</span>
-                    <span class="chip" onclick="toggleChip(this)">Creative</span>
-                    <span class="chip" onclick="toggleChip(this)">People</span>
-                    <span class="chip" onclick="toggleChip(this)">Other</span>
-                </div>
-            </div>
-
-            <div style="margin-bottom:12px;">
-                <div style="font-size:12px;font-weight:500;margin-bottom:8px;">Potential</div>
-                <div>
-                    <span class="potential-btn" data-value="Low"    onclick="togglePotential(this)">Low</span>
-                    <span class="potential-btn" data-value="Medium" onclick="togglePotential(this)">Med</span>
-                    <span class="potential-btn" data-value="High"   onclick="togglePotential(this)">High</span>
-                </div>
-            </div>
-
             <button class="btn btn-teal" onclick="saveIdea()" aria-label="Save idea">Save to Vault</button>
             <a href="#" class="btn btn-secondary" onclick="saveIdeaQuick()" role="button" aria-label="Quick save">Just save the name →</a>
         </div>
@@ -252,7 +231,7 @@
                             <th scope="col">Category</th>
                             <th scope="col">State</th>
                             <th scope="col">Potential</th>
-                            <th scope="col">Next action</th>
+                            <th scope="col">Last note</th>
                             <th scope="col">Date</th>
                             <th scope="col">Log</th>
                             <th scope="col"></th>

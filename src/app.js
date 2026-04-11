@@ -191,6 +191,11 @@ function navigateTo(screen) {
 
     // Screen-specific refresh
     if (screen === 'morning') {
+        if (state.dayLocked) {
+            state.dayLocked = false;
+            applyLockedState();
+            saveState();
+        }
         _pendingMorningIdeaId = null;
         renderMorningFocus();
         renderMorningStats();
@@ -400,7 +405,15 @@ function renderVault() {
 
     state.vault.forEach((idea, idx) => {
         const stateClass = idea.state.toLowerCase().replace(/\s+/g, '-');
-        const logCount   = (idea.workLog || []).length;
+        const workLog    = idea.workLog || [];
+        const logHtml    = workLog.length > 0
+            ? workLog.map(l =>
+                `<div style="font-size:11px;color:var(--muted);line-height:1.5;">`
+                + `<span style="opacity:0.6;">${escapeHtml(l.date.slice(5).replace('-', '/'))}</span> `
+                + escapeHtml(l.note)
+                + `</div>`
+              ).join('')
+            : '<span style="color:var(--muted)">—</span>';
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${idx + 1}</td>
@@ -408,9 +421,9 @@ function renderVault() {
             <td>${escapeHtml(idea.category)}</td>
             <td><span class="badge ${stateClass}">${escapeHtml(idea.state)}</span></td>
             <td><span class="badge ${idea.potential.toLowerCase()}">${escapeHtml(idea.potential)}</span></td>
-            <td>${escapeHtml(idea.nextAction)}</td>
+            <td>${escapeHtml(workLog.length > 0 ? workLog[workLog.length - 1].note : idea.nextAction)}</td>
             <td>${escapeHtml(idea.date)}</td>
-            <td style="color:var(--muted);font-size:11px;">${logCount > 0 ? logCount + ' log' + (logCount > 1 ? 's' : '') : '—'}</td>
+            <td>${logHtml}</td>
             <td style="white-space:nowrap;">
                 <button class="vault-action-btn"        onclick="editIdea(${idea.id})"   aria-label="Edit ${escapeHtml(idea.title)}">Edit</button>
                 <button class="vault-action-btn delete" onclick="deleteIdea(${idea.id})" aria-label="Delete ${escapeHtml(idea.title)}">✕</button>
@@ -543,10 +556,9 @@ async function saveIdea() {
         return;
     }
 
-    const note      = document.getElementById('idea-note')?.value.trim() || '';
-    const category  = Array.from(document.querySelectorAll('.chip.selected')).map(c => c.textContent).join(', ') || 'Other';
-    const potentialRaw = Array.from(document.querySelectorAll('.potential-btn.selected')).map(b => b.dataset.value)[0] || 'Medium';
-    const potential    = potentialRaw.charAt(0).toUpperCase() + potentialRaw.slice(1).toLowerCase();
+    const note     = document.getElementById('idea-note')?.value.trim() || '';
+    const category = 'Other';
+    const potential = 'Medium';
 
     const newIdea = {
         id:         Date.now(),
@@ -596,8 +608,6 @@ function clearCaptureForm() {
     const noteInput  = document.getElementById('idea-note');
     if (titleInput) titleInput.value = '';
     if (noteInput)  noteInput.value  = '';
-    document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
-    document.querySelectorAll('.potential-btn').forEach(b => b.classList.remove('selected'));
 }
 
 // ============================================================
