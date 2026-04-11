@@ -1,0 +1,69 @@
+  Dimension 1: The Soul (The "Why")
+
+  These questions define the psychological motivation behind the app.
+  - Identity: Is this a "Digital Brain" (storing everything so you don't have to) or a "Daily Coach"
+  (driving you to complete tasks)?
+
+A:both. I'd like to store ideas that pop up in my brain during the day, but get lost immediately as I didn't noted them down. Amd a daily coach to drive me, inspire, and motivate to reach a more worked out state of this ideas.
+
+  - Success Metric: When you close the app at the end of the day, what makes you feel like the app
+  "worked"? Is it because you did more work, or because you felt less anxious?
+
+A: it is because I feel that I did something to move my own ideas or plans forward outside of the 9-5job.
+
+
+  - The User Persona: Are you building this for a "High-Performance Professional" (speed and
+  execution) or a "Creative Thinker" (capture and reflection)?
+
+A: More a Creative thinker
+
+  Dimension 2: The Ritual (The "How")
+
+  These questions focus on the logic of the four daily phases.
+  - Morning Boot: Should this be a rigid checklist, or a soft landing for your thoughts? Does it need
+  to interact with yesterday's failures/successes?
+
+A: this is more or less a "set a rout for today". no strickt guidence, just to know what should be a focus for that day. For example, when I have a few minutes free in the job and don't know what to do in that time, I could pop up the CTML app and ree what  I thought was a good idea to work towards.
+
+  - Capture Phase: How much friction is too much? Is "Quick Capture" just text, or should it include
+  metadata (tags, urgency)?
+
+A: just a quick capture
+
+  - Work Phase: Is the "Work on It" phase about tracking time spent, or about updating the state of
+  progress (e.g., changing a task from 'waiting' to 'doing')?
+
+A: more or less it should reflect on the morning idea of what was the route of the day, and then capture any actual new ideas or progress that  was made towards compleating that idea.
+
+  - Evening Wrap: Is this a moment of closure (locking the day) or a moment of preparation (setting up
+   tomorrow)?
+
+A: This should be a conclusion of the day, a last point of summary of the day, that locks the app entirely from further interacting with it to get the feeling that "I'm done for the day" but in a satisfying way, not like a chore being completed.
+
+  Dimension 3: The Architecture (The "Tabs & Features")
+
+  These questions define the functionality of each UI element.
+  - The Vault: Is it a graveyard for dead ideas, or a living library? Should items ever "expire" or
+  move out of sight?
+
+A: an idea is never "dead" imo. This is not a greaveyar but literally a vault for ideas. for example I had the OnTime idea 3 years ago, but the tools required to move on with it arrived just now with AI advancing to this level. This is the spirit behind the vault.
+
+  - The Playbook: Is this just a static list of instructions, or should it be interactive (e.g.,
+  clicking a playbook item starts a task)?
+
+A: this is a harder question. Previously this was a collection of good calls and working promts, but I think this is already superseeded by the globan and local CLAUDE.md file.
+
+  - Focus/Work Screen: How much information from the Vault should be visible here? Do we want deep
+  detail, or just the "Next Action"?
+
+A: not sure. TBD
+
+  Dimension 4: The Future (The "Growth")
+
+  These questions define the technical boundaries.
+  - Input Modality: Beyond typing, will you eventually want voice-to-text or image/screenshot capture?
+  - Platform: Is this strictly a local web app, or do we need to design for a mobile-first "on-the-go"
+   experience (PWA)?
+
+A: yes to both. At the moment is just a proof of concept of my Claude to my life idea where I wanted to get used to Claude infrastructure. But now I'm using it, and the CTML is starting to become more like a future idea vault and presonal coach application, with further implication.
+
