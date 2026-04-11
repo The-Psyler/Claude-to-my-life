@@ -4,26 +4,26 @@
    ============================================================ */
 
 :root {
-    --purple: #7C6FF2;
+    --purple: #D4755A;
     --teal: #4DB6AC;
     --amber: #FFB74D;
     --coral: #E57373;
     --green: #81C784;
-    --bg: #121212;
-    --surface: #1E1E1E;
-    --muted: #B0B0B0;
-    --text: #E0E0E0;
-    --border: 1px solid rgba(255,255,255,0.1);
+    --bg: #1A1916;
+    --surface: #242220;
+    --muted: #9C9188;
+    --text: #EBE5DC;
+    --border: 1px solid rgba(255,243,230,0.09);
     --radius-card: 12px;
     --radius-input: 8px;
 }
 
 [data-theme="light"] {
-  --bg:      #F5F5F5;
-  --surface: #FFFFFF;
-  --muted:   #757575;
-  --text:    #212121;
-  --border:  1px solid rgba(0,0,0,0.1);
+  --bg:      #F4EFE8;
+  --surface: #FEFCF9;
+  --muted:   #6B6460;
+  --text:    #1C1A17;
+  --border:  1px solid rgba(28,26,23,0.1);
 }
 
 * {
