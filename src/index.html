@@ -265,19 +265,6 @@
             </div>
         </div>
 
-        <!-- Screen 7: Playbook -->
-        <div id="screen-playbook" class="screen">
-            <h1>AI Playbook</h1>
-            <p>Log insights, decisions, and prompts worth keeping.</p>
-
-            <textarea class="textarea" id="playbook-input" placeholder="Log an insight or decision..." aria-label="Playbook entry" style="min-height:72px;"></textarea>
-            <button class="btn" style="background:var(--amber);color:var(--bg);margin-bottom:20px;" onclick="addPlaybookEntry()">Add to Playbook</button>
-
-            <div class="playbook-list" id="playbook-list">
-                <!-- Populated by renderPlaybook() -->
-            </div>
-        </div>
-
         <!-- Toast -->
         <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
@@ -315,10 +302,6 @@
             <div class="nav-item" onclick="navigateTo('vault')" id="nav-vault" role="button" tabindex="0" aria-label="Vault">
                 <div class="nav-dot nav-dot-teal"></div>
                 <div class="nav-label nav-label-teal">Vault</div>
-            </div>
-            <div class="nav-item" onclick="navigateTo('playbook')" id="nav-playbook" role="button" tabindex="0" aria-label="Playbook">
-                <div class="nav-dot nav-dot-amber"></div>
-                <div class="nav-label nav-label-amber">Playbook</div>
             </div>
         </nav>
 

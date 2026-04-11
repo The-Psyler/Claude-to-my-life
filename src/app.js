@@ -22,7 +22,6 @@ const LS_LEGACY_KEY = 'ctml_state'; // kept only for migration
 const db = new Dexie(DB_NAME);
 db.version(1).stores({
     ideas:    'id, category, state, date',  // id = Date.now() — set at creation
-    playbook: '++id, date',
     settings: 'key'                         // key-value store for scalars + arrays
 });
 
@@ -37,17 +36,9 @@ const SEED_VAULT = [
     { id: 4, title: 'CTML Web App',               category: 'App',      state: 'Future', potential: 'High',   nextAction: 'Hand V0 spec to Claude Code',       date: 'Apr 9', workLog: [] }
 ];
 
-const SEED_PLAYBOOK = [
-    { date: 'Apr 9', text: 'CTML abbreviation confirmed — not CTMY' },
-    { date: 'Apr 9', text: 'Prompt fluency = the key skill to develop now' },
-    { date: 'Apr 9', text: 'Design DNA locked — soul statement: Any use is a good use.' },
-    { date: 'Apr 9', text: 'Capture icon = lightbulb + plus. Work icon = lightbulb in cradle (incubation).' }
-];
-
 let state = {
     karma:        47,
     vault:        [...SEED_VAULT],
-    playbook:     [...SEED_PLAYBOOK],
     reflections:  [],
     focus: {
         ideaId:        null,
@@ -57,7 +48,7 @@ let state = {
         date:          null       // ISO YYYY-MM-DD
     },
     dayLocked:       false,
-    lastBootDate:    null,        // ISO YYYY-MM-DD
+    lastBootDate:    null,        // ISO YYYY-MM-DD — date of last successful day start
     karmaAtDayStart: 0            // karma snapshot at day start — used for today's earned delta
 };
 
@@ -125,6 +116,12 @@ async function loadState() {
         if (typeof settings.karmaAtDayStart === 'number') {
             state.karmaAtDayStart = settings.karmaAtDayStart;
         }
+
+        // Auto-start new day if lastBootDate is from a previous day
+        const today = todayISO();
+        if (state.lastBootDate && state.lastBootDate < today) {
+            await startDay();
+        }
     } catch (e) {
         console.warn('loadState failed:', e);
         showToast('Could not load saved data', 'error');
@@ -169,13 +166,6 @@ async function migrateOldStorage() {
             state.focus = { ...state.focus, ...parsed.focus };
         }
         if (typeof parsed.dayLocked === 'boolean') state.dayLocked = parsed.dayLocked;
-
-        // Migrate playbook to Dexie table
-        if (Array.isArray(parsed.playbook) && parsed.playbook.length > 0) {
-            const entries = parsed.playbook.map(({ id: _id, ...entry }) => entry);
-            const newIds  = await db.playbook.bulkAdd(entries, { allKeys: true });
-            state.playbook = parsed.playbook.map((entry, i) => ({ ...entry, id: newIds[i] }));
-        }
 
         await saveState();
         localStorage.removeItem(LS_LEGACY_KEY);
@@ -422,22 +412,6 @@ function renderVault() {
             </td>
         `;
         tbody.appendChild(row);
-    });
-}
-
-function renderPlaybook() {
-    const list = document.getElementById('playbook-list');
-    if (!list) return;
-    list.innerHTML = '';
-
-    [...state.playbook].reverse().forEach(entry => {
-        const card = document.createElement('div');
-        card.className = 'playbook-card';
-        card.innerHTML = `
-            <div class="playbook-date">${escapeHtml(entry.date)}</div>
-            <div class="playbook-text">${escapeHtml(entry.text)}</div>
-        `;
-        list.appendChild(card);
     });
 }
 
@@ -775,27 +749,6 @@ async function logProgress(ideaId) {
 // PLAYBOOK
 // ============================================================
 
-async function addPlaybookEntry() {
-    const input = document.getElementById('playbook-input');
-    if (!input || !input.value.trim()) {
-        showToast('Write something first', 'error');
-        return;
-    }
-
-    const entry = {
-        date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-        text: input.value.trim()
-    };
-
-    // Write to Dexie first to get auto-increment id
-    const newId  = await db.playbook.add(entry);
-    entry.id     = newId;
-    state.playbook.push(entry);
-    input.value  = '';
-    renderPlaybook();
-    showToast('Added to Playbook', 'success');
-}
-
 // ============================================================
 // EVENING / DAY CLOSE
 // ============================================================
@@ -937,12 +890,6 @@ async function importVault(event) {
             if (!Array.isArray(data.vault)) throw new Error('Invalid format');
 
             state.vault = data.vault.map(idea => ({ workLog: [], ...idea }));
-            if (Array.isArray(data.playbook)) {
-                await db.playbook.clear();
-                const pbEntries = data.playbook.map(({ id: _, ...e }) => e);
-                const pbIds     = await db.playbook.bulkAdd(pbEntries, { allKeys: true });
-                state.playbook  = data.playbook.map((e, i) => ({ ...e, id: pbIds[i] }));
-            }
             if (Array.isArray(data.reflections)) state.reflections = data.reflections;
             if (typeof data.karma === 'number' && !isNaN(data.karma)) state.karma = data.karma;
             if (data.lastBootDate !== undefined) state.lastBootDate = data.lastBootDate;

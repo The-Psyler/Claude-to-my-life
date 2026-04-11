@@ -429,26 +429,6 @@ p {
 
 .moved-list li:last-child { border-bottom: none; }
 
-/* ── Playbook ── */
-
-.playbook-list { margin-bottom: 16px; }
-
-.playbook-card {
-    background: var(--surface);
-    border: var(--border);
-    border-radius: var(--radius-card);
-    padding: 12px;
-    margin-bottom: 8px;
-}
-
-.playbook-date {
-    font-size: 11px;
-    color: var(--muted);
-    margin-bottom: 4px;
-}
-
-.playbook-text { font-size: 14px; }
-
 /* ── Date / time labels ── */
 
 .date-display, .date-time, .focus-display {
