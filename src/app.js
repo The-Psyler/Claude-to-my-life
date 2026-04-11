@@ -25,6 +25,11 @@ db.version(1).stores({
     settings: 'key'                         // key-value store for scalars + arrays
 });
 
+// Sync Broadcast: keeps all open tabs in sync without echo loops (same-origin only)
+const _bc = typeof BroadcastChannel !== 'undefined'
+    ? new BroadcastChannel('ctml_sync')
+    : null;
+
 // ============================================================
 // STATE
 // ============================================================
@@ -55,6 +60,7 @@ let state = {
 // Temp vars — not persisted
 let _pendingMorningIdeaId = null; // vault picker selection during morning flow
 let _attachDecision       = null; // null | true | false — evening attach choice
+let _sessionDate          = null; // ISO date anchored at loadState() — prevents midnight drift
 
 // ============================================================
 // PERSISTENCE
@@ -78,6 +84,8 @@ async function saveState() {
                 await db.ideas.clear();
                 await db.ideas.bulkPut(state.vault);
             });
+            // Sync Broadcast: notify other tabs that state has been saved
+            if (_bc) _bc.postMessage({ type: 'state_saved' });
         } catch (e) {
             console.warn('saveState failed:', e);
             showToast('Save failed', 'error');
@@ -122,9 +130,11 @@ async function loadState() {
             state.karmaAtDayStart = settings.karmaAtDayStart;
         }
 
+        // Anchor the session date — all date-sensitive operations use this
+        _sessionDate = todayISO();
+
         // Auto-start new day if lastBootDate is from a previous day
-        const today = todayISO();
-        if (state.lastBootDate && state.lastBootDate < today) {
+        if (state.lastBootDate && state.lastBootDate < _sessionDate) {
             await startDay();
         }
     } catch (e) {
@@ -510,7 +520,7 @@ async function updateKarma(points) {
 }
 
 async function startDay() {
-    const today      = todayISO();
+    const today      = _sessionDate || todayISO();
     const inputEl    = document.getElementById('morning-focus-input');
     const inputTitle = inputEl?.value.trim() || '';
 
@@ -779,7 +789,7 @@ async function closeDay() {
         return;
     }
 
-    const today = todayISO();
+    const today = _sessionDate || todayISO();
 
     // Persist reflection
     state.reflections.push({
@@ -947,6 +957,41 @@ function showToast(message, type = 'info', duration = 2500) {
 }
 
 // ============================================================
+// SYNC BROADCAST HELPER
+// ============================================================
+
+// Re-renders the currently active screen without switching screens.
+// Mirrors the render logic in navigateTo() for use after a remote state reload.
+function renderCurrentScreen() {
+    const active = document.querySelector('.screen.active');
+    if (!active) return;
+    const screen = active.id.replace('screen-', '');
+
+    renderKarma();
+    if (screen === 'morning') {
+        renderMorningFocus();
+        renderMorningStats();
+        renderMorningVaultPicker();
+    } else if (screen === 'work') {
+        renderWorkList();
+    } else if (screen === 'evening') {
+        renderEveningMoved();
+        renderEveningAttachOption();
+        renderEveningKarma();
+        renderReflectionHistory();
+    } else if (screen === 'vault') {
+        renderVault();
+    } else if (screen === 'capture') {
+        // Capture form is stateless; just refresh karma
+    } else if (screen === 'playbook') {
+        if (typeof renderPlaybook === 'function') renderPlaybook();
+    } else {
+        // home or unknown — refresh karma (already done above)
+    }
+    if (state.dayLocked) applyLockedState();
+}
+
+// ============================================================
 // INIT
 // ============================================================
 
@@ -958,11 +1003,28 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     await loadState();
     renderAll();
+
+    // Sync Broadcast: reload state from DB when another tab saves
+    if (_bc) {
+        _bc.onmessage = async (event) => {
+            if (event.data?.type === 'state_saved') {
+                await loadState();
+                renderCurrentScreen();
+            }
+        };
+    }
 });
 
 // Persistence Sentinel: force-save when tab is hidden (browser switch, close, Alt+Tab)
+// Atomic Ceremony: detect date drift when tab becomes visible again
 document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'hidden') saveState();
+    if (document.visibilityState === 'hidden') {
+        saveState();
+    } else if (document.visibilityState === 'visible' && _sessionDate) {
+        if (todayISO() !== _sessionDate) {
+            showToast('New day detected — refresh to start fresh', 'info');
+        }
+    }
 });
 
 document.addEventListener('keydown', (e) => {

@@ -10,7 +10,15 @@
       "Bash(rm -rf \".claude/agent-memory\")",
       "Bash(git checkout:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(git fetch:*)",
+      "Bash(start src/index.html)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(npm --version)",
+      "Bash(git clone:*)",
+      "Read(//c/Users/PsyPC/ecc/**)",
+      "Bash(node scripts/install-apply.js --profile core --dry-run)"
     ]
   }
 }

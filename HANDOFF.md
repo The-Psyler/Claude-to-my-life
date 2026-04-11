@@ -1,24 +1,17 @@
 # HANDOFF — 2026-04-11
 
 ## Status
-Phase 3 in progress. UX batch complete. ECC core profile installed globally.
+Phase 3 complete. All planned features implemented and committed.
 
 ## Completed this session
-- Persistence Sentinel: `saveState()` write queue + `visibilitychange` forced-save
-- Capture simplification: Category and Potential removed, title + note only
-- Vault Log column: shows dated work log notes inline
-- Vault "Last note" column: most recent work log note, falls back to capture note
-- Morning Boot auto-unlock: navigating to morning screen clears dayLocked immediately
-- Global CLAUDE.md: removed HP Z800, clarified Handoff purpose
-- ECC core profile installed to `~/.claude/` (rules, agents, skills, commands, hooks)
+- Atomic Ceremony: `_sessionDate` anchored at `loadState()` time; `startDay()` and `closeDay()` use it instead of live `todayISO()`; `visibilitychange` listener shows toast on date drift
+- Sync Broadcast: `BroadcastChannel('ctml_sync')` added; `saveState()` posts after successful Dexie transaction; receiver in init reloads state + re-renders on message; `renderCurrentScreen()` helper added
 
 ## Phase 3 remaining
-- Atomic Ceremony (sessionDate, anti-midnight-drift) — `memory/plan-atomic-ceremony.md`
-- Sync Broadcast (BroadcastChannel multi-tab) — `memory/plan-sync-broadcast.md`
+None — all complete.
 
-## Branch
-`checkpoint-before-upgrades` — not yet merged into main.
-
-## Notes for next session
-- ECC installed at `C:/Users/PsyPC/ecc` (can be deleted — already copied to ~/.claude/)
-- ECC skills use `/ecc:` prefix or direct command names like `/code-review`, `/build-fix`
+## Next: Phase 4
+- Service Worker / PWA (offline + "Add to Home Screen")
+- Claude API integration (suggest next actions, surface dormant ideas)
+- Light theme toggle (prefers-color-scheme or manual)
+- Build pipeline (Vite for minification + cache-busting)

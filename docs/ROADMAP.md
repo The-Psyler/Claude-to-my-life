@@ -26,12 +26,12 @@
 - [x] Unlock Day button always in DOM (show/hide) — no more dynamic DOM creation
 - [x] Escape key closes edit modal; Ctrl+S scoped to capture screen only
 
-## Phase 3: Advanced Features (In Progress)
+## Phase 3: Advanced Features (Completed — Apr 11)
 - [x] ~~Streak counter~~ — explicitly excluded by user preference
 - [x] **The Continuity Bridge**: Resurrect yesterday's unfinished focus during Morning Boot.
-- [ ] **The Atomic Ceremony**: Implement a session-anchored `sessionDate` to prevent midnight boundary errors.
+- [x] **The Atomic Ceremony**: Implement a session-anchored `sessionDate` to prevent midnight boundary errors.
 - [x] **The Persistence Sentinel**: Serialize saveState() writes + visibilitychange forced-save.
-- [ ] **The Sync Broadcast**: Use `BroadcastChannel` to synchronize all open tabs in real-current state.
+- [x] **The Sync Broadcast**: Use `BroadcastChannel` to synchronize all open tabs in real-current state.
 - [x] **State / next-action editing from Work screen**: Update nextAction inline, not just via Vault modal
 - [x] **Morning Boot auto-unlock**: Entering Morning Boot while day is locked unlocks immediately. (Date-aware version deferred to Atomic Ceremony.)
 - [x] **Vault work log display**: Vault Log column now shows dated work log notes; Last note column shows most recent entry.
