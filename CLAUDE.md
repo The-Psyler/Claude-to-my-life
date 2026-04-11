@@ -43,3 +43,22 @@ See @docs/ARCHITECTURE.md
 
 ## Roadmap & phases
 See @docs/ROADMAP.md
+
+## Working Rules
+
+**Language:** Always respond in English.
+
+**File access:** Read files by explicit path only. Never delegate simple file reads to sub-agents.
+
+**Change discipline:**
+- Make one change at a time. Before applying, state what will change and which elements are affected.
+- Never rewrite a full file. Make surgical, targeted edits only.
+- If a change touches more than ~20 lines, present a plan and wait for approval.
+
+**UI/Styling changes:**
+- Before any HTML/CSS/layout change: state the plan, list affected elements, wait for go-ahead.
+- If a change breaks the UI, revert immediately — do not attempt to fix forward.
+
+**After each confirmed working change:** Remind user to commit before moving to the next task.
+
+**When uncertain:** Say so immediately. Do not substitute similar-sounding alternatives.
