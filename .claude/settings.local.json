@@ -7,7 +7,10 @@
       "WebFetch(domain:docs.anthropic.com)",
       "WebSearch",
       "Bash(rm \"00_ Scripted by Grok.txt\" \"01_hadndoff.txt\" \"02_CTMY_refined_instructions_.txt\" \"03_ handoff..txt\" \"9999newestchat without handoff.txt\" \"claude_to_my_life_system.md\" \"index_html_review.txt\" \"review_summary.txt\" \"docs/BUILD.md\")",
-      "Bash(rm -rf \".claude/agent-memory\")"
+      "Bash(rm -rf \".claude/agent-memory\")",
+      "Bash(git checkout:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ]
   }
 }
