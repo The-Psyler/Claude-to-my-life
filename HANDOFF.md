@@ -1,17 +1,19 @@
 # HANDOFF — 2026-04-11
 
 ## Status
-Phase 3 complete. All planned features implemented and committed.
+Phase 4 in progress. PWA + light/dark theme toggle implemented.
 
 ## Completed this session
-- Atomic Ceremony: `_sessionDate` anchored at `loadState()` time; `startDay()` and `closeDay()` use it instead of live `todayISO()`; `visibilitychange` listener shows toast on date drift
-- Sync Broadcast: `BroadcastChannel('ctml_sync')` added; `saveState()` posts after successful Dexie transaction; receiver in init reloads state + re-renders on message; `renderCurrentScreen()` helper added
+- PWA: added `src/manifest.json` (cache-first, standalone display, theme #534AB7)
+- PWA: added `src/sw.js` (install/activate/fetch cache-first service worker, CACHE_NAME `ctml-v1`)
+- PWA: wired manifest link and SW registration script into `src/index.html`
+- Light theme toggle: `[data-theme="light"]` block in style.css, `.nav-theme-btn` styles, sun icon button in nav bar, `toggleTheme()` + `applyTheme()` in app.js, persisted to localStorage `ctml_theme`
 
-## Phase 3 remaining
-None — all complete.
+## Pending manual step
+- Icons not yet created. Add these two files to enable install prompt:
+  - `src/icons/icon-192.png` (192×192 px)
+  - `src/icons/icon-512.png` (512×512 px)
 
-## Next: Phase 4
-- Service Worker / PWA (offline + "Add to Home Screen")
+## Phase 4 remaining
 - Claude API integration (suggest next actions, surface dormant ideas)
-- Light theme toggle (prefers-color-scheme or manual)
 - Build pipeline (Vite for minification + cache-busting)

@@ -39,7 +39,7 @@
 - [x] **Vault "Last note" column**: Renamed from "Next action"; shows last work log note, falls back to capture note.
 
 ## Phase 4: Deployment & Scaling (Planned)
-- [ ] **Service Worker / PWA**: Offline capability and "Add to Home Screen"
+- [x] **Service Worker / PWA**: Offline capability and "Add to Home Screen"
 - [ ] **Build pipeline**: Vite for minification and cache-busting
 - [ ] **Claude API integration**: Suggest next actions or surface dormant ideas
-- [ ] **Light theme toggle**: Respect prefers-color-scheme or manual toggle
+- [x] **Light theme toggle**: Respect prefers-color-scheme or manual toggle
