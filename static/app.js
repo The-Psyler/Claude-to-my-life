@@ -7,6 +7,38 @@
 // GUARD
 // ============================================================
 
+// ============================================================
+// i18n
+// ============================================================
+
+let currentLang = 'en';
+
+function t(key) {
+    return (translations[currentLang] && translations[currentLang][key]) || translations.en[key] || key;
+}
+
+function applyTranslations() {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        el.textContent = t(el.dataset.i18n);
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        el.placeholder = t(el.dataset.i18nPlaceholder);
+    });
+    document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+        el.setAttribute('aria-label', t(el.dataset.i18nAria));
+    });
+}
+
+function setLanguage(lang) {
+    currentLang = lang;
+    applyTranslations();
+    saveState();
+}
+
+// ============================================================
+// GUARD
+// ============================================================
+
 if (typeof Dexie === 'undefined') {
     document.body.innerHTML = '<p style="color:#E57373;padding:20px;font-family:system-ui;">Error: dexie.min.js not found. Place it in the src/ folder alongside app.js.</p>';
     throw new Error('Dexie not loaded');
@@ -79,7 +111,8 @@ async function saveState() {
                     { key: 'dayLocked',       value: state.dayLocked },
                     { key: 'lastBootDate',    value: state.lastBootDate },
                     { key: 'reflections',     value: state.reflections },
-                    { key: 'karmaAtDayStart', value: state.karmaAtDayStart }
+                    { key: 'karmaAtDayStart', value: state.karmaAtDayStart },
+                    { key: 'language',        value: currentLang }
                 ]);
                 // Clear + re-put handles deletions atomically
                 await db.ideas.clear();
@@ -89,7 +122,7 @@ async function saveState() {
             if (_bc) _bc.postMessage({ type: 'state_saved' });
         } catch (e) {
             console.warn('saveState failed:', e);
-            showToast('Save failed', 'error');
+            showToast(t('toast_save_failed'), 'error');
         }
     }).catch(() => {}); // keep queue alive if a save throws unexpectedly
     return _saveQueue;
@@ -130,6 +163,9 @@ async function loadState() {
         if (typeof settings.karmaAtDayStart === 'number') {
             state.karmaAtDayStart = settings.karmaAtDayStart;
         }
+        if (settings.language && (settings.language === 'en' || settings.language === 'hu')) {
+            currentLang = settings.language;
+        }
 
         // Anchor the session date — all date-sensitive operations use this
         _sessionDate = todayISO();
@@ -140,7 +176,7 @@ async function loadState() {
         }
     } catch (e) {
         console.warn('loadState failed:', e);
-        showToast('Could not load saved data', 'error');
+        showToast(t('toast_load_failed'), 'error');
     }
 }
 
@@ -223,6 +259,9 @@ function navigateTo(screen) {
         renderIdeaDetail();
     } else if (screen === 'vault') {
         renderVault();
+    } else if (screen === 'settings') {
+        const radio = document.querySelector(`input[name="lang"][value="${currentLang}"]`);
+        if (radio) radio.checked = true;
     }
 
     setTimeout(() => {
@@ -253,8 +292,8 @@ function renderAll() {
 function renderKarma() {
     const homeDisplay   = document.getElementById('karma-display');
     const morningKarma  = document.getElementById('morning-karma-text');
-    if (homeDisplay)  homeDisplay.textContent  = state.karma + ' pts';
-    if (morningKarma) morningKarma.textContent = state.karma + ' karma';
+    if (homeDisplay)  homeDisplay.textContent  = state.karma + ' ' + t('label_pts');
+    if (morningKarma) morningKarma.textContent = state.karma + ' ' + t('label_karma');
 }
 
 function renderMorningFocus() {
@@ -270,7 +309,7 @@ function renderMorningFocus() {
     if (hasPriorFocus) {
         if (yesterdayTitle)  yesterdayTitle.textContent  = state.focus.title;
         if (yesterdayAction) yesterdayAction.textContent = state.focus.nextAction
-            ? 'Next: ' + state.focus.nextAction
+            ? t('label_next') + ': ' + state.focus.nextAction
             : '';
     }
 
@@ -299,7 +338,7 @@ function renderMorningVaultPicker() {
     if (!container) return;
 
     if (state.vault.length === 0) {
-        container.innerHTML = '<p style="color:var(--muted);font-size:13px;padding:8px 0;">No ideas yet — capture one first.</p>';
+        container.innerHTML = '<p style="color:var(--muted);font-size:13px;padding:8px 0;">' + escapeHtml(t('toast_no_ideas')) + '</p>';
         return;
     }
 
@@ -338,7 +377,7 @@ function renderWorkList() {
     container.innerHTML = '';
 
     if (state.vault.length === 0) {
-        container.innerHTML = '<p style="text-align:center;padding:20px 0;">No ideas yet — capture one first.</p>';
+        container.innerHTML = '<p style="text-align:center;padding:20px 0;">' + escapeHtml(t('toast_no_ideas')) + '</p>';
         return;
     }
 
@@ -348,7 +387,7 @@ function renderWorkList() {
         const workLog    = idea.workLog || [];
 
         const focusLabel = isFocused
-            ? '<span style="color:var(--purple);font-size:11px;margin-left:6px;">● focus</span>'
+            ? '<span style="color:var(--purple);font-size:11px;margin-left:6px;">' + escapeHtml(t('work_focus_label')) + '</span>'
             : '';
 
         const logEntries = workLog.length > 0
@@ -357,7 +396,7 @@ function renderWorkList() {
                     <span class="work-log-date">${escapeHtml(e.date)}</span>
                     <span class="work-log-note">${escapeHtml(e.note)}</span>
                 </div>`).join('')
-            : '<div class="work-log-empty">No progress logged yet.</div>';
+            : '<div class="work-log-empty">' + escapeHtml(t('work_no_progress')) + '</div>';
 
         const card = document.createElement('div');
         card.className = 'card';
@@ -370,36 +409,36 @@ function renderWorkList() {
                 <span class="badge ${idea.potential.toLowerCase()}">${escapeHtml(idea.potential)}</span>
             </div>
             <div class="expanded-card" style="display:none;">
-                <div class="expanded-title">Category: ${escapeHtml(idea.category)}</div>
+                <div class="expanded-title">${escapeHtml(t('work_category'))}: ${escapeHtml(idea.category)}</div>
                 <div class="expanded-next">
-                    <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">Next action</div>
+                    <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">${escapeHtml(t('work_next_action'))}</div>
                     <input type="text" class="input"
                            style="margin:0 0 4px;font-size:13px;padding:6px 10px;"
                            id="next-action-input-${idea.id}"
                            value="${escapeHtml(idea.nextAction)}"
-                           placeholder="What's the next action?"
+                           placeholder="${escapeHtml(t('work_next_placeholder'))}"
                            onclick="event.stopPropagation()">
                     <button class="work-log-btn"
                             onclick="event.stopPropagation(); saveNextAction(${idea.id})">
-                        Update next action
+                        ${escapeHtml(t('work_update_next'))}
                     </button>
                 </div>
                 <div class="expanded-action">
                     <button class="expanded-action-btn ${isFocused ? 'is-focus' : ''}"
                             onclick="event.stopPropagation(); setFocus(${idea.id})">
-                        ${isFocused ? "Today's focus ✓" : "This is today's focus →"}
+                        ${isFocused ? escapeHtml(t('work_is_focus')) : escapeHtml(t('work_set_focus'))}
                     </button>
                 </div>
                 <div class="work-log-section">
-                    <div class="work-log-section-label">Progress log</div>
+                    <div class="work-log-section-label">${escapeHtml(t('work_progress_log'))}</div>
                     <textarea class="textarea work-log-input"
                               id="work-log-input-${idea.id}"
-                              placeholder="What did you do? What did you learn?"
+                              placeholder="${escapeHtml(t('work_progress_placeholder'))}"
                               onclick="event.stopPropagation()"
                               rows="2"></textarea>
                     <button class="work-log-btn"
                             onclick="event.stopPropagation(); logProgress(${idea.id})">
-                        Log progress
+                        ${escapeHtml(t('work_log_progress'))}
                     </button>
                     <div class="work-log-entries" id="work-log-entries-${idea.id}">
                         ${logEntries}
@@ -432,7 +471,7 @@ function renderVault() {
             <td>${escapeHtml(lastNote)}</td>
             <td>${escapeHtml(idea.date)}</td>
             <td style="white-space:nowrap;">
-                <button class="vault-action-btn"        onclick="event.stopPropagation(); editIdea(${idea.id})"   aria-label="Edit ${escapeHtml(idea.title)}">Edit</button>
+                <button class="vault-action-btn"        onclick="event.stopPropagation(); editIdea(${idea.id})"   aria-label="${escapeHtml(t('btn_edit'))} ${escapeHtml(idea.title)}">${escapeHtml(t('btn_edit'))}</button>
                 <button class="vault-action-btn delete" onclick="event.stopPropagation(); deleteIdea(${idea.id})" aria-label="Delete ${escapeHtml(idea.title)}">✕</button>
             </td>
         `;
@@ -448,24 +487,24 @@ function renderEveningMoved() {
     const todayISO_ = todayISO();
     const items = [];
 
-    if (state.focus.title) items.push('Focus: ' + state.focus.title);
+    if (state.focus.title) items.push(t('label_focus') + ': ' + state.focus.title);
 
     // Ideas captured today
     state.vault
         .filter(v => v.date === today)
         .filter(v => !items.some(i => i.includes(v.title)))
         .slice(0, 2)
-        .forEach(v => items.push('Captured: ' + v.title));
+        .forEach(v => items.push(t('label_captured') + ': ' + v.title));
 
     // Ideas with work logged today
     state.vault
         .filter(v => (v.workLog || []).some(l => l.date === todayISO_))
         .filter(v => !items.some(i => i.includes(v.title)))
         .slice(0, 2)
-        .forEach(v => items.push('Worked on: ' + v.title));
+        .forEach(v => items.push(t('label_worked_on') + ': ' + v.title));
 
     if (items.length === 0) {
-        movedList.innerHTML = '<li style="color:var(--muted)">Nothing logged yet today</li>';
+        movedList.innerHTML = '<li style="color:var(--muted)">' + escapeHtml(t('toast_nothing_logged')) + '</li>';
     } else {
         movedList.innerHTML = items.map(item => `<li>${escapeHtml(item)}</li>`).join('');
     }
@@ -477,7 +516,7 @@ function renderEveningAttachOption() {
     if (!section) return;
 
     if (state.focus.isVaultLinked && state.focus.ideaId && state.focus.title) {
-        if (label) label.textContent = 'Attach this reflection to "' + state.focus.title + '"?';
+        if (label) label.textContent = t('evening_attach_question') + ' "' + state.focus.title + '"?';
         section.style.display = 'block';
     } else {
         section.style.display = 'none';
@@ -488,7 +527,7 @@ function renderEveningKarma() {
     const karmaDisplay = document.getElementById('today-karma-display');
     if (!karmaDisplay || state.dayLocked) return;
     const earned = state.karma - (state.karmaAtDayStart ?? state.karma);
-    karmaDisplay.textContent = earned + ' karma earned today';
+    karmaDisplay.textContent = earned + ' ' + t('evening_karma_earned');
 }
 
 function renderReflectionHistory() {
@@ -496,7 +535,7 @@ function renderReflectionHistory() {
     if (!list) return;
     const entries = [...state.reflections].reverse().slice(0, 30);
     if (entries.length === 0) {
-        list.innerHTML = '<p style="color:var(--muted);font-size:13px;margin:8px 0 0;">No past reflections yet.</p>';
+        list.innerHTML = '<p style="color:var(--muted);font-size:13px;margin:8px 0 0;">' + escapeHtml(t('toast_no_reflections')) + '</p>';
         return;
     }
     list.innerHTML = entries.map(e => `
@@ -523,7 +562,7 @@ async function startDay() {
 
     // Guard: prevent same-day re-start
     if (state.lastBootDate === today && !state.dayLocked) {
-        showToast('Day already started', 'info');
+        showToast(t('toast_day_already'), 'info');
         navigateTo('home');
         return;
     }
@@ -548,7 +587,7 @@ async function startDay() {
     _pendingMorningIdeaId = null;
 
     await updateKarma(5);
-    showToast('+5 karma — Day started!', 'success');
+    showToast(t('toast_day_started'), 'success');
     navigateTo('home');
 }
 
@@ -559,7 +598,7 @@ async function startDay() {
 async function saveIdea() {
     const titleInput = document.getElementById('idea-title');
     if (!titleInput || !titleInput.value.trim()) {
-        showToast('Please enter a title', 'error');
+        showToast(t('toast_enter_title'), 'error');
         return;
     }
 
@@ -582,13 +621,13 @@ async function saveIdea() {
     renderVault();
     await updateKarma(8);
     clearCaptureForm();
-    showToast('+8 pts — Saved to Vault', 'success');
+    showToast(t('toast_saved_full'), 'success');
 }
 
 async function saveIdeaQuick() {
     const titleInput = document.getElementById('idea-title');
     if (!titleInput || !titleInput.value.trim()) {
-        showToast('Please enter a title', 'error');
+        showToast(t('toast_enter_title'), 'error');
         return;
     }
 
@@ -607,7 +646,7 @@ async function saveIdeaQuick() {
     renderVault();
     await updateKarma(3);
     clearCaptureForm();
-    showToast('+3 pts — Saved to Vault', 'success');
+    showToast(t('toast_saved_quick'), 'success');
 }
 
 function clearCaptureForm() {
@@ -650,7 +689,7 @@ async function deleteIdea(id) {
     state.vault.splice(idx, 1);
     renderVault();
     await saveState();
-    showToast('Deleted: ' + title, 'info');
+    showToast(t('toast_deleted') + ': ' + title, 'info');
 }
 
 function editIdea(id) {
@@ -671,7 +710,7 @@ async function saveEdit() {
     if (idx === -1) return;
 
     const title = document.getElementById('idea-edit-title').value.trim();
-    if (!title) { showToast('Title cannot be empty', 'error'); return; }
+    if (!title) { showToast(t('toast_title_empty'), 'error'); return; }
 
     state.vault[idx] = {
         ...state.vault[idx],
@@ -690,7 +729,7 @@ async function saveEdit() {
     renderVault();
     await saveState();
     closeEditModal();
-    showToast('Saved', 'success');
+    showToast(t('toast_idea_saved'), 'success');
 }
 
 function closeEditModal() {
@@ -714,7 +753,7 @@ async function setFocus(ideaId) {
     };
     await saveState();
     renderWorkList();
-    showToast('Focus set: ' + idea.title, 'success');
+    showToast(t('toast_focus_set') + ': ' + idea.title, 'success');
 }
 
 // Called from Morning Boot vault picker
@@ -735,7 +774,7 @@ function clearMorningVaultSelection() {
 async function saveNextAction(ideaId) {
     const input = document.getElementById('next-action-input-' + ideaId);
     const val   = input?.value.trim();
-    if (!val) { showToast('Next action cannot be empty', 'error'); return; }
+    if (!val) { showToast(t('toast_next_empty'), 'error'); return; }
 
     const idea = state.vault.find(v => v.id === ideaId);
     if (!idea) return;
@@ -743,7 +782,7 @@ async function saveNextAction(ideaId) {
     if (state.focus.ideaId === ideaId) state.focus.nextAction = val;
 
     await saveState();
-    showToast('Next action updated', 'success');
+    showToast(t('toast_next_updated'), 'success');
 }
 
 // ============================================================
@@ -753,7 +792,7 @@ async function saveNextAction(ideaId) {
 async function logProgress(ideaId) {
     const textarea = document.getElementById('work-log-input-' + ideaId);
     const note     = textarea?.value.trim();
-    if (!note) { showToast('Write what you did first', 'error'); return; }
+    if (!note) { showToast(t('toast_write_first'), 'error'); return; }
 
     const idea = state.vault.find(v => v.id === ideaId);
     if (!idea) return;
@@ -764,7 +803,7 @@ async function logProgress(ideaId) {
     await saveState();
     if (textarea) textarea.value = '';
     renderWorkList();
-    showToast('Progress logged', 'success');
+    showToast(t('toast_progress_logged'), 'success');
 }
 
 // ============================================================
@@ -782,7 +821,7 @@ async function closeDay() {
     const reflection = textarea?.value.trim() || '';
 
     if (!reflection) {
-        showToast('Write one thing before closing the day', 'error');
+        showToast(t('toast_write_reflection'), 'error');
         return;
     }
 
@@ -809,14 +848,14 @@ async function closeDay() {
     state.dayLocked = true;
     await saveState();
     applyLockedState();
-    showToast('+18 pts — Day closed. Good work.', 'success');
+    showToast(t('toast_day_closed'), 'success');
 }
 
 async function unlockDay() {
     state.dayLocked = false;
     await saveState();
     applyLockedState();
-    showToast('Day unlocked', 'info');
+    showToast(t('toast_day_unlocked'), 'info');
 }
 
 function applyLockedState() {
@@ -834,8 +873,8 @@ function applyLockedState() {
 
     if (state.dayLocked) {
         // Evening screen
-        if (eveningHeading) eveningHeading.textContent  = 'Day is closed.';
-        if (karmaDisplay)   karmaDisplay.textContent    = 'Today is complete';
+        if (eveningHeading) eveningHeading.textContent  = t('evening_day_closed');
+        if (karmaDisplay)   karmaDisplay.textContent    = t('evening_today_complete');
         if (karmaPill)      karmaPill.style.display     = 'none';
         if (closeDayBtn)  { closeDayBtn.disabled = true;  closeDayBtn.style.opacity  = '0.4'; }
         if (unlockBtn)      unlockBtn.style.display     = 'block';
@@ -845,15 +884,15 @@ function applyLockedState() {
         if (homeBanner)     homeBanner.style.display    = 'block';
         if (homeBannerKarma) {
             const earned = state.karma - (state.karmaAtDayStart ?? state.karma);
-            homeBannerKarma.textContent = earned + ' karma earned today';
+            homeBannerKarma.textContent = earned + ' ' + t('evening_karma_earned');
         }
         if (morningCard)    morningCard.style.opacity   = '0.45';
     } else {
         // Evening screen
-        if (eveningHeading) eveningHeading.textContent  = 'Good work. What are you taking into tomorrow?';
+        if (eveningHeading) eveningHeading.textContent  = t('evening_title');
         if (karmaDisplay) {
             const earned = state.karma - (state.karmaAtDayStart ?? state.karma);
-            karmaDisplay.textContent = earned + ' karma earned today';
+            karmaDisplay.textContent = earned + ' ' + t('evening_karma_earned');
         }
         if (karmaPill)      karmaPill.style.display     = 'inline-block';
         if (closeDayBtn)  { closeDayBtn.disabled = false; closeDayBtn.style.opacity  = '1'; }
@@ -870,7 +909,7 @@ function attachReflectionToIdea() {
     _attachDecision = true;
     const section = document.getElementById('evening-attach-section');
     if (section) section.style.display = 'none';
-    showToast('Will attach when you close the day', 'info');
+    showToast(t('toast_will_attach'), 'info');
 }
 
 function skipAttachment() {
@@ -893,7 +932,7 @@ function renderIdeaDetail() {
     if (!idea) { navigateTo('vault'); return; }
 
     document.getElementById('idea-detail-title').textContent = idea.title;
-    document.getElementById('idea-detail-date').textContent  = 'Captured ' + (idea.date || '');
+    document.getElementById('idea-detail-date').textContent  = t('detail_captured') + ' ' + (idea.date || '');
 
     const badgeEl = document.getElementById('idea-detail-state-badge');
     badgeEl.innerHTML = `<span style="font-size:12px;font-weight:600;padding:3px 10px;border-radius:12px;background:rgba(124,111,242,0.15);color:var(--purple);">${escapeHtml(idea.state || 'New')}</span>`;
@@ -902,7 +941,7 @@ function renderIdeaDetail() {
     const entries = Array.isArray(idea.workLog) ? idea.workLog : [];
 
     if (entries.length === 0) {
-        logEl.innerHTML = `<div class="detail-empty">No work log yet. Use "Work on it" to add entries.</div>`;
+        logEl.innerHTML = `<div class="detail-empty">${escapeHtml(t('detail_no_log'))}</div>`;
     } else {
         logEl.innerHTML = entries.map(entry =>
             `<div class="detail-log-entry">
@@ -918,6 +957,24 @@ function toggleTheme() {
     const next = current === 'light' ? 'dark' : 'light';
     applyTheme(next);
     localStorage.setItem('ctml_theme', next);
+}
+
+// ── Settings: Reset Data ──
+
+function openResetModal() {
+    document.getElementById('reset-modal').classList.add('active');
+}
+
+function closeResetModal() {
+    document.getElementById('reset-modal').classList.remove('active');
+}
+
+async function confirmResetData() {
+    await db.ideas.clear();
+    await db.settings.clear();
+    await db.playbook.clear();
+    localStorage.removeItem('ctml_theme');
+    location.reload();
 }
 
 function applyTheme(theme) {
@@ -1000,6 +1057,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     applyTheme(localStorage.getItem('ctml_theme') || 'dark');
     await loadState();
     renderAll();
+    applyTranslations();
 
     // Sync Broadcast: reload state from DB when another tab saves
     if (_bc) {
@@ -1019,7 +1077,7 @@ document.addEventListener('visibilitychange', () => {
         saveState();
     } else if (document.visibilityState === 'visible' && _sessionDate) {
         if (todayISO() !== _sessionDate) {
-            showToast('New day detected — refresh to start fresh', 'info');
+            showToast(t('toast_new_day'), 'info');
         }
     }
 });

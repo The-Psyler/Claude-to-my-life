@@ -761,3 +761,64 @@ p {
     font-size: 13px;
     cursor: pointer;
 }
+
+/* ── Settings screen ── */
+
+.settings-section {
+    margin-bottom: 24px;
+}
+
+.settings-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    margin-bottom: 10px;
+}
+
+.settings-radio-group {
+    display: flex;
+    gap: 12px;
+}
+
+.settings-radio {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--text);
+    cursor: pointer;
+}
+
+.settings-radio input[type="radio"] {
+    accent-color: var(--purple);
+    width: 16px;
+    height: 16px;
+}
+
+.settings-theme-btn {
+    width: 100%;
+}
+
+.btn-secondary {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--text);
+}
+
+.btn-danger {
+    background: var(--coral);
+    color: #fff;
+    border: none;
+}
+
+.btn-danger:hover {
+    opacity: 0.85;
+}
+
+.settings-about-text {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+}

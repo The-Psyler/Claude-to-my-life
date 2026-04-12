@@ -15,8 +15,8 @@
         <!-- Screen 1: Home -->
         <div id="screen-home" class="screen active">
             <div style="display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:20px;">
-                <h1>What are we doing?</h1>
-                <p>Pick a mode and let's go.</p>
+                <h1 data-i18n="home_title">What are we doing?</h1>
+                <p data-i18n="home_subtitle">Pick a mode and let's go.</p>
                 <div class="karma-pill">
                     <div class="karma-icon" aria-hidden="true">👤</div>
                     <span id="karma-display">— pts</span>
@@ -25,9 +25,9 @@
 
             <!-- Day closed banner (visible only when dayLocked) -->
             <div id="home-day-closed" style="display:none;background:rgba(129,199,132,0.1);border:1px solid rgba(129,199,132,0.3);border-radius:12px;padding:14px 16px;margin-bottom:16px;text-align:center;">
-                <div style="font-size:14px;font-weight:600;color:var(--green);margin-bottom:4px;">Day complete</div>
+                <div style="font-size:14px;font-weight:600;color:var(--green);margin-bottom:4px;" data-i18n="home_day_complete">Day complete</div>
                 <div style="font-size:12px;color:var(--muted);margin-bottom:10px;" id="home-day-closed-karma"></div>
-                <button class="btn" style="background:transparent;border:1px solid rgba(255,255,255,0.15);font-size:12px;padding:6px 14px;margin:0;" onclick="unlockDay()">Unlock day →</button>
+                <button class="btn" style="background:transparent;border:1px solid rgba(255,255,255,0.15);font-size:12px;padding:6px 14px;margin:0;" onclick="unlockDay()" data-i18n="home_unlock">Unlock day →</button>
             </div>
 
             <div class="mode-grid">
@@ -45,8 +45,8 @@
                             <line x1="18.36" y1="5.64"  x2="19.78" y2="4.22"></line>
                         </svg>
                     </div>
-                    <div class="mode-title">Morning boot</div>
-                    <div class="mode-hint">Set your focus for the day</div>
+                    <div class="mode-title" data-i18n="home_morning">Morning boot</div>
+                    <div class="mode-hint" data-i18n="home_morning_hint">Set your focus for the day</div>
                 </div>
 
                 <div class="mode-card" onclick="navigateTo('capture')">
@@ -63,8 +63,8 @@
                             <path d="M16.24 7.76l2.83-2.83"></path>
                         </svg>
                     </div>
-                    <div class="mode-title">Capture idea</div>
-                    <div class="mode-hint">Log it before it disappears</div>
+                    <div class="mode-title" data-i18n="home_capture">Capture idea</div>
+                    <div class="mode-hint" data-i18n="home_capture_hint">Log it before it disappears</div>
                 </div>
 
                 <div class="mode-card" onclick="navigateTo('work')">
@@ -75,8 +75,8 @@
                             <path d="M2 12l10 5 10-5"></path>
                         </svg>
                     </div>
-                    <div class="mode-title">Work on it</div>
-                    <div class="mode-hint">Pick an idea and make progress</div>
+                    <div class="mode-title" data-i18n="home_work">Work on it</div>
+                    <div class="mode-hint" data-i18n="home_work_hint">Pick an idea and make progress</div>
                 </div>
 
                 <div class="mode-card" onclick="navigateTo('evening')">
@@ -85,29 +85,30 @@
                             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                         </svg>
                     </div>
-                    <div class="mode-title">Evening wrap</div>
-                    <div class="mode-hint">Close the day, bank the karma</div>
+                    <div class="mode-title" data-i18n="home_evening">Evening wrap</div>
+                    <div class="mode-hint" data-i18n="home_evening_hint">Close the day, bank the karma</div>
                 </div>
             </div>
         </div>
 
         <!-- Screen 2: Morning Boot -->
         <div id="screen-morning" class="screen">
-            <button class="back-btn" onclick="goBack()" aria-label="Back">←</button>
+            <button class="back-btn" onclick="goBack()" data-i18n-aria="btn_back" aria-label="Back">←</button>
             <div class="date-display" id="morning-date"></div>
-            <h1>Good morning. One thing today.</h1>
+            <h1 data-i18n="morning_title">Good morning. One thing today.</h1>
 
             <!-- Yesterday's focus — shown only if prior focus exists from a different day -->
             <div id="morning-yesterday-focus" class="morning-yesterday" style="display:none;">
-                <div class="morning-yesterday-label">Yesterday's focus</div>
+                <div class="morning-yesterday-label" data-i18n="morning_yesterday">Yesterday's focus</div>
                 <div class="morning-yesterday-title" id="morning-yesterday-title"></div>
                 <div class="morning-yesterday-action" id="morning-yesterday-action"></div>
             </div>
 
             <!-- Today's focus input -->
             <div style="margin-bottom:12px;">
-                <div style="font-size:12px;font-weight:500;margin-bottom:8px;">What's your focus today?</div>
+                <div style="font-size:12px;font-weight:500;margin-bottom:8px;" data-i18n="morning_focus_label">What's your focus today?</div>
                 <input type="text" class="input" id="morning-focus-input"
+                       data-i18n-placeholder="morning_placeholder"
                        placeholder="Type it, or pick from your vault below..."
                        aria-label="Today's focus"
                        oninput="clearMorningVaultSelection()"
@@ -116,7 +117,7 @@
 
             <!-- Vault picker -->
             <div style="margin-bottom:16px;">
-                <div class="morning-picker-label">Or pick from vault</div>
+                <div class="morning-picker-label" data-i18n="morning_pick_vault">Or pick from vault</div>
                 <div id="morning-vault-picker">
                     <!-- Populated by renderMorningVaultPicker() -->
                 </div>
@@ -125,15 +126,15 @@
             <div class="stat-row">
                 <div class="stat-card">
                     <div class="stat-value" id="stat-ideas">—</div>
-                    <div class="stat-label">ideas</div>
+                    <div class="stat-label" data-i18n="morning_ideas">ideas</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-value" id="stat-active">—</div>
-                    <div class="stat-label">active</div>
+                    <div class="stat-label" data-i18n="morning_active">active</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-value" id="stat-waiting">—</div>
-                    <div class="stat-label">waiting</div>
+                    <div class="stat-label" data-i18n="morning_waiting">waiting</div>
                 </div>
             </div>
 
@@ -142,27 +143,27 @@
                 <div class="karma-row-text" id="morning-karma-text">— karma</div>
             </div>
 
-            <button class="btn btn-primary" onclick="startDay()">Start the day</button>
+            <button class="btn btn-primary" onclick="startDay()" data-i18n="morning_start">Start the day</button>
         </div>
 
         <!-- Screen 3: Capture Idea -->
         <div id="screen-capture" class="screen">
-            <button class="back-btn" onclick="goBack()" aria-label="Back">←</button>
-            <h1>What's the idea?</h1>
-            <p>Name it. The rest can wait.</p>
+            <button class="back-btn" onclick="goBack()" data-i18n-aria="btn_back" aria-label="Back">←</button>
+            <h1 data-i18n="capture_title">What's the idea?</h1>
+            <p data-i18n="capture_subtitle">Name it. The rest can wait.</p>
 
-            <input type="text" class="input" id="idea-title" placeholder="Give it a name..." aria-label="Idea title">
-            <textarea class="textarea" id="idea-note" placeholder="One sentence is enough." aria-label="Idea note"></textarea>
+            <input type="text" class="input" id="idea-title" data-i18n-placeholder="capture_placeholder" placeholder="Give it a name..." aria-label="Idea title">
+            <textarea class="textarea" id="idea-note" data-i18n-placeholder="capture_note_placeholder" placeholder="One sentence is enough." aria-label="Idea note"></textarea>
 
-            <button class="btn btn-teal" onclick="saveIdea()" aria-label="Save idea">Save to Vault</button>
-            <a href="#" class="btn btn-secondary" onclick="saveIdeaQuick()" role="button" aria-label="Quick save">Just save the name →</a>
+            <button class="btn btn-teal" onclick="saveIdea()" aria-label="Save idea" data-i18n="capture_save">Save to Vault</button>
+            <a href="#" class="btn btn-secondary" onclick="saveIdeaQuick()" role="button" aria-label="Quick save" data-i18n="capture_quick">Just save the name →</a>
         </div>
 
         <!-- Screen 4: Work on It -->
         <div id="screen-work" class="screen">
-            <button class="back-btn" onclick="goBack()" aria-label="Back">←</button>
-            <h1>What are we working on?</h1>
-            <p>Pick an idea and set it as today's focus.</p>
+            <button class="back-btn" onclick="goBack()" data-i18n-aria="btn_back" aria-label="Back">←</button>
+            <h1 data-i18n="work_title">What are we working on?</h1>
+            <p data-i18n="work_subtitle">Pick an idea and set it as today's focus.</p>
             <div id="vault-list">
                 <!-- Populated by renderWorkList() -->
             </div>
@@ -170,25 +171,26 @@
 
         <!-- Screen 5: Evening Wrap -->
         <div id="screen-evening" class="screen">
-            <button class="back-btn" onclick="goBack()" id="evening-back-btn" aria-label="Back">←</button>
+            <button class="back-btn" onclick="goBack()" id="evening-back-btn" data-i18n-aria="btn_back" aria-label="Back">←</button>
             <div class="date-time" id="evening-date"></div>
             <div class="date-time" id="evening-time"></div>
-            <h1 id="evening-heading">Good work. What are you taking into tomorrow?</h1>
+            <h1 id="evening-heading" data-i18n="evening_title">Good work. What are you taking into tomorrow?</h1>
 
             <div style="margin-bottom:16px;">
-                <div style="font-size:12px;font-weight:500;margin-bottom:8px;">What moved today</div>
+                <div style="font-size:12px;font-weight:500;margin-bottom:8px;" data-i18n="evening_moved">What moved today</div>
                 <ul class="moved-list">
                     <!-- Populated by renderEveningMoved() -->
                 </ul>
             </div>
 
             <textarea class="textarea" id="evening-reflection-textarea"
+                      data-i18n-placeholder="evening_reflection_placeholder"
                       placeholder="One thing, or a few words. Whatever feels true."
                       aria-label="Evening reflection"></textarea>
 
             <!-- Past reflections (collapsible) -->
             <details style="margin-bottom:16px;">
-                <summary style="font-size:12px;color:var(--muted);cursor:pointer;user-select:none;">Past reflections</summary>
+                <summary style="font-size:12px;color:var(--muted);cursor:pointer;user-select:none;" data-i18n="evening_past">Past reflections</summary>
                 <div id="reflection-history-list" style="margin-top:8px;"></div>
             </details>
 
@@ -196,8 +198,8 @@
             <div id="evening-attach-section" class="evening-attach-section" style="display:none;">
                 <span class="evening-attach-label" id="evening-attach-label"></span>
                 <div class="evening-attach-actions">
-                    <button class="evening-attach-yes" onclick="attachReflectionToIdea()">Yes, attach it</button>
-                    <button class="evening-attach-no"  onclick="skipAttachment()">No thanks</button>
+                    <button class="evening-attach-yes" onclick="attachReflectionToIdea()" data-i18n="evening_attach_yes">Yes, attach it</button>
+                    <button class="evening-attach-no"  onclick="skipAttachment()" data-i18n="evening_attach_no">No thanks</button>
                 </div>
             </div>
 
@@ -207,24 +209,24 @@
                 <div class="karma-row-pill" id="today-karma-pill">+18 pts</div>
             </div>
 
-            <button id="unlock-day-btn" class="btn btn-green" onclick="unlockDay()" style="display:none;">
+            <button id="unlock-day-btn" class="btn btn-green" onclick="unlockDay()" style="display:none;" data-i18n="evening_locked">
                 ⚠️ Day is locked — need to add something? Unlock it →
             </button>
-            <button class="btn btn-coral" onclick="closeDay()" id="close-day-btn">Close the day</button>
+            <button class="btn btn-coral" onclick="closeDay()" id="close-day-btn" data-i18n="evening_close">Close the day</button>
         </div>
 
         <!-- Screen 6: Vault -->
         <div id="screen-vault" class="screen">
-            <h1>Vault</h1>
+            <h1 data-i18n="vault_title">Vault</h1>
             <div class="vault-table">
                 <table role="table" aria-label="Saved ideas list">
                     <thead>
                         <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Title</th>
-                            <th scope="col">State</th>
-                            <th scope="col">Last note</th>
-                            <th scope="col">Date</th>
+                            <th scope="col" data-i18n="vault_col_num">#</th>
+                            <th scope="col" data-i18n="vault_col_title">Title</th>
+                            <th scope="col" data-i18n="vault_col_state">State</th>
+                            <th scope="col" data-i18n="vault_col_note">Last note</th>
+                            <th scope="col" data-i18n="vault_col_date">Date</th>
                             <th scope="col"></th>
                         </tr>
                     </thead>
@@ -241,66 +243,107 @@
         <!-- Edit Modal -->
         <div id="edit-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="edit-modal-title" onclick="closeEditModal()">
             <div class="modal" onclick="event.stopPropagation()">
-                <h2 id="edit-modal-title">Edit idea</h2>
+                <h2 id="edit-modal-title" data-i18n="edit_title">Edit idea</h2>
                 <input type="hidden" id="idea-edit-id">
-                <input type="text" class="input" id="idea-edit-title" placeholder="Title" aria-label="Idea title">
-                <select id="idea-edit-state" aria-label="State">
-                    <option value="New">New</option>
-                    <option value="Active">Active</option>
-                    <option value="Future">Future</option>
-                    <option value="On Hold">On Hold</option>
+                <input type="text" class="input" id="idea-edit-title" data-i18n-placeholder="edit_placeholder_title" placeholder="Title" aria-label="Idea title">
+                <select id="idea-edit-state" data-i18n-aria="edit_state" aria-label="State">
+                    <option value="New" data-i18n="edit_state_new">New</option>
+                    <option value="Active" data-i18n="edit_state_active">Active</option>
+                    <option value="Future" data-i18n="edit_state_future">Future</option>
+                    <option value="On Hold" data-i18n="edit_state_hold">On Hold</option>
                 </select>
-                <select id="idea-edit-potential" aria-label="Potential">
-                    <option value="Low">Low potential</option>
-                    <option value="Medium">Medium potential</option>
-                    <option value="High">High potential</option>
+                <select id="idea-edit-potential" data-i18n-aria="edit_potential" aria-label="Potential">
+                    <option value="Low" data-i18n="edit_potential_low">Low potential</option>
+                    <option value="Medium" data-i18n="edit_potential_med">Medium potential</option>
+                    <option value="High" data-i18n="edit_potential_high">High potential</option>
                 </select>
-                <input type="text" class="input" id="idea-edit-next" placeholder="Next action" aria-label="Next action">
+                <input type="text" class="input" id="idea-edit-next" data-i18n-placeholder="edit_next_action" placeholder="Next action" data-i18n-aria="edit_next_action" aria-label="Next action">
                 <div class="modal-actions">
-                    <button class="btn btn-primary" onclick="saveEdit()">Save</button>
-                    <button class="btn btn-secondary" onclick="closeEditModal()" style="border:1px solid rgba(255,255,255,0.1);margin-top:0;">Cancel</button>
+                    <button class="btn btn-primary" onclick="saveEdit()" data-i18n="btn_save">Save</button>
+                    <button class="btn btn-secondary" onclick="closeEditModal()" style="border:1px solid rgba(255,255,255,0.1);margin-top:0;" data-i18n="btn_cancel">Cancel</button>
                 </div>
             </div>
         </div>
 
         <!-- Screen 7: Idea Detail -->
         <div id="screen-idea-detail" class="screen">
-            <button class="back-btn" onclick="navigateTo('vault')" aria-label="Back">←</button>
+            <button class="back-btn" onclick="navigateTo('vault')" data-i18n-aria="btn_back" aria-label="Back">←</button>
             <div id="idea-detail-state-badge" style="margin-bottom:8px;"></div>
             <h1 id="idea-detail-title"></h1>
             <div id="idea-detail-date" style="font-size:12px;color:var(--muted);margin-bottom:24px;"></div>
-            <div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-bottom:16px;">Work log</div>
+            <div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-bottom:16px;" data-i18n="detail_work_log">Work log</div>
             <div id="idea-detail-log"></div>
+        </div>
+
+        <!-- Screen 8: Settings -->
+        <div id="screen-settings" class="screen">
+            <h1 data-i18n="settings_title">Settings</h1>
+
+            <div class="settings-section">
+                <div class="settings-label" data-i18n="settings_language">Language</div>
+                <div class="settings-radio-group">
+                    <label class="settings-radio">
+                        <input type="radio" name="lang" value="en" checked onchange="setLanguage('en')">
+                        <span>English</span>
+                    </label>
+                    <label class="settings-radio">
+                        <input type="radio" name="lang" value="hu" onchange="setLanguage('hu')">
+                        <span>Magyar</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <div class="settings-label" data-i18n="settings_theme">Theme</div>
+                <button class="btn btn-secondary settings-theme-btn" onclick="toggleTheme()" data-i18n="settings_toggle_theme">Toggle light / dark</button>
+            </div>
+
+            <div class="settings-section">
+                <div class="settings-label" data-i18n="settings_data">Data</div>
+                <button class="btn btn-danger" onclick="openResetModal()" data-i18n="settings_reset">Reset all data</button>
+            </div>
+
+            <div class="settings-section settings-about">
+                <div class="settings-label" data-i18n="settings_about">About</div>
+                <div class="settings-about-text">
+                    <strong>CTML</strong> — Claude to My Life<br>
+                    <span data-i18n="settings_version">Version</span> 0.1.0-alpha
+                </div>
+            </div>
+        </div>
+
+        <!-- Reset confirmation modal -->
+        <div id="reset-modal" class="modal-overlay" onclick="if(event.target===this)closeResetModal()">
+            <div class="modal">
+                <h2 data-i18n="reset_title">Reset all data?</h2>
+                <p style="font-size:14px;color:var(--muted);margin-bottom:16px;" data-i18n="reset_warning">This will permanently delete all ideas, reflections, karma, and settings. This cannot be undone.</p>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" onclick="closeResetModal()" data-i18n="btn_cancel">Cancel</button>
+                    <button class="btn btn-danger" onclick="confirmResetData()" data-i18n="reset_confirm">Delete everything</button>
+                </div>
+            </div>
         </div>
 
         <!-- Navigation Bar -->
         <nav class="nav-bar" role="navigation" aria-label="Main navigation">
-            <div class="nav-item active" onclick="navigateTo('home')" id="nav-home" role="button" tabindex="0" aria-label="Home">
+            <div class="nav-item active" onclick="navigateTo('home')" id="nav-home" role="button" tabindex="0" data-i18n-aria="nav_home" aria-label="Home">
                 <div class="nav-dot nav-dot-purple"></div>
-                <div class="nav-label nav-label-purple">Home</div>
+                <div class="nav-label nav-label-purple" data-i18n="nav_home">Home</div>
             </div>
-            <div class="nav-item" onclick="navigateTo('vault')" id="nav-vault" role="button" tabindex="0" aria-label="Vault">
+            <div class="nav-item" onclick="navigateTo('vault')" id="nav-vault" role="button" tabindex="0" data-i18n-aria="nav_vault" aria-label="Vault">
                 <div class="nav-dot nav-dot-teal"></div>
-                <div class="nav-label nav-label-teal">Vault</div>
+                <div class="nav-label nav-label-teal" data-i18n="nav_vault">Vault</div>
             </div>
-            <button id="theme-toggle" class="nav-theme-btn" onclick="toggleTheme()" aria-label="Toggle theme" title="Toggle light/dark">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="5"></circle>
-                    <line x1="12" y1="1"  x2="12" y2="3"></line>
-                    <line x1="12" y1="21" x2="12" y2="23"></line>
-                    <line x1="4.22" y1="4.22"   x2="5.64" y2="5.64"></line>
-                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                    <line x1="1"  y1="12" x2="3"  y2="12"></line>
-                    <line x1="21" y1="12" x2="23" y2="12"></line>
-                    <line x1="4.22" y1="19.78"  x2="5.64" y2="18.36"></line>
-                    <line x1="18.36" y1="5.64"  x2="19.78" y2="4.22"></line>
-                </svg>
-            </button>
+            <div class="nav-item" onclick="navigateTo('settings')" id="nav-settings" role="button" tabindex="0" data-i18n-aria="nav_settings" aria-label="Settings">
+                <div class="nav-dot nav-dot-amber"></div>
+                <div class="nav-label nav-label-amber" data-i18n="nav_settings">Settings</div>
+            </div>
         </nav>
 
     </div><!-- /#app -->
 
     <script src="dexie.min.js"></script>
+    <script src="translations.js"></script>
     <script src="app.js"></script>
     <script>
       if ('serviceWorker' in navigator) {
