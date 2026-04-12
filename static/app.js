@@ -1042,6 +1042,12 @@ function dismissWelcome() {
     document.querySelector('.nav-bar').style.display = '';
 }
 
+function showWelcome() {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-welcome').classList.add('active');
+    document.querySelector('.nav-bar').style.display = 'none';
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     const dateStr = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     document.getElementById('morning-date').textContent = dateStr;

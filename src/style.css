@@ -45,6 +45,7 @@ body {
 
 .screen {
     display: none;
+    position: relative;
     padding: 20px;
     max-width: 600px;
     margin: 0 auto;
@@ -57,6 +58,7 @@ body {
 }
 
 .screen.active { display: block; }
+.screen:has(> .back-btn) { padding-top: 72px; }
 
 /* ── Welcome Screen ── */
 
