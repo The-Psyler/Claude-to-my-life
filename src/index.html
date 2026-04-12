@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#534AB7">
-    <link rel="manifest" href="../static/manifest.json">
+    <link rel="manifest" href="manifest.json">
     <meta name="description" content="CTML - Claude to My Life: A productivity app for capturing ideas and managing daily focus">
     <title>CTML - Claude to My Life</title>
     <link rel="stylesheet" href="style.css">
@@ -342,13 +342,13 @@
 
     </div><!-- /#app -->
 
-    <script src="../static/dexie.min.js"></script>
-    <script src="../static/translations.js"></script>
-    <script src="../static/app.js"></script>
+    <script src="dexie.min.js"></script>
+    <script src="translations.js"></script>
+    <script src="app.js"></script>
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('../static/sw.js').catch(() => {});
+          navigator.serviceWorker.register('./sw.js').catch(() => {});
         });
       }
     </script>
