@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [checkpoint-before-upgrades]
+    branches: [main]
 
 permissions:
   contents: read
