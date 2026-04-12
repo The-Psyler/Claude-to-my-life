@@ -1035,11 +1035,25 @@ function renderCurrentScreen() {
 // INIT
 // ============================================================
 
+function dismissWelcome() {
+    localStorage.setItem('ctml_welcomeDismissed', 'true');
+    document.getElementById('screen-welcome').classList.remove('active');
+    document.getElementById('screen-home').classList.add('active');
+    document.querySelector('.nav-bar').style.display = '';
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     const dateStr = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     document.getElementById('morning-date').textContent = dateStr;
     document.getElementById('evening-date').textContent = dateStr;
     document.getElementById('evening-time').textContent = 'Evening';
+
+    // Show welcome screen on first visit
+    if (!localStorage.getItem('ctml_welcomeDismissed')) {
+        document.getElementById('screen-home').classList.remove('active');
+        document.getElementById('screen-welcome').classList.add('active');
+        document.querySelector('.nav-bar').style.display = 'none';
+    }
 
     applyTheme(localStorage.getItem('ctml_theme') || 'dark');
     await loadState();

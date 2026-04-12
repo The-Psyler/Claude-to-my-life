@@ -12,6 +12,55 @@
 <body>
     <div id="app">
 
+        <!-- ============================================================
+             WELCOME SCREEN — Edit the text below freely.
+             Hungarian section first, English section second.
+             The app shows this once; after "Continue" it won't appear again.
+             To force it again: clear localStorage key "ctml_welcomeDismissed".
+             ============================================================ -->
+        <div id="screen-welcome" class="screen">
+            <div class="welcome-content">
+
+                <p class="welcome-scroll-hint">Scroll down for English</p>
+
+                <!-- ── Hungarian ── -->
+                <section class="welcome-section">
+                    <h1>Szia!</h1>
+                    <p>Ez a <strong>CTML (Claude to My Life)</strong> — egy kísérleti személyes produktivitás app, amit épp tesztelek.</p>
+                    <p>Az app négy napi rituáléra épül: <strong>Reggeli indítás → Ötlet rögzítés → Munka rajta → Esti lezárás</strong>. Minden adat a te készülékeden marad — nincs szerver, nincs fiók, nincs adatgyűjtés.</p>
+                    <p>Ez egy <strong>alfa teszt</strong> — ha bármit furcsát találsz, vagy van ötleted, szólj bátran!</p>
+
+                    <h2>Telepítés</h2>
+                    <ul>
+                        <li><strong>Android (Chrome):</strong> Menü (⋮) → „Hozzáadás a kezdőképernyőhöz" vagy „Alkalmazás telepítése"</li>
+                        <li><strong>iPhone (Safari):</strong> Megosztás gomb (□↑) → „Hozzáadás a Főképernyőhöz"</li>
+                        <li><strong>PC (Chrome/Edge):</strong> Kattints a címsorban lévő telepítés ikonra, vagy Menü → „Alkalmazás telepítése"</li>
+                    </ul>
+                    <p>Telepítés után az app önálló alkalmazásként nyílik meg, és offline is működik.</p>
+                </section>
+
+                <hr class="welcome-divider">
+
+                <!-- ── English ── -->
+                <section class="welcome-section">
+                    <h1>Hey there!</h1>
+                    <p>This is <strong>CTML (Claude to My Life)</strong> — an experimental personal productivity app I'm currently testing.</p>
+                    <p>The app is built around four daily rituals: <strong>Morning Boot → Capture → Work on It → Evening Wrap</strong>. All data stays on your device — no server, no account, no data collection.</p>
+                    <p>This is an <strong>alpha test</strong> — if you find anything odd or have ideas, let me know!</p>
+
+                    <h2>How to install</h2>
+                    <ul>
+                        <li><strong>Android (Chrome):</strong> Menu (⋮) → "Add to Home screen" or "Install app"</li>
+                        <li><strong>iPhone (Safari):</strong> Share button (□↑) → "Add to Home Screen"</li>
+                        <li><strong>PC (Chrome/Edge):</strong> Click the install icon in the address bar, or Menu → "Install app"</li>
+                    </ul>
+                    <p>After installing, the app opens as a standalone app and works offline.</p>
+                </section>
+
+                <button class="btn btn-primary welcome-continue-btn" onclick="dismissWelcome()">Continue →</button>
+            </div>
+        </div>
+
         <!-- Screen 1: Home -->
         <div id="screen-home" class="screen active">
             <div style="display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:20px;">

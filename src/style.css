@@ -58,6 +58,63 @@ body {
 
 .screen.active { display: block; }
 
+/* ── Welcome Screen ── */
+
+.welcome-content {
+    padding-bottom: 40px;
+}
+
+.welcome-scroll-hint {
+    text-align: center;
+    font-size: 13px;
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 24px;
+}
+
+.welcome-section h1 {
+    font-size: 26px;
+    margin-bottom: 12px;
+}
+
+.welcome-section h2 {
+    font-size: 18px;
+    margin-top: 20px;
+    margin-bottom: 8px;
+}
+
+.welcome-section p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text);
+    margin-bottom: 10px;
+}
+
+.welcome-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 12px 0;
+}
+
+.welcome-section ul li {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text);
+    padding: 6px 0;
+    border-bottom: var(--border);
+}
+
+.welcome-divider {
+    border: none;
+    border-top: var(--border);
+    margin: 32px 0;
+}
+
+.welcome-continue-btn {
+    margin-top: 24px;
+    width: 100%;
+}
+
 /* ── Typography ── */
 
 h1 {
