@@ -42,8 +42,17 @@
 - [x] **Vault idea detail view**: Click any vault idea row to see full work log history in a modal.
 - [x] **Removed JSON import/export**: Toolbar and functions removed; data lives in IndexedDB.
 
-## Phase 4: Deployment & Scaling (Planned)
+## Phase 4: Closed Alpha Distribution (In Progress — Apr 12)
 - [x] **Service Worker / PWA**: Offline capability and "Add to Home Screen"
-- [ ] **Build pipeline**: Vite for minification and cache-busting
-- [ ] **Claude API integration**: Suggest next actions or surface dormant ideas
 - [x] **Light theme toggle**: Respect prefers-color-scheme or manual toggle
+- [ ] **PWA icons**: Generate icon-192.png + icon-512.png for install prompt
+- [ ] **Vite build pipeline**: Minification, cache-busting, hashed filenames
+- [ ] **GitHub Pages deployment**: Automated deploy of `dist/` to gh-pages branch
+- [ ] **Service Worker update**: Cache-bust via Vite manifest, notify user of new version
+- [ ] **Manual QA pass**: Full ritual loop + offline + cross-tab + theme + PWA install
+- [ ] **Alpha release**: Share URL with testers (PC, Android, iPhone)
+
+## Phase 5: Post-Alpha (Deferred)
+- [ ] **Voice capture**: SpeechRecognition API, no server needed
+- [ ] **Weekly review screen**: What moved, what stalled, karma trend
+- [ ] **Claude API integration**: Suggest next actions, surface dormant ideas

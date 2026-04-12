@@ -3,20 +3,33 @@
 Personal productivity app built around four daily rituals: Morning Boot → Capture → Work on It → Evening Wrap. Single-user, offline-first, personal tool.
 
 ## Run
-Open `src/index.html` in any modern browser. No build step, no npm, no server.
+
+**Development:** `npm run dev` — starts Vite dev server with hot reload.
+**Production:** `npm run build` — outputs optimized files to `dist/`.
+**Legacy:** Opening `src/index.html` directly still works for quick checks.
 
 ## Source files
 ```
-src/index.html   — HTML structure only (no logic, no styles)
-src/style.css    — All styles, CSS variables only
-src/app.js       — All logic
-src/dexie.min.js — IndexedDB wrapper (local file, not CDN)
+src/index.html       — HTML structure (Vite processes this as entry point)
+src/style.css        — All styles, CSS variables only (Vite hashes for cache-busting)
+static/app.js        — All logic (copied verbatim to dist/)
+static/dexie.min.js  — IndexedDB wrapper (copied verbatim to dist/)
+static/sw.js         — Service worker (stale-while-revalidate caching)
+static/manifest.json — PWA manifest
+static/icons/        — PWA install icons (192px, 512px)
 ```
+
+**Why src/ vs static/:** Vite processes files in `src/` (HTML entry, CSS hashing). Files in `static/` are copied as-is to `dist/` — used for non-module JS that Vite can't bundle.
+
+## Deployment
+- **Target:** GitHub Pages serving `dist/` on the `gh-pages` branch
+- **URL:** https://the-psyler.github.io/Claude-to-my-life/
+- **Install:** PWA-installable on PC (Chrome/Edge), Android (Chrome), iPhone (Safari)
 
 ## Hard constraints
 - **No frameworks.** Vanilla JS only. No React, Vue, jQuery, etc.
-- **No build step.** Everything must work by opening index.html directly.
-- **No CDN.** All dependencies are local files in src/.
+- **No CDN at runtime.** All dependencies are local files in static/.
+- **Build must be simple.** Vite for minification + cache-busting only. No transpilation, no bundler plugins, no complex config.
 
 ## Critical rules
 
@@ -45,4 +58,8 @@ See @docs/ARCHITECTURE.md
 See @docs/ROADMAP.md
 
 ## Verification
-After any HTML/CSS/JS change: open `src/index.html` in browser and confirm visually before moving on.
+After any HTML/CSS/JS change:
+1. Check `npm run dev` — no console errors in browser.
+2. Run `npm run build` — must succeed without errors.
+3. Test `npm run preview` — verify production build works.
+4. Visually confirm the change in browser before moving on.
