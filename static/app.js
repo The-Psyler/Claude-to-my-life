@@ -40,7 +40,7 @@ function setLanguage(lang) {
 // ============================================================
 
 if (typeof Dexie === 'undefined') {
-    document.body.innerHTML = '<p style="color:#E57373;padding:20px;font-family:system-ui;">Error: dexie.min.js not found. Place it in the src/ folder alongside app.js.</p>';
+    document.body.innerHTML = '<p style="color:#E57373;padding:20px;font-family:system-ui;">Error: dexie.min.js not found. Place it in the static/ folder alongside app.js.</p>';
     throw new Error('Dexie not loaded');
 }
 
@@ -66,16 +66,9 @@ const _bc = typeof BroadcastChannel !== 'undefined'
 // STATE
 // ============================================================
 
-const SEED_VAULT = [
-    { id: 1, title: 'CTML Pipeline',              category: 'System',   state: 'Active', potential: 'High',   nextAction: 'Build daily rhythm into habit',     date: 'Apr 9', workLog: [] },
-    { id: 2, title: 'OnTime App',                 category: 'App',      state: 'New',    potential: 'High',   nextAction: 'Define core loop in one paragraph', date: 'Apr 9', workLog: [] },
-    { id: 3, title: 'AI Experience Presentation', category: 'Creative', state: 'New',    potential: 'Medium', nextAction: 'Outline 3 key moments to show',     date: 'Apr 9', workLog: [] },
-    { id: 4, title: 'CTML Web App',               category: 'App',      state: 'Future', potential: 'High',   nextAction: 'Hand V0 spec to Claude Code',       date: 'Apr 9', workLog: [] }
-];
-
 let state = {
-    karma:        47,
-    vault:        [...SEED_VAULT],
+    karma:        0,
+    vault:        [],
     reflections:  [],
     focus: {
         ideaId:        null,
@@ -135,11 +128,6 @@ async function loadState() {
         const ideas = await db.ideas.toArray();
         if (ideas.length > 0) {
             state.vault = ideas.map(idea => ({ workLog: [], ...idea }));
-        }
-
-        const playbook = await db.playbook.orderBy('id').toArray();
-        if (playbook.length > 0) {
-            state.playbook = playbook;
         }
 
         const rows     = await db.settings.toArray();
@@ -972,7 +960,6 @@ function closeResetModal() {
 async function confirmResetData() {
     await db.ideas.clear();
     await db.settings.clear();
-    await db.playbook.clear();
     localStorage.removeItem('ctml_theme');
     location.reload();
 }
