@@ -1,22 +1,24 @@
-# HANDOFF — 2026-04-12
+# HANDOFF — 2026-04-12 (session 2)
 
 ## Status
-Phase 4 (Closed Alpha Distribution) in progress. Vite pipeline built, icons generated, GH Actions workflow created.
+Phase 4 (Closed Alpha Distribution) — app deployed to GitHub Pages, ready for testers.
 
 ## Completed this session
-- Moved project from Desktop to `~/.claude/projects/claude-to-my-life/`
-- Cleaned up `.claude/` folder structure (archived transient data, rewrote README)
-- Added docs: README.md, docs/BUILD.md, docs/TEST.md
-- Reorganized memory to `.claude/memory/`
-- Vite build pipeline: `src/` (HTML+CSS processed) + `static/` (JS+SW+manifest copied verbatim)
-- Service worker rewritten: stale-while-revalidate (no hardcoded filenames)
-- PWA icons generated (192px + 512px, purple #534AB7 + white "CTML")
-- GitHub Actions workflow for auto-deploy to Pages
+- Merged `checkpoint-before-upgrades` (19 commits) into `main`, deleted branch
+- Fixed broken script paths after src/static split
+- Removed hardcoded SEED_VAULT and karma=47 defaults (clean start)
+- Removed dead `db.playbook` references (table no longer in schema)
+- Fixed reset button (was failing silently on missing playbook table)
+- Fixed deploy workflow trigger (`main` instead of deleted branch)
+- Added bilingual welcome screen (HU/EN) with install instructions
+- Added "How to install" button in Settings to reopen welcome page
+- Fixed back button overlapping title text (padding-top + position:relative)
+- Repo made public, GitHub Pages enabled and deploying
+
+## Live URL
+https://the-psyler.github.io/Claude-to-my-life/
 
 ## Pending
-- Enable GitHub Pages in repo settings → Source: GitHub Actions
-- Push and verify deployment at https://the-psyler.github.io/Claude-to-my-life/
-- Full QA pass before sharing alpha URL with testers
-
-## Plan reference
-See `~/.claude/plans/starry-moseying-pine.md`
+- Full QA pass on mobile (Android PWA install, iPhone Safari)
+- Verify service worker update flow (testers get new versions automatically)
+- Future ideas saved to memory: `~/.claude/projects/C--Users-PsyPC--claude/memory/project_ctml_future_ideas.md`
