@@ -31,6 +31,7 @@ function applyTranslations() {
 
 function setLanguage(lang) {
     currentLang = lang;
+    localStorage.setItem('ctml_lang', lang);
     applyTranslations();
     saveState();
 }
@@ -268,6 +269,7 @@ function goBack() { navigateTo('home'); }
 
 function renderAll() {
     renderKarma();
+    renderHomeFocus();
     renderMorningFocus();
     renderMorningStats();
     renderMorningVaultPicker();
@@ -282,6 +284,24 @@ function renderKarma() {
     const morningKarma  = document.getElementById('morning-karma-text');
     if (homeDisplay)  homeDisplay.textContent  = state.karma + ' ' + t('label_pts');
     if (morningKarma) morningKarma.textContent = state.karma + ' ' + t('label_karma');
+}
+
+function renderHomeFocus() {
+    const pill = document.getElementById('home-focus-pill');
+    if (!pill) return;
+    if (!state.focus || !state.focus.title) {
+        pill.hidden = true;
+        return;
+    }
+    pill.hidden = false;
+    document.getElementById('home-focus-title').textContent = escapeHtml(state.focus.title);
+    const na = document.getElementById('home-focus-next');
+    if (state.focus.nextAction) {
+        na.textContent = escapeHtml(state.focus.nextAction);
+        na.hidden = false;
+    } else {
+        na.hidden = true;
+    }
 }
 
 function renderMorningFocus() {
@@ -847,6 +867,12 @@ async function unlockDay() {
 }
 
 function applyLockedState() {
+    if (state.dayLocked) {
+        document.documentElement.setAttribute('data-locked', '');
+    } else {
+        document.documentElement.removeAttribute('data-locked');
+    }
+
     const closeDayBtn    = document.getElementById('close-day-btn');
     const unlockBtn      = document.getElementById('unlock-day-btn');
     const eveningHeading = document.getElementById('evening-heading');
@@ -1026,7 +1052,8 @@ function renderCurrentScreen() {
     } else if (screen === 'playbook') {
         if (typeof renderPlaybook === 'function') renderPlaybook();
     } else {
-        // home or unknown — refresh karma (already done above)
+        // home or unknown
+        renderHomeFocus();
     }
     if (state.dayLocked) applyLockedState();
 }
@@ -1062,9 +1089,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     applyTheme(localStorage.getItem('ctml_theme') || 'dark');
+    const _savedLang = localStorage.getItem('ctml_lang');
+    if (_savedLang === 'en' || _savedLang === 'hu') currentLang = _savedLang;
+    applyTranslations();
     await loadState();
     renderAll();
-    applyTranslations();
 
     // Sync Broadcast: reload state from DB when another tab saves
     if (_bc) {
@@ -1072,6 +1101,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (event.data?.type === 'state_saved') {
                 await loadState();
                 renderCurrentScreen();
+                applyTranslations();
             }
         };
     }

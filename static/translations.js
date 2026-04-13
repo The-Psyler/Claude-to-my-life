@@ -14,6 +14,7 @@ const translations = {
     // ── Home screen ──
     home_title: 'What are we doing?',
     home_subtitle: 'Pick a mode and let\'s go.',
+    home_focus_label: 'Today\'s focus',
     home_day_complete: 'Day complete',
     home_unlock: 'Unlock day →',
     home_morning: 'Morning boot',
@@ -165,6 +166,7 @@ const translations = {
     // ── Kezdőlap ──
     home_title: 'Mit csinálunk?',
     home_subtitle: 'Válassz egy módot és kezdjünk!',
+    home_focus_label: 'Mai fókusz',
     home_day_complete: 'A nap kész',
     home_unlock: 'Nap feloldása →',
     home_morning: 'Reggeli indítás',
