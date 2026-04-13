@@ -1,24 +1,25 @@
-# HANDOFF — 2026-04-12 (session 2)
+# HANDOFF — 2026-04-13
 
 ## Status
-Phase 4 (Closed Alpha Distribution) — app deployed to GitHub Pages, ready for testers.
+Phase 4 (Closed Alpha) — deployed. SDD pipeline established. Patch ideas logged for evaluation.
 
 ## Completed this session
-- Merged `checkpoint-before-upgrades` (19 commits) into `main`, deleted branch
-- Fixed broken script paths after src/static split
-- Removed hardcoded SEED_VAULT and karma=47 defaults (clean start)
-- Removed dead `db.playbook` references (table no longer in schema)
-- Fixed reset button (was failing silently on missing playbook table)
-- Fixed deploy workflow trigger (`main` instead of deleted branch)
-- Added bilingual welcome screen (HU/EN) with install instructions
-- Added "How to install" button in Settings to reopen welcome page
-- Fixed back button overlapping title text (padding-top + position:relative)
-- Repo made public, GitHub Pages enabled and deploying
+- Added SDD section to global ~/.claude/CLAUDE.md
+- Created CHANGELOG.md (full history from Phases 1–4, [Unreleased] pending items)
+- Created docs/FEATURE-PIPELINE.md (10-step SDD pipeline for all future work)
+
+## Pending (Phase 4)
+- PWA icons (192px, 512px)
+- Vite build + GitHub Pages deploy automation
+- Service Worker update notification
+- Full QA pass on mobile (Android PWA, iPhone Safari)
+
+## Patch ideas (queued for evaluation — see memory)
+1. Active focus on home screen
+2. Fix language selection not persisting
+3. Menu bar icons
+4. Work note categorisation (new branch / WIP / done)
+5. Day state background color feedback
 
 ## Live URL
 https://the-psyler.github.io/Claude-to-my-life/
-
-## Pending
-- Full QA pass on mobile (Android PWA install, iPhone Safari)
-- Verify service worker update flow (testers get new versions automatically)
-- Future ideas saved to memory: `~/.claude/projects/C--Users-PsyPC--claude/memory/project_ctml_future_ideas.md`
