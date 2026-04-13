@@ -458,7 +458,7 @@ p {
 
 .nav-theme-btn {
   background: none;
-  border: none;
+  border: var(--border);
   color: var(--text);
   cursor: pointer;
   padding: 8px;
@@ -966,7 +966,7 @@ p {
 
 .btn-secondary {
     background: transparent;
-    border: 1px solid rgba(43, 29, 29, 0.507);
+    border: var(--border);
     color: var(--text);
 }
 
