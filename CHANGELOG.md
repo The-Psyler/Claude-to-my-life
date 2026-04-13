@@ -7,11 +7,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Pending (Phase 4 — Closed Alpha Distribution)
 - PWA icons generation (192px, 512px)
-- Vite build pipeline optimization
-- GitHub Pages deployment automation
-- Service Worker update notifications
 - Full QA pass on mobile (Android PWA, iPhone Safari)
 - Service Worker update flow verification
+
+## [0.1.1] — 2026-04-13
+
+### Fixed
+- **Language selection persistence**: Language now saved to localStorage synchronously (mirrors theme pattern). Applied from localStorage before IndexedDB load to prevent flash of English on PWA restart. ([53f34e4](https://github.com/The-Psyler/Claude-to-my-life/commit/53f34e4))
+- **BroadcastChannel translation sync**: applyTranslations() now called when other tabs reload state, ensuring multi-tab consistency. ([53f34e4](https://github.com/The-Psyler/Claude-to-my-life/commit/53f34e4))
+
+### Added
+- **Home screen focus pill**: Today's morning focus task now displayed prominently on home screen when set. Shows title and next action. ([53f34e4](https://github.com/The-Psyler/Claude-to-my-life/commit/53f34e4))
+
+### Changed
+- **Nav bar icons**: Replaced colored dots with SVG icons — house (Home), database (Vault), sliders (Settings). Same color scheme maintained. ([53f34e4](https://github.com/The-Psyler/Claude-to-my-life/commit/53f34e4))
+- **Day state visual feedback**: Background color shifts to darker greenish tint when day is locked, signaling "rest mode". ([53f34e4](https://github.com/The-Psyler/Claude-to-my-life/commit/53f34e4))
 
 ## [0.1.0-alpha] — 2026-04-12
 
