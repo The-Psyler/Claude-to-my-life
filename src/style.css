@@ -270,6 +270,7 @@ p {
 
 .btn-secondary {
     background: transparent;
+    border: var(--border);
     color: var(--muted);
     font-size: 13px;
     margin-top: 8px;
@@ -962,12 +963,6 @@ p {
 
 .settings-theme-btn {
     width: 100%;
-}
-
-.btn-secondary {
-    background: transparent;
-    border: var(--border);
-    color: var(--text);
 }
 
 .btn-danger {

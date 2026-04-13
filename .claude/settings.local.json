@@ -18,7 +18,8 @@
       "Bash(npm --version)",
       "Bash(git clone:*)",
       "Read(//c/Users/PsyPC/ecc/**)",
-      "Bash(node scripts/install-apply.js --profile core --dry-run)"
+      "Bash(node scripts/install-apply.js --profile core --dry-run)",
+      "Bash(npm run:*)"
     ]
   }
 }
