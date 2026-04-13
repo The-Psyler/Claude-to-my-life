@@ -23,7 +23,7 @@
   --surface: #FEFCF9;
   --muted:   #6B6460;
   --text:    #1C1A17;
-  --border:  1px solid rgba(28,26,23,0.1);
+  --border:  1px solid rgba(28, 26, 23, 0.61);
 }
 
 /* Day locked: subtle background shift to signal rest mode */
