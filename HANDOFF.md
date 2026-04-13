@@ -1,32 +1,34 @@
-# HANDOFF — 2026-04-13 (Updated)
+# HANDOFF — 2026-04-13 (v0.1.2 Sparks Rework)
 
 ## Status
-Phase 4 (Closed Alpha) — deployed with patch batch 0.1.1. SDD pipeline established.
+Phase 4 (Closed Alpha) — v0.1.2 deployed. Sparks system fully integrated.
 
-## Completed this session
-- Added SDD section to global ~/.claude/CLAUDE.md
-- Created CHANGELOG.md (full history from Phases 1–4, [Unreleased] pending items)
-- Created docs/FEATURE-PIPELINE.md (10-step SDD pipeline for all future work)
-- **Deployed patch batch 0.1.1** (commit 53f34e4):
-  - Language selection bug fix (persistent across sessions)
-  - Home screen focus pill (shows active morning focus)
-  - Nav bar icons (house/database/sliders)
-  - Day state background color (darker when locked)
+## Completed this session (Sparks feature)
+- Reworked branches → sparks (expandable sub-ideas within ideas)
+- Each spark has its own progress log (textarea + notes list)
+- Sparks show in Work screen (click to expand) and Vault detail view
+- Data migration: old branches → sparks (backward compatible)
+- Tested: add spark, expand, log note under spark, toggle done, persistence
+- User testing: verified all core flows work end-to-end
+
+## Released (v0.1.2 — 2026-04-13)
+✓ Sparks system: expandable sub-ideas with own progress logs
+✓ Per-spark note logging (logSparkNote)
+✓ Spark toggle expand/collapse (toggleSparkExpand)
+✓ Spark done checkbox (toggleSpark)
+✓ Vault detail view shows sparks + their notes
+✓ Backward migration: branches → sparks + notes: []
 
 ## Pending (Phase 4 — QA & Polish)
 - PWA icons (192px, 512px)
 - Full QA pass on mobile (Android PWA, iPhone Safari)
 - Service Worker update flow verification
 
-## Released (v0.1.1 — 2026-04-13)
-✓ Language selection bug fix (persistent across sessions, mirrors theme pattern)
-✓ Home screen focus pill (shows active morning focus)
-✓ Nav bar icons (house/database/sliders SVG)
-✓ Day state background color (darker when day locked)
-
-## Patch ideas (queued for Phase 5+ — see memory)
-- Work note categorisation (new branch / WIP / done) [deferred, score −1]
-- Other future enhancements: idea graphing, milestone decomposition, contextual prompting
+## Phase 5+ (deferred, post-alpha)
+- Spark → Vault promotion (new button)
+- Spark delete/reorder
+- Evening wrap integration with sparks
+- Other ideas: graphing, milestone decomposition, contextual prompting
 
 ## Live URL
 https://the-psyler.github.io/Claude-to-my-life/

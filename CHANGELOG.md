@@ -10,6 +10,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Full QA pass on mobile (Android PWA, iPhone Safari)
 - Service Worker update flow verification
 
+## [0.1.2] — 2026-04-13
+
+### Changed
+- **Sparks system rework**: Renamed "branches" → "sparks" throughout. Sparks are now expandable sub-ideas within an idea, each with their own progress log.
+- **Per-spark progress notes**: When working on a spark, log progress notes under that specific spark instead of the main idea's flat log. Main work log remains for general notes.
+- **Spark toggle & expansion**: Click a spark row to expand and reveal its notes + textarea. Arrow indicator shows expand state (› / ⌄). Checkbox toggles done state.
+- **Removed kind-toggle UI**: The Progress/Spark buttons on the main work log are gone — that was a misinterpretation of the feature. All notes logged to main work log are now simple progress entries.
+- **Vault detail view**: Sparks shown with their notes nested underneath, making it easy to see all work tied to each spark.
+- **Data migration**: Old "branches" field automatically migrates to "sparks" on load with empty notes arrays.
+
 ## [0.1.1] — 2026-04-13
 
 ### Fixed
