@@ -60,6 +60,12 @@ const translations = {
     work_progress_log: 'Progress log',
     work_progress_placeholder: 'What did you do? What did you learn?',
     work_log_progress: 'Log progress',
+    work_branches_label: 'Branches',
+    work_add_branch: 'Add branch',
+    work_branch_placeholder: 'Branch name...',
+    work_no_branches: 'No branches yet',
+    work_kind_log: 'Progress',
+    work_kind_spark: 'Spark',
 
     // ── Evening Wrap ──
     evening_title: 'Good work. What are you taking into tomorrow?',
@@ -212,6 +218,12 @@ const translations = {
     work_progress_log: 'Haladási napló',
     work_progress_placeholder: 'Mit csináltál? Mit tanultál?',
     work_log_progress: 'Haladás rögzítése',
+    work_branches_label: 'Ágak',
+    work_add_branch: 'Ág hozzáadása',
+    work_branch_placeholder: 'Ág neve...',
+    work_no_branches: 'Még nincs ág',
+    work_kind_log: 'Haladás',
+    work_kind_spark: 'Szikra',
 
     // ── Esti lezárás ──
     evening_title: 'Szép munka! Mit viszel tovább holnapra?',

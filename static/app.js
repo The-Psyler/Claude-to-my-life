@@ -128,7 +128,7 @@ async function loadState() {
 
         const ideas = await db.ideas.toArray();
         if (ideas.length > 0) {
-            state.vault = ideas.map(idea => ({ workLog: [], ...idea }));
+            state.vault = ideas.map(idea => ({ workLog: [], branches: [], ...idea }));
         }
 
         const rows     = await db.settings.toArray();
@@ -398,12 +398,26 @@ function renderWorkList() {
             ? '<span style="color:var(--purple);font-size:11px;margin-left:6px;">' + escapeHtml(t('work_focus_label')) + '</span>'
             : '';
 
-        const logEntries = workLog.length > 0
-            ? [...workLog].reverse().map(e => `
-                <div class="work-log-entry">
-                    <span class="work-log-date">${escapeHtml(e.date)}</span>
-                    <span class="work-log-note">${escapeHtml(e.note)}</span>
+        const branches    = idea.branches || [];
+        const branchItems = branches.length > 0
+            ? branches.map(b => `
+                <div class="branch-item${b.done ? ' branch-done' : ''}"
+                     onclick="event.stopPropagation(); toggleBranch(${idea.id}, ${b.id})">
+                    <span class="branch-check">${b.done ? '✓' : '○'}</span>
+                    <span class="branch-title">${escapeHtml(b.title)}</span>
                 </div>`).join('')
+            : '<div class="work-log-empty">' + escapeHtml(t('work_no_branches')) + '</div>';
+
+        const logEntries = workLog.length > 0
+            ? [...workLog].reverse().map(e => {
+                const isSpark = (e.kind || 'log') === 'spark';
+                return `
+                    <div class="work-log-entry${isSpark ? ' work-log-spark' : ''}">
+                        <span class="work-log-date">${escapeHtml(e.date)}</span>
+                        ${isSpark ? '<span class="spark-icon">✦</span>' : ''}
+                        <span class="work-log-note">${escapeHtml(e.note)}</span>
+                    </div>`;
+            }).join('')
             : '<div class="work-log-empty">' + escapeHtml(t('work_no_progress')) + '</div>';
 
         const card = document.createElement('div');
@@ -437,8 +451,33 @@ function renderWorkList() {
                         ${isFocused ? escapeHtml(t('work_is_focus')) : escapeHtml(t('work_set_focus'))}
                     </button>
                 </div>
+                <div class="branch-section">
+                    <div class="work-log-section-label">${escapeHtml(t('work_branches_label'))}</div>
+                    <div class="branch-list">${branchItems}</div>
+                    <div class="branch-add-row">
+                        <input type="text" class="input branch-input"
+                               id="branch-input-${idea.id}"
+                               placeholder="${escapeHtml(t('work_branch_placeholder'))}"
+                               onclick="event.stopPropagation()">
+                        <button class="work-log-btn"
+                                onclick="event.stopPropagation(); addBranch(${idea.id})">
+                            ${escapeHtml(t('work_add_branch'))}
+                        </button>
+                    </div>
+                </div>
                 <div class="work-log-section">
                     <div class="work-log-section-label">${escapeHtml(t('work_progress_log'))}</div>
+                    <div class="kind-toggle" onclick="event.stopPropagation()">
+                        <button id="kind-log-${idea.id}" class="kind-btn kind-active"
+                                onclick="setLogKind(${idea.id}, 'log')">
+                            ${escapeHtml(t('work_kind_log'))}
+                        </button>
+                        <button id="kind-spark-${idea.id}" class="kind-btn"
+                                onclick="setLogKind(${idea.id}, 'spark')">
+                            ✦ ${escapeHtml(t('work_kind_spark'))}
+                        </button>
+                    </div>
+                    <span id="kind-marker-${idea.id}" data-kind="log" style="display:none;"></span>
                     <textarea class="textarea work-log-input"
                               id="work-log-input-${idea.id}"
                               placeholder="${escapeHtml(t('work_progress_placeholder'))}"
@@ -799,19 +838,58 @@ async function saveNextAction(ideaId) {
 
 async function logProgress(ideaId) {
     const textarea = document.getElementById('work-log-input-' + ideaId);
+    const marker   = document.getElementById('kind-marker-' + ideaId);
     const note     = textarea?.value.trim();
     if (!note) { showToast(t('toast_write_first'), 'error'); return; }
 
     const idea = state.vault.find(v => v.id === ideaId);
     if (!idea) return;
 
+    const kind = marker?.dataset.kind || 'log';
     if (!idea.workLog) idea.workLog = [];
-    idea.workLog.push({ date: todayISO(), note });
+    idea.workLog.push({ date: todayISO(), note, kind });
 
     await saveState();
     if (textarea) textarea.value = '';
+    setLogKind(ideaId, 'log');
     renderWorkList();
     showToast(t('toast_progress_logged'), 'success');
+}
+
+function setLogKind(ideaId, kind) {
+    const logBtn   = document.getElementById('kind-log-' + ideaId);
+    const sparkBtn = document.getElementById('kind-spark-' + ideaId);
+    const marker   = document.getElementById('kind-marker-' + ideaId);
+    if (!logBtn || !sparkBtn || !marker) return;
+    logBtn.classList.toggle('kind-active', kind === 'log');
+    sparkBtn.classList.toggle('kind-active', kind === 'spark');
+    marker.dataset.kind = kind;
+}
+
+async function addBranch(ideaId) {
+    const input = document.getElementById('branch-input-' + ideaId);
+    const title = input?.value.trim();
+    if (!title) { showToast(t('toast_write_first'), 'error'); return; }
+
+    const idea = state.vault.find(v => v.id === ideaId);
+    if (!idea) return;
+
+    if (!idea.branches) idea.branches = [];
+    idea.branches.push({ id: Date.now(), title, date: todayISO(), done: false });
+
+    await saveState();
+    if (input) input.value = '';
+    renderWorkList();
+}
+
+async function toggleBranch(ideaId, branchId) {
+    const idea = state.vault.find(v => v.id === ideaId);
+    if (!idea || !idea.branches) return;
+    const branch = idea.branches.find(b => b.id === branchId);
+    if (!branch) return;
+    branch.done = !branch.done;
+    await saveState();
+    renderWorkList();
 }
 
 // ============================================================
@@ -951,18 +1029,37 @@ function renderIdeaDetail() {
     const badgeEl = document.getElementById('idea-detail-state-badge');
     badgeEl.innerHTML = `<span style="font-size:12px;font-weight:600;padding:3px 10px;border-radius:12px;background:rgba(124,111,242,0.15);color:var(--purple);">${escapeHtml(idea.state || 'New')}</span>`;
 
+    const branchEl = document.getElementById('idea-detail-branches');
+    const branches = Array.isArray(idea.branches) ? idea.branches : [];
+    if (branches.length > 0) {
+        branchEl.innerHTML = `<div style="margin-bottom:16px;">
+            <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">${escapeHtml(t('work_branches_label'))}</div>
+            ${branches.map(b => `
+                <div style="display:flex;align-items:center;gap:8px;padding:4px 0;font-size:13px;">
+                    <span style="color:var(--teal);flex-shrink:0;">${b.done ? '✓' : '○'}</span>
+                    <span style="${b.done ? 'text-decoration:line-through;color:var(--muted);' : ''}">${escapeHtml(b.title)}</span>
+                </div>`).join('')}
+        </div>`;
+    } else {
+        branchEl.innerHTML = '';
+    }
+
     const logEl  = document.getElementById('idea-detail-log');
     const entries = Array.isArray(idea.workLog) ? idea.workLog : [];
 
     if (entries.length === 0) {
         logEl.innerHTML = `<div class="detail-empty">${escapeHtml(t('detail_no_log'))}</div>`;
     } else {
-        logEl.innerHTML = entries.map(entry =>
-            `<div class="detail-log-entry">
+        logEl.innerHTML = entries.map(entry => {
+            const isSpark = (entry.kind || 'log') === 'spark';
+            return `<div class="detail-log-entry${isSpark ? ' detail-log-spark' : ''}">
                 <div class="detail-log-date">${escapeHtml(entry.date || '')}</div>
-                <div class="detail-log-note">${escapeHtml(entry.note || '')}</div>
-            </div>`
-        ).join('');
+                <div style="display:flex;gap:4px;">
+                    ${isSpark ? '<span style="color:var(--amber);font-size:10px;flex-shrink:0;">✦</span>' : ''}
+                    <div class="detail-log-note">${escapeHtml(entry.note || '')}</div>
+                </div>
+            </div>`;
+        }).join('');
     }
 }
 

@@ -813,6 +813,67 @@ p {
     font-style: italic;
 }
 
+/* ── Work on It: branches ── */
+
+.branch-section {
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+.branch-list { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
+
+.branch-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    border-radius: var(--radius-input);
+    background: rgba(255,255,255,0.04);
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: background 0.15s;
+}
+
+.branch-item:hover { background: rgba(255,255,255,0.08); }
+
+.branch-done .branch-title { text-decoration: line-through; color: var(--muted); }
+
+.branch-check { color: var(--teal); font-size: 0.75rem; width: 14px; flex-shrink: 0; }
+
+.branch-add-row { display: flex; gap: 6px; align-items: center; }
+
+.branch-input { flex: 1; margin: 0; font-size: 13px; padding: 6px 10px; }
+
+/* ── Work on It: kind toggle ── */
+
+.kind-toggle { display: flex; gap: 6px; margin-bottom: 6px; }
+
+.kind-btn {
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.kind-btn.kind-active {
+    border-color: var(--purple);
+    color: var(--purple);
+    background: rgba(124,111,242,0.1);
+}
+
+/* ── Work log spark styling ── */
+
+.work-log-spark { border-left: 2px solid var(--amber); padding-left: 6px; }
+
+.spark-icon { color: var(--amber); font-size: 10px; margin-right: 4px; flex-shrink: 0; }
+
+.detail-log-spark { border-left: 2px solid var(--amber); padding-left: 6px; }
+
 /* ── Evening Wrap: attach option ── */
 
 .evening-attach-section {
