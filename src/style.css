@@ -813,66 +813,75 @@ p {
     font-style: italic;
 }
 
-/* ── Work on It: branches ── */
+/* ── Work on It: sparks ── */
 
-.branch-section {
+.spark-section {
     border-top: 1px solid rgba(255,255,255,0.06);
     padding-top: 10px;
     margin-top: 10px;
 }
 
-.branch-list { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
+.spark-list { display: flex; flex-direction: column; gap: 2px; margin-bottom: 8px; }
 
-.branch-item {
+.spark-item {
+    border-radius: var(--radius-input);
+    overflow: hidden;
+}
+
+.spark-header {
     display: flex;
     align-items: center;
     gap: 8px;
     padding: 6px 10px;
-    border-radius: var(--radius-input);
     background: rgba(255,255,255,0.04);
     cursor: pointer;
     font-size: 0.875rem;
     transition: background 0.15s;
+    user-select: none;
 }
 
-.branch-item:hover { background: rgba(255,255,255,0.08); }
+.spark-header:hover { background: rgba(255,255,255,0.08); }
 
-.branch-done .branch-title { text-decoration: line-through; color: var(--muted); }
+.spark-done .spark-title { text-decoration: line-through; color: var(--muted); }
 
-.branch-check { color: var(--teal); font-size: 0.75rem; width: 14px; flex-shrink: 0; }
-
-.branch-add-row { display: flex; gap: 6px; align-items: center; }
-
-.branch-input { flex: 1; margin: 0; font-size: 13px; padding: 6px 10px; }
-
-/* ── Work on It: kind toggle ── */
-
-.kind-toggle { display: flex; gap: 6px; margin-bottom: 6px; }
-
-.kind-btn {
-    padding: 3px 10px;
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    background: transparent;
-    color: var(--muted);
-    font-size: 11px;
+.spark-check {
+    color: var(--teal);
+    font-size: 0.75rem;
+    width: 14px;
+    flex-shrink: 0;
     cursor: pointer;
-    transition: all 0.15s;
+    padding: 2px;
 }
 
-.kind-btn.kind-active {
-    border-color: var(--purple);
-    color: var(--purple);
-    background: rgba(124,111,242,0.1);
+.spark-title { flex: 1; }
+
+.spark-arrow {
+    color: var(--muted);
+    font-size: 14px;
+    flex-shrink: 0;
+    transition: transform 0.15s;
 }
 
-/* ── Work log spark styling ── */
+.spark-notes-section {
+    background: rgba(255,255,255,0.02);
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding: 8px 10px;
+}
 
-.work-log-spark { border-left: 2px solid var(--amber); padding-left: 6px; }
+.spark-notes-list { margin-bottom: 8px; }
 
-.spark-icon { color: var(--amber); font-size: 10px; margin-right: 4px; flex-shrink: 0; }
+.spark-note-entry {
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+}
 
-.detail-log-spark { border-left: 2px solid var(--amber); padding-left: 6px; }
+.spark-note-entry:last-child { border-bottom: none; }
+
+.spark-note-input { margin-bottom: 6px !important; }
+
+.spark-add-row { display: flex; gap: 6px; align-items: center; }
+
+.spark-input { flex: 1; margin: 0; font-size: 13px; padding: 6px 10px; }
 
 /* ── Evening Wrap: attach option ── */
 
