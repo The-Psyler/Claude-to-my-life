@@ -813,6 +813,76 @@ p {
     font-style: italic;
 }
 
+/* ── Work on It: sparks ── */
+
+.spark-section {
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+.spark-list { display: flex; flex-direction: column; gap: 2px; margin-bottom: 8px; }
+
+.spark-item {
+    border-radius: var(--radius-input);
+    overflow: hidden;
+}
+
+.spark-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    background: rgba(255,255,255,0.04);
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: background 0.15s;
+    user-select: none;
+}
+
+.spark-header:hover { background: rgba(255,255,255,0.08); }
+
+.spark-done .spark-title { text-decoration: line-through; color: var(--muted); }
+
+.spark-check {
+    color: var(--teal);
+    font-size: 0.75rem;
+    width: 14px;
+    flex-shrink: 0;
+    cursor: pointer;
+    padding: 2px;
+}
+
+.spark-title { flex: 1; }
+
+.spark-arrow {
+    color: var(--muted);
+    font-size: 14px;
+    flex-shrink: 0;
+    transition: transform 0.15s;
+}
+
+.spark-notes-section {
+    background: rgba(255,255,255,0.02);
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding: 8px 10px;
+}
+
+.spark-notes-list { margin-bottom: 8px; }
+
+.spark-note-entry {
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.spark-note-entry:last-child { border-bottom: none; }
+
+.spark-note-input { margin-bottom: 6px !important; }
+
+.spark-add-row { display: flex; gap: 6px; align-items: center; }
+
+.spark-input { flex: 1; margin: 0; font-size: 13px; padding: 6px 10px; }
+
 /* ── Evening Wrap: attach option ── */
 
 .evening-attach-section {

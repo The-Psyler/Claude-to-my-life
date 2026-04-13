@@ -128,7 +128,11 @@ async function loadState() {
 
         const ideas = await db.ideas.toArray();
         if (ideas.length > 0) {
-            state.vault = ideas.map(idea => ({ workLog: [], ...idea }));
+            state.vault = ideas.map(idea => {
+                const rawSparks = idea.sparks || idea.branches || [];
+                const sparks = rawSparks.map(s => ({ notes: [], ...s }));
+                return { workLog: [], ...idea, sparks };
+            });
         }
 
         const rows     = await db.settings.toArray();
@@ -398,6 +402,40 @@ function renderWorkList() {
             ? '<span style="color:var(--purple);font-size:11px;margin-left:6px;">' + escapeHtml(t('work_focus_label')) + '</span>'
             : '';
 
+        const sparks     = idea.sparks || [];
+        const sparkItems = sparks.length > 0
+            ? sparks.map(s => {
+                const sparkNotes = s.notes || [];
+                const notesList  = sparkNotes.length > 0
+                    ? sparkNotes.map(n => `
+                        <div class="spark-note-entry">
+                            <span class="work-log-date">${escapeHtml(n.date)}</span>
+                            <span class="work-log-note">${escapeHtml(n.note)}</span>
+                        </div>`).join('')
+                    : '<div class="work-log-empty">' + escapeHtml(t('work_spark_no_notes')) + '</div>';
+                return `
+                <div class="spark-item${s.done ? ' spark-done' : ''}">
+                    <div class="spark-header" onclick="event.stopPropagation(); toggleSparkExpand(${s.id})">
+                        <span class="spark-check" onclick="event.stopPropagation(); toggleSpark(${idea.id}, ${s.id})">${s.done ? '✓' : '○'}</span>
+                        <span class="spark-title">${escapeHtml(s.title)}</span>
+                        <span class="spark-arrow" id="spark-arrow-${s.id}">›</span>
+                    </div>
+                    <div class="spark-notes-section" id="spark-notes-${s.id}" style="display:none;">
+                        <div class="spark-notes-list">${notesList}</div>
+                        <textarea class="textarea spark-note-input"
+                                  id="spark-note-input-${s.id}"
+                                  placeholder="${escapeHtml(t('work_spark_note_placeholder'))}"
+                                  onclick="event.stopPropagation()"
+                                  rows="2"></textarea>
+                        <button class="work-log-btn"
+                                onclick="event.stopPropagation(); logSparkNote(${idea.id}, ${s.id})">
+                            ${escapeHtml(t('work_log_progress'))}
+                        </button>
+                    </div>
+                </div>`;
+            }).join('')
+            : '<div class="work-log-empty">' + escapeHtml(t('work_no_sparks')) + '</div>';
+
         const logEntries = workLog.length > 0
             ? [...workLog].reverse().map(e => `
                 <div class="work-log-entry">
@@ -436,6 +474,20 @@ function renderWorkList() {
                             onclick="event.stopPropagation(); setFocus(${idea.id})">
                         ${isFocused ? escapeHtml(t('work_is_focus')) : escapeHtml(t('work_set_focus'))}
                     </button>
+                </div>
+                <div class="spark-section">
+                    <div class="work-log-section-label">${escapeHtml(t('work_sparks_label'))}</div>
+                    <div class="spark-list">${sparkItems}</div>
+                    <div class="spark-add-row">
+                        <input type="text" class="input spark-input"
+                               id="spark-input-${idea.id}"
+                               placeholder="${escapeHtml(t('work_spark_placeholder'))}"
+                               onclick="event.stopPropagation()">
+                        <button class="work-log-btn"
+                                onclick="event.stopPropagation(); addSpark(${idea.id})">
+                            ${escapeHtml(t('work_add_spark'))}
+                        </button>
+                    </div>
                 </div>
                 <div class="work-log-section">
                     <div class="work-log-section-label">${escapeHtml(t('work_progress_log'))}</div>
@@ -814,6 +866,60 @@ async function logProgress(ideaId) {
     showToast(t('toast_progress_logged'), 'success');
 }
 
+async function addSpark(ideaId) {
+    const input = document.getElementById('spark-input-' + ideaId);
+    const title = input?.value.trim();
+    if (!title) { showToast(t('toast_write_first'), 'error'); return; }
+
+    const idea = state.vault.find(v => v.id === ideaId);
+    if (!idea) return;
+
+    if (!idea.sparks) idea.sparks = [];
+    idea.sparks.push({ id: Date.now(), title, date: todayISO(), done: false, notes: [] });
+
+    await saveState();
+    if (input) input.value = '';
+    renderWorkList();
+}
+
+async function toggleSpark(ideaId, sparkId) {
+    const idea = state.vault.find(v => v.id === ideaId);
+    if (!idea || !idea.sparks) return;
+    const spark = idea.sparks.find(s => s.id === sparkId);
+    if (!spark) return;
+    spark.done = !spark.done;
+    await saveState();
+    renderWorkList();
+}
+
+function toggleSparkExpand(sparkId) {
+    const section = document.getElementById('spark-notes-' + sparkId);
+    const arrow   = document.getElementById('spark-arrow-' + sparkId);
+    if (!section) return;
+    const isOpen = section.style.display !== 'none';
+    section.style.display = isOpen ? 'none' : 'block';
+    if (arrow) arrow.textContent = isOpen ? '›' : '⌄';
+}
+
+async function logSparkNote(ideaId, sparkId) {
+    const textarea = document.getElementById('spark-note-input-' + sparkId);
+    const note     = textarea?.value.trim();
+    if (!note) { showToast(t('toast_write_first'), 'error'); return; }
+
+    const idea = state.vault.find(v => v.id === ideaId);
+    if (!idea || !idea.sparks) return;
+    const spark = idea.sparks.find(s => s.id === sparkId);
+    if (!spark) return;
+
+    if (!spark.notes) spark.notes = [];
+    spark.notes.push({ date: todayISO(), note });
+
+    await saveState();
+    if (textarea) textarea.value = '';
+    renderWorkList();
+    showToast(t('toast_progress_logged'), 'success');
+}
+
 // ============================================================
 // PLAYBOOK
 // ============================================================
@@ -951,7 +1057,32 @@ function renderIdeaDetail() {
     const badgeEl = document.getElementById('idea-detail-state-badge');
     badgeEl.innerHTML = `<span style="font-size:12px;font-weight:600;padding:3px 10px;border-radius:12px;background:rgba(124,111,242,0.15);color:var(--purple);">${escapeHtml(idea.state || 'New')}</span>`;
 
-    const logEl  = document.getElementById('idea-detail-log');
+    const sparkEl  = document.getElementById('idea-detail-branches');
+    const sparks   = Array.isArray(idea.sparks) ? idea.sparks : [];
+    if (sparks.length > 0) {
+        sparkEl.innerHTML = `<div style="margin-bottom:20px;">
+            <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">${escapeHtml(t('work_sparks_label'))}</div>
+            ${sparks.map(s => {
+                const notes = s.notes || [];
+                const notesList = notes.map(n => `
+                    <div style="padding:4px 0 4px 22px;font-size:12px;color:var(--muted);">
+                        <span style="font-size:10px;margin-right:6px;">${escapeHtml(n.date)}</span>${escapeHtml(n.note)}
+                    </div>`).join('');
+                return `
+                <div style="margin-bottom:8px;">
+                    <div style="display:flex;align-items:center;gap:8px;font-size:13px;">
+                        <span style="color:var(--teal);flex-shrink:0;">${s.done ? '✓' : '○'}</span>
+                        <span style="${s.done ? 'text-decoration:line-through;color:var(--muted);' : 'font-weight:600;'}">${escapeHtml(s.title)}</span>
+                    </div>
+                    ${notesList}
+                </div>`;
+            }).join('')}
+        </div>`;
+    } else {
+        sparkEl.innerHTML = '';
+    }
+
+    const logEl   = document.getElementById('idea-detail-log');
     const entries = Array.isArray(idea.workLog) ? idea.workLog : [];
 
     if (entries.length === 0) {
