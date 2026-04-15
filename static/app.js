@@ -231,7 +231,10 @@ function navigateTo(screen) {
     if (navItem) navItem.classList.add('active');
 
     // Screen-specific refresh
-    if (screen === 'morning') {
+    if (screen === 'home') {
+        renderHomeFocus();
+        renderKarma();
+    } else if (screen === 'morning') {
         if (state.dayLocked) {
             state.dayLocked = false;
             applyLockedState();
