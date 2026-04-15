@@ -1,15 +1,13 @@
-# HANDOFF — 2026-04-13 (v0.1.2 Sparks Rework)
+# HANDOFF — 2026-04-15 (v0.1.2 Bug Fixes & Polish)
 
 ## Status
-Phase 4 (Closed Alpha) — v0.1.2 deployed. Sparks system fully integrated.
+Phase 4 (Closed Alpha) — v0.1.2 deployed. UX polish: light theme toast fix, card expansion persistence.
 
-## Completed this session (Sparks feature)
-- Reworked branches → sparks (expandable sub-ideas within ideas)
-- Each spark has its own progress log (textarea + notes list)
-- Sparks show in Work screen (click to expand) and Vault detail view
-- Data migration: old branches → sparks (backward compatible)
-- Tested: add spark, expand, log note under spark, toggle done, persistence
-- User testing: verified all core flows work end-to-end
+## Completed this session (Bug fixes & refinement)
+- **Toast notification fix**: Light mode notification background now adapts to theme (was hardcoded dark)
+- **Card expansion UX fix**: Work screen cards now stay expanded after logging progress or adding sparks (was collapsing on render)
+- All 3 previous button border commits pushed to GitHub
+- Tested light/dark theme switching, button borders, and expanded card persistence on mobile
 
 ## Released (v0.1.2 — 2026-04-13)
 ✓ Sparks system: expandable sub-ideas with own progress logs
