@@ -6,8 +6,9 @@ Phase 4 (Closed Alpha) — v0.1.2 deployed. UX polish: light theme toast fix, ca
 ## Completed this session (Bug fixes & refinement)
 - **Toast notification fix**: Light mode notification background now adapts to theme (was hardcoded dark)
 - **Card expansion UX fix**: Work screen cards now stay expanded after logging progress or adding sparks (was collapsing on render)
+- **Home focus pill fix**: Today's focus now updates on Home screen when starting a day
 - All 3 previous button border commits pushed to GitHub
-- Tested light/dark theme switching, button borders, and expanded card persistence on mobile
+- Tested light/dark theme switching, button borders, expanded card persistence, and focus display on mobile
 
 ## Released (v0.1.2 — 2026-04-13)
 ✓ Sparks system: expandable sub-ideas with own progress logs
