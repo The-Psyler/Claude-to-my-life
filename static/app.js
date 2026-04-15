@@ -447,6 +447,7 @@ function renderWorkList() {
 
         const card = document.createElement('div');
         card.className = 'card';
+        card.setAttribute('data-idea-id', idea.id);
         if (isFocused) card.style.borderColor = 'var(--purple)';
 
         const isExpanded = _expandedCardIds.has(idea.id);
@@ -742,16 +743,12 @@ function toggleCard(card) {
     expanded.style.display = isExpanding ? 'block' : 'none';
 
     // Track expanded state by idea ID
-    const titleEl = card?.querySelector('.card-title');
-    if (titleEl) {
-        const ideaText = titleEl.textContent;
-        const idea = state.vault.find(v => v.title === ideaText.replace(/\s+\(focus\).*/, ''));
-        if (idea) {
-            if (isExpanding) {
-                _expandedCardIds.add(idea.id);
-            } else {
-                _expandedCardIds.delete(idea.id);
-            }
+    const ideaId = card?.getAttribute('data-idea-id');
+    if (ideaId) {
+        if (isExpanding) {
+            _expandedCardIds.add(parseInt(ideaId));
+        } else {
+            _expandedCardIds.delete(parseInt(ideaId));
         }
     }
 }
