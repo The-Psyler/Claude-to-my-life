@@ -88,6 +88,7 @@ let _pendingMorningIdeaId = null; // vault picker selection during morning flow
 let _attachDecision       = null; // null | true | false — evening attach choice
 let _currentDetailId      = null; // idea id open in the detail screen
 let _sessionDate          = null; // ISO date anchored at loadState() — prevents midnight drift
+let _expandedCardIds      = new Set(); // track which work cards are expanded
 
 // ============================================================
 // PERSISTENCE
@@ -448,13 +449,16 @@ function renderWorkList() {
         card.className = 'card';
         if (isFocused) card.style.borderColor = 'var(--purple)';
 
+        const isExpanded = _expandedCardIds.has(idea.id);
+        const expandedDisplay = isExpanded ? 'block' : 'none';
+
         card.innerHTML = `
             <div class="card-title">${escapeHtml(idea.title)}${focusLabel}</div>
             <div>
                 <span class="badge ${stateClass}">${escapeHtml(idea.state)}</span>
                 <span class="badge ${idea.potential.toLowerCase()}">${escapeHtml(idea.potential)}</span>
             </div>
-            <div class="expanded-card" style="display:none;">
+            <div class="expanded-card" style="display:${expandedDisplay};">
                 <div class="expanded-title">${escapeHtml(t('work_category'))}: ${escapeHtml(idea.category)}</div>
                 <div class="expanded-next">
                     <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">${escapeHtml(t('work_next_action'))}</div>
@@ -734,7 +738,22 @@ function togglePotential(btn) {
 function toggleCard(card) {
     const expanded = card?.querySelector('.expanded-card');
     if (!expanded) return;
-    expanded.style.display = expanded.style.display === 'none' ? 'block' : 'none';
+    const isExpanding = expanded.style.display === 'none';
+    expanded.style.display = isExpanding ? 'block' : 'none';
+
+    // Track expanded state by idea ID
+    const titleEl = card?.querySelector('.card-title');
+    if (titleEl) {
+        const ideaText = titleEl.textContent;
+        const idea = state.vault.find(v => v.title === ideaText.replace(/\s+\(focus\).*/, ''));
+        if (idea) {
+            if (isExpanding) {
+                _expandedCardIds.add(idea.id);
+            } else {
+                _expandedCardIds.delete(idea.id);
+            }
+        }
+    }
 }
 
 async function deleteIdea(id) {
