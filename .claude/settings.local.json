@@ -19,7 +19,10 @@
       "Bash(git clone:*)",
       "Read(//c/Users/PsyPC/ecc/**)",
       "Bash(node scripts/install-apply.js --profile core --dry-run)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(awk -F/ '{if \\(NF==1\\) print $0; else {dir=$1\"/\"; if \\(prev!=dir\\) {print dir; prev=dir}; print \"  └─ \" $2}}')",
+      "Bash(git restore *)",
+      "Bash(git push *)"
     ]
   }
 }

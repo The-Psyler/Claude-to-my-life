@@ -290,7 +290,7 @@ function renderAll() {
 function renderKarma() {
     const homeDisplay   = document.getElementById('karma-display');
     const morningKarma  = document.getElementById('morning-karma-text');
-    if (homeDisplay)  homeDisplay.textContent  = state.karma + ' ' + t('label_pts');
+    if (homeDisplay)  homeDisplay.textContent  = state.karma + ' ' + t('label_karma');
     if (morningKarma) morningKarma.textContent = state.karma + ' ' + t('label_karma');
 }
 
@@ -628,8 +628,23 @@ async function startDay() {
     const inputEl    = document.getElementById('morning-focus-input');
     const inputTitle = inputEl?.value.trim() || '';
 
-    // Guard: prevent same-day re-start
+    // Build focus from input first (used in both the guard and normal path)
+    let newFocus = { ideaId: null, title: inputTitle, nextAction: '', isVaultLinked: false, date: today };
+    if (_pendingMorningIdeaId) {
+        const idea = state.vault.find(v => v.id === _pendingMorningIdeaId);
+        if (idea) {
+            newFocus = { ideaId: idea.id, title: idea.title, nextAction: idea.nextAction, isVaultLinked: true, date: today };
+        }
+    }
+    _pendingMorningIdeaId = null;
+
+    // Guard: prevent same-day re-start (karma re-award)
     if (state.lastBootDate === today && !state.dayLocked) {
+        // Still persist any focus update
+        if (newFocus.title) {
+            state.focus = newFocus;
+            await saveState();
+        }
         showToast(t('toast_day_already'), 'info');
         navigateTo('home');
         return;
@@ -641,18 +656,10 @@ async function startDay() {
         applyLockedState();
     }
 
-    // Commit focus
-    let newFocus = { ideaId: null, title: inputTitle, nextAction: '', isVaultLinked: false, date: today };
-    if (_pendingMorningIdeaId) {
-        const idea = state.vault.find(v => v.id === _pendingMorningIdeaId);
-        if (idea) {
-            newFocus = { ideaId: idea.id, title: idea.title, nextAction: idea.nextAction, isVaultLinked: true, date: today };
-        }
-    }
+    // Commit focus for new day
     state.focus           = newFocus;
     state.lastBootDate    = today;
     state.karmaAtDayStart = state.karma; // snapshot before awarding +5
-    _pendingMorningIdeaId = null;
 
     await updateKarma(5);
     showToast(t('toast_day_started'), 'success');
