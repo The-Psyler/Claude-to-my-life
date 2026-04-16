@@ -1,7 +1,7 @@
-# HANDOFF — 2026-04-16 (v0.1.3 Home Screen & Day Flow Polish)
+# HANDOFF — 2026-04-16 (v0.1.4 Home Screen & Day Flow Polish)
 
 ## Status
-Phase 4 (Closed Alpha) — v0.1.3 deployed. Home screen polish: focus always updates, karma label, focus pill styling, removed auto-start.
+Phase 4 (Closed Alpha) — v0.1.4 deployed. Home screen polish: focus always updates, karma label, focus pill styling, removed auto-start.
 
 ## Completed this session (Home screen refinement)
 - **Morning Boot focus always updates**: Day re-start guard now persists focus changes without re-awarding karma
