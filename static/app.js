@@ -266,6 +266,35 @@ function navigateTo(screen) {
 
 function goBack() { navigateTo('home'); }
 
+// ── Swipe navigation (home ↔ vault ↔ settings) ──
+(function () {
+    const SWIPE_SCREENS = ['home', 'vault', 'settings'];
+    const THRESHOLD = 50; // px minimum horizontal swipe
+    let startX = 0;
+
+    function currentSwipeScreen() {
+        return SWIPE_SCREENS.find(s =>
+            document.getElementById('screen-' + s)?.classList.contains('active')
+        ) ?? null;
+    }
+
+    document.addEventListener('touchstart', e => {
+        startX = e.touches[0].clientX;
+    }, { passive: true });
+
+    document.addEventListener('touchend', e => {
+        const delta = e.changedTouches[0].clientX - startX;
+        if (Math.abs(delta) < THRESHOLD) return;
+
+        const current = currentSwipeScreen();
+        if (!current) return;
+
+        const idx = SWIPE_SCREENS.indexOf(current);
+        if (delta < 0 && idx < SWIPE_SCREENS.length - 1) navigateTo(SWIPE_SCREENS[idx + 1]);
+        if (delta > 0 && idx > 0)                         navigateTo(SWIPE_SCREENS[idx - 1]);
+    }, { passive: true });
+})();
+
 // ============================================================
 // RENDER
 // ============================================================
