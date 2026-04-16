@@ -1,13 +1,18 @@
-# HANDOFF — 2026-04-16 (v0.2.0 Settings Refresh & Animation Polish)
+# HANDOFF — 2026-04-16 (v0.2.1 Swipe Animation Fixed)
 
 ## Status
-Phase 4 (Closed Alpha) — v0.2.0 deployed. Refresh button added, swipe animations polished.
+Phase 4 (Closed Alpha) — v0.2.1 deployed. Swipe navigation smooth, refresh button added.
 
 ## Completed this session
-- **Refresh button** (v0.2.0): Settings screen now has "Refresh app" button to reload without full browser reload
-- **Swipe animation tuning** (v0.2.0): Left swipes (home→vault→settings) now use ease-in-out for smoother feel
-- **Previous (v0.1.8)**: Fixed swipe animation jump by clearing `data-swipe` attribute after animation ends
-- **Earlier (v0.1.5–0.1.7)**: Swipe navigation with 50px threshold, direction-aware animations, focus & karma fixes
+- **Swipe animation fix** (v0.2.1): Removed attribute-clearing logic, relied on `animation-fill-mode: forwards` to preserve final state—no more jump
+- **Refresh button** (v0.2.0): Settings screen has "Refresh app" button for page reload without full browser refresh
+- **Earlier iteration attempts**: Tried setTimeout and animationend clearing, but animation-fill-mode alone is the correct solution
+
+## Working features
+✓ Swipe left/right between home ↔ vault ↔ settings (smooth, no jump)
+✓ Direction-aware animations (slideFromRight for left swipes, slideFromLeft for right swipes)
+✓ Refresh button in Settings → Sync section
+✓ Morning Boot focus, Karma display, Today's Focus styling all working
 
 ## Released (v0.1.2 — 2026-04-13)
 ✓ Sparks system: expandable sub-ideas with own progress logs
