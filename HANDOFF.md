@@ -1,15 +1,18 @@
-# HANDOFF — 2026-04-16 (v0.1.4 Home Screen & Day Flow Polish)
+# HANDOFF — 2026-04-16 (v0.1.5 Swipe Navigation)
 
 ## Status
-Phase 4 (Closed Alpha) — v0.1.4 deployed. Home screen polish: focus always updates, karma label, focus pill styling, removed auto-start.
+Phase 4 (Closed Alpha) — v0.1.5 deployed. Swipe navigation added + home screen refinements.
 
-## Completed this session (Home screen refinement)
+## Completed this session
+- **Swipe navigation**: Swipe left/right between home ↔ vault ↔ settings screens
+  - 50px minimum threshold to prevent accidental triggers
+  - Only works on the three main nav-bar screens
+  - Updated animation to horizontal slide (translateX) for better UX
 - **Morning Boot focus always updates**: Day re-start guard now persists focus changes without re-awarding karma
 - **Karma label fix**: Home screen karma pill shows "Karma" instead of "pts"
 - **Today's Focus styling**: Centered with larger title (1.2rem) and full border design
 - **Removed auto-start on page load**: Day now starts ONLY when user manually clicks "Start Day" button
 - **Improved focus update messaging**: Shows "Focus updated" when focus changes on same-day re-click
-- Verified build succeeds and dev server runs without errors
 - All changes pushed to GitHub
 
 ## Released (v0.1.2 — 2026-04-13)
