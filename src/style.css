@@ -384,6 +384,7 @@ p {
     width: 100%;
     border-collapse: collapse;
     font-size: 12px;
+    table-layout: fixed;
 }
 
 .vault-table th {
@@ -394,9 +395,19 @@ p {
     border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
+.vault-table th:nth-child(1) { width: 24px; }
+.vault-table th:nth-child(2) { width: 28%; }
+.vault-table th:nth-child(3) { width: 62px; }
+.vault-table th:nth-child(4) { width: auto; }
+.vault-table th:nth-child(5) { width: 70px; }
+.vault-table th:nth-child(6) { width: 62px; }
+
 .vault-table td {
     padding: 8px;
     border-bottom: 1px solid rgba(255,255,255,0.05);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 /* ── Badges ── */
@@ -413,6 +424,7 @@ p {
 .badge.new      { background: rgba(124, 111, 242, 0.2); color: var(--purple); }
 .badge.future   { background: rgba(255, 183,  77, 0.2); color: var(--amber); }
 .badge.on-hold  { background: rgba(176, 176, 176, 0.2); color: var(--muted); }
+.badge.done     { background: rgba(129, 199, 132, 0.2); color: var(--green); }
 .badge.high     { background: rgba(229, 115, 115, 0.2); color: var(--coral); }
 .badge.medium   { background: rgba( 77, 182, 172, 0.2); color: var(--teal); }
 .badge.low      { background: rgba(255, 183,  77, 0.2); color: var(--amber); }

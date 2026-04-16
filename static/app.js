@@ -37,6 +37,12 @@ function setLanguage(lang) {
 }
 
 // ============================================================
+// Module state
+// ============================================================
+
+let _currentIdeaId = null;
+
+// ============================================================
 // GUARD
 // ============================================================
 
@@ -451,7 +457,7 @@ function renderWorkList() {
                 return `
                 <div class="spark-item${s.done ? ' spark-done' : ''}">
                     <div class="spark-header" onclick="event.stopPropagation(); toggleSparkExpand(${s.id})">
-                        <span class="spark-check" onclick="event.stopPropagation(); toggleSpark(${idea.id}, ${s.id})">${s.done ? '✓' : '○'}</span>
+                        <span class="spark-check">${s.done ? '✓' : '○'}</span>
                         <span class="spark-title">${escapeHtml(s.title)}</span>
                         <span class="spark-arrow" id="spark-arrow-${s.id}">›</span>
                     </div>
@@ -961,6 +967,24 @@ function toggleSparkExpand(sparkId) {
     if (arrow) arrow.textContent = isOpen ? '›' : '⌄';
 }
 
+async function toggleSparkInDetail(ideaId, sparkId) {
+    const idea = state.vault.find(v => v.id === ideaId);
+    const spark = idea?.sparks?.find(s => s.id === sparkId);
+    if (!spark) return;
+    spark.done = !spark.done;
+    await saveState();
+    renderIdeaDetail();
+}
+
+async function toggleIdeaDone() {
+    const idea = state.vault.find(v => v.id === _currentIdeaId);
+    if (!idea) return;
+    idea.state = idea.state === 'Done' ? 'Active' : 'Done';
+    await saveState();
+    renderIdeaDetail();
+    renderVault();
+}
+
 async function logSparkNote(ideaId, sparkId) {
     const textarea = document.getElementById('spark-note-input-' + sparkId);
     const note     = textarea?.value.trim();
@@ -1104,6 +1128,7 @@ function skipAttachment() {
 
 function openIdeaDetail(ideaId) {
     _currentDetailId = ideaId;
+    _currentIdeaId = ideaId;
     navigateTo('idea-detail');
 }
 
@@ -1115,7 +1140,14 @@ function renderIdeaDetail() {
     document.getElementById('idea-detail-date').textContent  = t('detail_captured') + ' ' + (idea.date || '');
 
     const badgeEl = document.getElementById('idea-detail-state-badge');
-    badgeEl.innerHTML = `<span style="font-size:12px;font-weight:600;padding:3px 10px;border-radius:12px;background:rgba(124,111,242,0.15);color:var(--purple);">${escapeHtml(idea.state || 'New')}</span>`;
+    const stateClass = (idea.state || 'New').toLowerCase().replace(/\s+/g, '-');
+    badgeEl.innerHTML = `<span class="badge ${stateClass}">${escapeHtml(idea.state || 'New')}</span>`;
+
+    // Set done button label
+    const doneBtn = document.getElementById('idea-detail-done-btn');
+    if (doneBtn) {
+        doneBtn.textContent = idea.state === 'Done' ? t('detail_mark_active') || 'Mark as active' : t('detail_mark_done') || 'Mark as done';
+    }
 
     const sparkEl  = document.getElementById('idea-detail-branches');
     const sparks   = Array.isArray(idea.sparks) ? idea.sparks : [];
@@ -1131,7 +1163,7 @@ function renderIdeaDetail() {
                 return `
                 <div style="margin-bottom:8px;">
                     <div style="display:flex;align-items:center;gap:8px;font-size:13px;">
-                        <span style="color:var(--teal);flex-shrink:0;">${s.done ? '✓' : '○'}</span>
+                        <span style="color:var(--teal);flex-shrink:0;cursor:pointer;" onclick="toggleSparkInDetail(${idea.id}, ${s.id})">${s.done ? '✓' : '○'}</span>
                         <span style="${s.done ? 'text-decoration:line-through;color:var(--muted);' : 'font-weight:600;'}">${escapeHtml(s.title)}</span>
                     </div>
                     ${notesList}
