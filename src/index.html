@@ -331,7 +331,7 @@
             <div id="idea-detail-branches"></div>
             <div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-bottom:16px;" data-i18n="detail_work_log">Work log</div>
             <div id="idea-detail-log"></div>
-            <button id="idea-detail-delete-btn" class="btn btn-danger" onclick="confirmDeleteIdea()" style="margin-top:24px;">Delete idea</button>
+            <button id="idea-detail-delete-btn" class="btn btn-danger" onclick="confirmDeleteIdea()" style="margin-top:24px;" data-i18n="btn_delete_idea">Delete idea</button>
         </div>
 
         <!-- Screen 8: Settings -->
@@ -376,7 +376,7 @@
                 <div class="settings-label" data-i18n="settings_about">About</div>
                 <div class="settings-about-text">
                     <strong>CTML</strong> — Claude to My Life<br>
-                    <span data-i18n="settings_version">Version</span> 0.3.2
+                    <span data-i18n="settings_version">Version</span> 0.3.3
                 </div>
             </div>
         </div>
@@ -389,7 +389,7 @@
                 <p style="font-size:14px;color:var(--muted);margin-bottom:16px;">This will permanently delete the idea and all its notes and sparks. This cannot be undone.</p>
                 <div class="modal-actions">
                     <button class="btn btn-secondary" onclick="closeDeleteModal()" data-i18n="btn_cancel">Cancel</button>
-                    <button class="btn btn-danger" onclick="actuallyDeleteIdea()">Delete idea</button>
+                    <button class="btn btn-danger" onclick="actuallyDeleteIdea()" data-i18n="btn_delete_idea">Delete idea</button>
                 </div>
             </div>
         </div>

@@ -1157,7 +1157,7 @@ function renderIdeaDetail() {
     // Set done button label
     const doneBtn = document.getElementById('idea-detail-done-btn');
     if (doneBtn) {
-        doneBtn.textContent = idea.state === 'Done' ? 'Mark as active' : 'Mark as complete';
+        doneBtn.textContent = idea.state === 'Done' ? t('btn_mark_active') : t('btn_mark_complete');
     }
 
     const sparkEl  = document.getElementById('idea-detail-branches');

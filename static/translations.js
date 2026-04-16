@@ -113,6 +113,7 @@ const translations = {
     settings_language: 'Language',
     settings_theme: 'Theme',
     settings_toggle_theme: 'Toggle light / dark',
+    settings_refresh: 'Refresh app',
     settings_data: 'Data',
     settings_reset: 'Reset all data',
     settings_about: 'About',
@@ -128,6 +129,9 @@ const translations = {
     btn_save: 'Save',
     btn_cancel: 'Cancel',
     btn_edit: 'Edit',
+    btn_mark_complete: 'Mark as complete',
+    btn_mark_active: 'Mark as active',
+    btn_delete_idea: 'Delete idea',
 
     // ── Toasts ──
     toast_save_failed: 'Save failed',
@@ -271,6 +275,7 @@ const translations = {
     settings_language: 'Nyelv',
     settings_theme: 'Téma',
     settings_toggle_theme: 'Világos / sötét váltás',
+    settings_refresh: 'Alkalmazás frissítése',
     settings_data: 'Adatok',
     settings_reset: 'Összes adat törlése',
     settings_about: 'Névjegy',
@@ -286,6 +291,9 @@ const translations = {
     btn_save: 'Mentés',
     btn_cancel: 'Mégse',
     btn_edit: 'Szerkesztés',
+    btn_mark_complete: 'Jelöld befejezettnek',
+    btn_mark_active: 'Jelöld aktívnak',
+    btn_delete_idea: 'Ötlet törlése',
 
     // ── Toast üzenetek ──
     toast_save_failed: 'Mentés sikertelen',
