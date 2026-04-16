@@ -300,8 +300,6 @@ function goBack() { navigateTo('home'); }
             app.dataset.swipe = 'right';
             navigateTo(SWIPE_SCREENS[idx - 1]);
         }
-
-        setTimeout(() => { delete app.dataset.swipe; }, 350);
     }, { passive: true });
 })();
 

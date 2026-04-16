@@ -78,8 +78,8 @@ body {
 .screen.active { display: block; }
 
 /* Direction-aware swipe animations */
-#app[data-swipe="left"]  .screen.active { animation: slideFromRight 0.3s ease-out; }
-#app[data-swipe="right"] .screen.active { animation: slideFromLeft  0.3s ease-out; }
+#app[data-swipe="left"]  .screen.active { animation: slideFromRight 0.3s ease-out forwards; }
+#app[data-swipe="right"] .screen.active { animation: slideFromLeft  0.3s ease-out forwards; }
 .screen:has(> .back-btn) { padding-top: 72px; }
 
 /* ── Welcome Screen ── */
