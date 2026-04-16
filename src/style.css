@@ -65,7 +65,21 @@ body {
     to   { opacity: 1; transform: translateX(0); }
 }
 
+@keyframes slideFromRight {
+    from { opacity: 0; transform: translateX(80px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideFromLeft {
+    from { opacity: 0; transform: translateX(-80px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
 .screen.active { display: block; }
+
+/* Direction-aware swipe animations */
+#app[data-swipe="left"]  .screen.active { animation: slideFromRight 0.3s ease-out; }
+#app[data-swipe="right"] .screen.active { animation: slideFromLeft  0.3s ease-out; }
 .screen:has(> .back-btn) { padding-top: 72px; }
 
 /* ── Welcome Screen ── */

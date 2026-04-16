@@ -289,9 +289,19 @@ function goBack() { navigateTo('home'); }
         const current = currentSwipeScreen();
         if (!current) return;
 
-        const idx = SWIPE_SCREENS.indexOf(current);
-        if (delta < 0 && idx < SWIPE_SCREENS.length - 1) navigateTo(SWIPE_SCREENS[idx + 1]);
-        if (delta > 0 && idx > 0)                         navigateTo(SWIPE_SCREENS[idx - 1]);
+        const idx  = SWIPE_SCREENS.indexOf(current);
+        const app  = document.getElementById('app');
+
+        if (delta < 0 && idx < SWIPE_SCREENS.length - 1) {
+            app.dataset.swipe = 'left';
+            navigateTo(SWIPE_SCREENS[idx + 1]);
+        }
+        if (delta > 0 && idx > 0) {
+            app.dataset.swipe = 'right';
+            navigateTo(SWIPE_SCREENS[idx - 1]);
+        }
+
+        setTimeout(() => { delete app.dataset.swipe; }, 350);
     }, { passive: true });
 })();
 
