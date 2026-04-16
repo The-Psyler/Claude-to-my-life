@@ -278,10 +278,6 @@ function goBack() { navigateTo('home'); }
         ) ?? null;
     }
 
-    function clearSwipeAttribute() {
-        document.getElementById('app').removeAttribute('data-swipe');
-    }
-
     document.addEventListener('touchstart', e => {
         startX = e.touches[0].clientX;
     }, { passive: true });
@@ -293,9 +289,8 @@ function goBack() { navigateTo('home'); }
         const current = currentSwipeScreen();
         if (!current) return;
 
-        const idx  = SWIPE_SCREENS.indexOf(current);
-        const app  = document.getElementById('app');
-        const screen = document.getElementById('screen-' + SWIPE_SCREENS[idx + (delta < 0 ? 1 : -1)]);
+        const idx = SWIPE_SCREENS.indexOf(current);
+        const app = document.getElementById('app');
 
         if (delta < 0 && idx < SWIPE_SCREENS.length - 1) {
             app.dataset.swipe = 'left';
@@ -303,19 +298,6 @@ function goBack() { navigateTo('home'); }
         } else if (delta > 0 && idx > 0) {
             app.dataset.swipe = 'right';
             navigateTo(SWIPE_SCREENS[idx - 1]);
-        } else {
-            return;
-        }
-
-        // Clear data-swipe after animation completes (animationend) or timeout (fallback)
-        if (screen) {
-            const handler = () => {
-                clearSwipeAttribute();
-                screen.removeEventListener('animationend', handler);
-            };
-            screen.addEventListener('animationend', handler, { once: true });
-            // Fallback: also clear after animation duration to ensure it happens
-            setTimeout(clearSwipeAttribute, 320);
         }
     }, { passive: true });
 })();
