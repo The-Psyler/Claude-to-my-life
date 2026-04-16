@@ -7,6 +7,8 @@ Phase 4 (Closed Alpha) — v0.1.2 deployed. Home screen polish: focus always upd
 - **Morning Boot focus always updates**: Day re-start guard now persists focus changes without re-awarding karma
 - **Karma label fix**: Home screen karma pill shows "Karma" instead of "pts"
 - **Today's Focus styling**: Centered with larger title (1.2rem) and full border design
+- **Removed auto-start on page load**: Day now starts ONLY when user manually clicks "Start Day" button
+- **Improved focus update messaging**: Shows "Focus updated" when focus changes on same-day re-click
 - Verified build succeeds and dev server runs without errors
 - All changes pushed to GitHub
 
