@@ -325,7 +325,10 @@
         <div id="screen-idea-detail" class="screen">
             <button class="back-btn" onclick="navigateTo('vault')" data-i18n-aria="btn_back" aria-label="Back">←</button>
             <div id="idea-detail-state-badge" style="margin-bottom:8px;"></div>
-            <button id="idea-detail-done-btn" class="btn btn-secondary" onclick="toggleIdeaDone()" style="margin-bottom:16px;"></button>
+            <div style="display:flex;gap:8px;margin-bottom:16px;">
+                <button id="idea-detail-done-btn" class="btn btn-secondary" onclick="toggleIdeaDone()" style="flex:1;"></button>
+                <button id="idea-detail-delete-btn" class="btn btn-danger" onclick="confirmDeleteIdea()" data-i18n="btn_delete">Delete</button>
+            </div>
             <h1 id="idea-detail-title"></h1>
             <div id="idea-detail-date" style="font-size:12px;color:var(--muted);margin-bottom:24px;"></div>
             <div id="idea-detail-branches"></div>
@@ -375,12 +378,24 @@
                 <div class="settings-label" data-i18n="settings_about">About</div>
                 <div class="settings-about-text">
                     <strong>CTML</strong> — Claude to My Life<br>
-                    <span data-i18n="settings_version">Version</span> 0.3.0
+                    <span data-i18n="settings_version">Version</span> 0.3.1
                 </div>
             </div>
         </div>
 
         <!-- Reset confirmation modal -->
+        <!-- Delete idea confirmation modal -->
+        <div id="delete-idea-modal" class="modal-overlay" onclick="if(event.target===this)closeDeleteModal()">
+            <div class="modal">
+                <h2>Delete this idea?</h2>
+                <p style="font-size:14px;color:var(--muted);margin-bottom:16px;">This will permanently delete the idea and all its notes and sparks. This cannot be undone.</p>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" onclick="closeDeleteModal()" data-i18n="btn_cancel">Cancel</button>
+                    <button class="btn btn-danger" onclick="actuallyDeleteIdea()">Delete idea</button>
+                </div>
+            </div>
+        </div>
+
         <div id="reset-modal" class="modal-overlay" onclick="if(event.target===this)closeResetModal()">
             <div class="modal">
                 <h2 data-i18n="reset_title">Reset all data?</h2>

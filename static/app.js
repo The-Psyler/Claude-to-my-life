@@ -576,8 +576,7 @@ function renderVault() {
             <td>${escapeHtml(lastNote)}</td>
             <td>${escapeHtml(idea.date)}</td>
             <td style="white-space:nowrap;">
-                <button class="vault-action-btn"        onclick="event.stopPropagation(); editIdea(${idea.id})"   aria-label="${escapeHtml(t('btn_edit'))} ${escapeHtml(idea.title)}">${escapeHtml(t('btn_edit'))}</button>
-                <button class="vault-action-btn delete" onclick="event.stopPropagation(); deleteIdea(${idea.id})" aria-label="Delete ${escapeHtml(idea.title)}">✕</button>
+                <button class="vault-action-btn" onclick="event.stopPropagation(); editIdea(${idea.id})" aria-label="${escapeHtml(t('btn_edit'))} ${escapeHtml(idea.title)}">${escapeHtml(t('btn_edit'))}</button>
             </td>
         `;
         tbody.appendChild(row);
@@ -1218,6 +1217,22 @@ async function confirmResetData() {
     await db.settings.clear();
     localStorage.removeItem('ctml_theme');
     location.reload();
+}
+
+function confirmDeleteIdea() {
+    document.getElementById('delete-idea-modal').classList.add('active');
+}
+
+function closeDeleteModal() {
+    document.getElementById('delete-idea-modal').classList.remove('active');
+}
+
+async function actuallyDeleteIdea() {
+    const id = _currentIdeaId;
+    if (!id) return;
+    await deleteIdea(id);
+    closeDeleteModal();
+    navigateTo('vault');
 }
 
 function applyTheme(theme) {
