@@ -163,11 +163,6 @@ async function loadState() {
 
         // Anchor the session date — all date-sensitive operations use this
         _sessionDate = todayISO();
-
-        // Auto-start new day if lastBootDate is from a previous day
-        if (state.lastBootDate && state.lastBootDate < _sessionDate) {
-            await startDay();
-        }
     } catch (e) {
         console.warn('loadState failed:', e);
         showToast(t('toast_load_failed'), 'error');
@@ -641,11 +636,14 @@ async function startDay() {
     // Guard: prevent same-day re-start (karma re-award)
     if (state.lastBootDate === today && !state.dayLocked) {
         // Still persist any focus update
+        let focusUpdated = false;
         if (newFocus.title) {
             state.focus = newFocus;
             await saveState();
+            focusUpdated = true;
         }
-        showToast(t('toast_day_already'), 'info');
+        const msg = focusUpdated ? 'Focus updated' : t('toast_day_already');
+        showToast(msg, 'info');
         navigateTo('home');
         return;
     }
