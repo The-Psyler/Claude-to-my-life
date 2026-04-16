@@ -1,19 +1,18 @@
-# HANDOFF — 2026-04-16 (v0.1.5 Swipe Navigation)
+# HANDOFF — 2026-04-16 (v0.1.8 Swipe Animation Polish)
 
 ## Status
-Phase 4 (Closed Alpha) — v0.1.5 deployed. Swipe navigation added + home screen refinements.
+Phase 4 (Closed Alpha) — v0.1.8 deployed. Swipe animation jump fixed.
 
 ## Completed this session
-- **Swipe navigation**: Swipe left/right between home ↔ vault ↔ settings screens
+- **Swipe animation jump fix** (v0.1.8): Resolved visual jump at end of swipe by clearing `data-swipe` attribute after animation completes using `animationend` event
+- **Previous session (v0.1.5–0.1.7)**:
+  - Swipe navigation: Swipe left/right between home ↔ vault ↔ settings
   - 50px minimum threshold to prevent accidental triggers
-  - Only works on the three main nav-bar screens
-  - Updated animation to horizontal slide (translateX) for better UX
-- **Morning Boot focus always updates**: Day re-start guard now persists focus changes without re-awarding karma
-- **Karma label fix**: Home screen karma pill shows "Karma" instead of "pts"
-- **Today's Focus styling**: Centered with larger title (1.2rem) and full border design
-- **Removed auto-start on page load**: Day now starts ONLY when user manually clicks "Start Day" button
-- **Improved focus update messaging**: Shows "Focus updated" when focus changes on same-day re-click
-- All changes pushed to GitHub
+  - Direction-aware animations (slideFromRight / slideFromLeft)
+  - Morning Boot focus always updates
+  - Karma label displays "Karma" instead of "pts"
+  - Today's Focus centered with larger title and full border
+  - Day starts ONLY when user clicks "Start Day"
 
 ## Released (v0.1.2 — 2026-04-13)
 ✓ Sparks system: expandable sub-ideas with own progress logs
