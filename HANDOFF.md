@@ -1,18 +1,22 @@
-# HANDOFF — 2026-04-16 (v0.2.1 Swipe Animation Fixed)
+# HANDOFF — 2026-04-16 (v0.3.0 Vault UX Polish)
 
 ## Status
-Phase 4 (Closed Alpha) — v0.2.1 deployed. Swipe navigation smooth, refresh button added.
+Phase 4 (Closed Alpha) — v0.3.0 deployed. Vault table title always visible, completion moved to detail view.
 
 ## Completed this session
-- **Swipe animation fix** (v0.2.1): Removed attribute-clearing logic, relied on `animation-fill-mode: forwards` to preserve final state—no more jump
-- **Refresh button** (v0.2.0): Settings screen has "Refresh app" button for page reload without full browser refresh
-- **Earlier iteration attempts**: Tried setTimeout and animationend clearing, but animation-fill-mode alone is the correct solution
+- **Vault table fixed title** (v0.3.0): `table-layout: fixed` with explicit column widths—title always readable even with long last-note text. All cells truncate with ellipsis.
+- **Spark/idea completion in detail view** (v0.3.0):
+  - Removed spark done toggle from Work screen (display-only ○/✓ now)
+  - Added tappable ○/✓ toggles in vault detail view via `toggleSparkInDetail()`
+  - Added "Mark as done" / "Mark as active" button to idea detail screen
+  - New "Done" state badge with green styling
+- **Previous (v0.2.0–0.2.1)**: Refresh button, swipe animation fixes
 
 ## Working features
-✓ Swipe left/right between home ↔ vault ↔ settings (smooth, no jump)
-✓ Direction-aware animations (slideFromRight for left swipes, slideFromLeft for right swipes)
-✓ Refresh button in Settings → Sync section
-✓ Morning Boot focus, Karma display, Today's Focus styling all working
+✓ Vault table: title column always fixed & visible (no horizontal scroll-off)
+✓ Work screen sparks: create + add notes only (no toggle)
+✓ Vault detail screen: spark done toggle + idea state toggle
+✓ State badges: Active (teal), New (purple), Future (amber), On Hold (muted), Done (green)
 
 ## Released (v0.1.2 — 2026-04-13)
 ✓ Sparks system: expandable sub-ideas with own progress logs
