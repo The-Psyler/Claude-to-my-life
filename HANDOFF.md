@@ -1,14 +1,14 @@
-# HANDOFF — 2026-04-15 (v0.1.2 Bug Fixes & Polish)
+# HANDOFF — 2026-04-16 (v0.1.2 Home Screen Polish)
 
 ## Status
-Phase 4 (Closed Alpha) — v0.1.2 deployed. UX polish: light theme toast fix, card expansion persistence.
+Phase 4 (Closed Alpha) — v0.1.2 deployed. Home screen polish: focus always updates, karma label, focus pill styling.
 
-## Completed this session (Bug fixes & refinement)
-- **Toast notification fix**: Light mode notification background now adapts to theme (was hardcoded dark)
-- **Card expansion UX fix**: Work screen cards now stay expanded after logging progress or adding sparks (was collapsing on render)
-- **Home focus pill fix**: Today's focus now updates on Home screen when starting a day
-- All 3 previous button border commits pushed to GitHub
-- Tested light/dark theme switching, button borders, expanded card persistence, and focus display on mobile
+## Completed this session (Home screen refinement)
+- **Morning Boot focus always updates**: Day re-start guard now persists focus changes without re-awarding karma
+- **Karma label fix**: Home screen karma pill shows "Karma" instead of "pts"
+- **Today's Focus styling**: Centered with larger title (1.2rem) and full border design
+- Verified build succeeds and dev server runs without errors
+- All changes pushed to GitHub
 
 ## Released (v0.1.2 — 2026-04-13)
 ✓ Sparks system: expandable sub-ideas with own progress logs
