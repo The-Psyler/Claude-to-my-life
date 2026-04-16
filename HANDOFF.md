@@ -1,11 +1,20 @@
-# HANDOFF — 2026-04-16 (v0.3.2 Swipe & Border UX)
+# HANDOFF — 2026-04-16 (v0.3.5 Real Day-Locking & Table Simplification)
 
 ## Status
-Phase 4 (Closed Alpha) — v0.3.2 deployed. Swipe gestures fixed for cleaner interaction, vault borders now high-contrast in both themes.
+Phase 4 (Closed Alpha) — v0.3.5 deployed. Day locking now respects real dates, vault table simplified to 3 essential columns.
 
 ## Completed this session
-- **Swipe vertical scroll fix** (v0.3.2): Added touchmove listener with horizontal vs vertical detection (`deltaX > deltaY`). Prevents default scroll only when gesture is clearly horizontal (>10px). Solves "drifting" swipe when not perfectly horizontal.
-- **Vault table border contrast** (v0.3.2): Replaced hardcoded `rgba(255,255,255,0.05)` borders with theme-aware `var(--border)`. Now high-contrast in both dark mode and light mode (matching settings screen).
+- **Real day-locking** (v0.3.5): Lock now persists until the next real day arrives (date-aware, not just UI state)
+  - `unlockDay()` checks `lastBootDate !== today` before allowing unlock
+  - `startDay()` prevents morning boot if day locked and still same date
+  - Unlock button disabled & greyed when locked on same day (visual feedback: "Come back tomorrow")
+  - Morning boot card disabled & non-clickable when day locked on same day
+  - Auto-unlock triggers when entering morning boot on next day
+- **Simplified vault table** (v0.3.4): Removed clutter—now 3 columns only: Title, Status, Date
+  - Removed index (#), Last note, and Actions columns
+  - Users click row to open detail view (where edit is available)
+- **Translations added** (v0.3.3): Hungarian translations for mark-complete, mark-active, delete-idea, settings-refresh
+- **Swipe & borders** (v0.3.2): Fixed vertical scroll during swipe, improved vault border contrast in light mode
 - **Previous (v0.3.0–0.3.1)**: Vault title fixed, spark/idea completion moved to detail view, idea deletion moved to detail view with confirmation
 
 ## Working features

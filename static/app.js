@@ -679,9 +679,16 @@ async function startDay() {
     }
     _pendingMorningIdeaId = null;
 
-    // Guard: prevent same-day re-start (karma re-award)
-    if (state.lastBootDate === today && !state.dayLocked) {
-        // Still persist any focus update
+    // Guard: prevent same-day re-start, and prevent locked days from starting until next day
+    if (state.lastBootDate === today) {
+        // Same day detected
+        if (state.dayLocked) {
+            // Day is locked and still same day — cannot start
+            showToast(t('toast_day_already'), 'error');
+            navigateTo('home');
+            return;
+        }
+        // Day unlocked but already started — allow focus update only
         let focusUpdated = false;
         if (newFocus.title) {
             state.focus = newFocus;
@@ -694,7 +701,7 @@ async function startDay() {
         return;
     }
 
-    // Auto-unlock if a new day has started
+    // Auto-unlock if a new day has started (day is locked but different date now)
     if (state.dayLocked && state.lastBootDate !== today) {
         state.dayLocked = false;
         applyLockedState();
@@ -1054,6 +1061,12 @@ async function closeDay() {
 }
 
 async function unlockDay() {
+    const today = _sessionDate || todayISO();
+    // Can only unlock if a new day has arrived
+    if (state.lastBootDate === today) {
+        showToast('Come back tomorrow', 'error');
+        return;
+    }
     state.dayLocked = false;
     await saveState();
     applyLockedState();
@@ -1080,12 +1093,20 @@ function applyLockedState() {
     const morningCard    = document.getElementById('mode-card-morning');
 
     if (state.dayLocked) {
+        const today = _sessionDate || todayISO();
+        const canUnlock = state.lastBootDate !== today; // Can unlock only if new day arrived
+
         // Evening screen
         if (eveningHeading) eveningHeading.textContent  = t('evening_day_closed');
         if (karmaDisplay)   karmaDisplay.textContent    = t('evening_today_complete');
         if (karmaPill)      karmaPill.style.display     = 'none';
         if (closeDayBtn)  { closeDayBtn.disabled = true;  closeDayBtn.style.opacity  = '0.4'; }
-        if (unlockBtn)      unlockBtn.style.display     = 'block';
+        if (unlockBtn) {
+            unlockBtn.style.display = 'block';
+            unlockBtn.disabled = !canUnlock;
+            unlockBtn.style.opacity = canUnlock ? '1' : '0.4';
+            unlockBtn.style.cursor = canUnlock ? 'pointer' : 'not-allowed';
+        }
         if (backBtn)      { backBtn.disabled = true;      backBtn.style.opacity      = '0.3'; backBtn.style.cursor = 'not-allowed'; }
 
         // Home screen
@@ -1094,7 +1115,11 @@ function applyLockedState() {
             const earned = state.karma - (state.karmaAtDayStart ?? state.karma);
             homeBannerKarma.textContent = earned + ' ' + t('evening_karma_earned');
         }
-        if (morningCard)    morningCard.style.opacity   = '0.45';
+        if (morningCard) {
+            morningCard.style.opacity = '0.45';
+            morningCard.style.pointerEvents = 'none';
+            morningCard.style.cursor = 'not-allowed';
+        }
     } else {
         // Evening screen
         if (eveningHeading) eveningHeading.textContent  = t('evening_title');
@@ -1109,7 +1134,11 @@ function applyLockedState() {
 
         // Home screen
         if (homeBanner)     homeBanner.style.display    = 'none';
-        if (morningCard)    morningCard.style.opacity   = '1';
+        if (morningCard) {
+            morningCard.style.opacity = '1';
+            morningCard.style.pointerEvents = 'auto';
+            morningCard.style.cursor = 'pointer';
+        }
     }
 }
 
