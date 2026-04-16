@@ -278,6 +278,10 @@ function goBack() { navigateTo('home'); }
         ) ?? null;
     }
 
+    function clearSwipeAttribute() {
+        document.getElementById('app').removeAttribute('data-swipe');
+    }
+
     document.addEventListener('touchstart', e => {
         startX = e.touches[0].clientX;
     }, { passive: true });
@@ -291,14 +295,21 @@ function goBack() { navigateTo('home'); }
 
         const idx  = SWIPE_SCREENS.indexOf(current);
         const app  = document.getElementById('app');
+        const screen = document.getElementById('screen-' + SWIPE_SCREENS[idx + (delta < 0 ? 1 : -1)]);
 
         if (delta < 0 && idx < SWIPE_SCREENS.length - 1) {
             app.dataset.swipe = 'left';
             navigateTo(SWIPE_SCREENS[idx + 1]);
-        }
-        if (delta > 0 && idx > 0) {
+        } else if (delta > 0 && idx > 0) {
             app.dataset.swipe = 'right';
             navigateTo(SWIPE_SCREENS[idx - 1]);
+        } else {
+            return;
+        }
+
+        // Clear data-swipe after animation completes
+        if (screen) {
+            screen.addEventListener('animationend', clearSwipeAttribute, { once: true });
         }
     }, { passive: true });
 })();
@@ -1163,6 +1174,13 @@ function toggleTheme() {
     const next = current === 'light' ? 'dark' : 'light';
     applyTheme(next);
     localStorage.setItem('ctml_theme', next);
+}
+
+function refreshApp() {
+    showToast('Refreshing...', 'info');
+    setTimeout(() => {
+        location.reload();
+    }, 300);
 }
 
 // ── Settings: Reset Data ──
