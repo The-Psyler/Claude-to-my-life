@@ -307,9 +307,15 @@ function goBack() { navigateTo('home'); }
             return;
         }
 
-        // Clear data-swipe after animation completes
+        // Clear data-swipe after animation completes (animationend) or timeout (fallback)
         if (screen) {
-            screen.addEventListener('animationend', clearSwipeAttribute, { once: true });
+            const handler = () => {
+                clearSwipeAttribute();
+                screen.removeEventListener('animationend', handler);
+            };
+            screen.addEventListener('animationend', handler, { once: true });
+            // Fallback: also clear after animation duration to ensure it happens
+            setTimeout(clearSwipeAttribute, 320);
         }
     }, { passive: true });
 })();
