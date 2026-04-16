@@ -574,22 +574,15 @@ function renderVault() {
     if (!tbody) return;
     tbody.innerHTML = '';
 
-    state.vault.forEach((idea, idx) => {
+    state.vault.forEach((idea) => {
         const stateClass = idea.state.toLowerCase().replace(/\s+/g, '-');
-        const workLog    = idea.workLog || [];
-        const lastNote   = workLog.length > 0 ? workLog[workLog.length - 1].note : (idea.nextAction || '—');
         const row = document.createElement('tr');
         row.style.cursor = 'pointer';
         row.onclick = () => openIdeaDetail(idea.id);
         row.innerHTML = `
-            <td>${idx + 1}</td>
             <td>${escapeHtml(idea.title)}</td>
             <td><span class="badge ${stateClass}">${escapeHtml(idea.state)}</span></td>
-            <td>${escapeHtml(lastNote)}</td>
             <td>${escapeHtml(idea.date)}</td>
-            <td style="white-space:nowrap;">
-                <button class="vault-action-btn" onclick="event.stopPropagation(); editIdea(${idea.id})" aria-label="${escapeHtml(t('btn_edit'))} ${escapeHtml(idea.title)}">${escapeHtml(t('btn_edit'))}</button>
-            </td>
         `;
         tbody.appendChild(row);
     });

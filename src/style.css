@@ -395,12 +395,9 @@ p {
     border-bottom: var(--border);
 }
 
-.vault-table th:nth-child(1) { width: 24px; }
-.vault-table th:nth-child(2) { width: 28%; }
-.vault-table th:nth-child(3) { width: 62px; }
-.vault-table th:nth-child(4) { width: auto; }
-.vault-table th:nth-child(5) { width: 70px; }
-.vault-table th:nth-child(6) { width: 62px; }
+.vault-table th:nth-child(1) { width: auto; }
+.vault-table th:nth-child(2) { width: 90px; }
+.vault-table th:nth-child(3) { width: 75px; }
 
 .vault-table td {
     padding: 8px;
