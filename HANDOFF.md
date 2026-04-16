@@ -1,16 +1,12 @@
-# HANDOFF — 2026-04-16 (v0.3.0 Vault UX Polish)
+# HANDOFF — 2026-04-16 (v0.3.2 Swipe & Border UX)
 
 ## Status
-Phase 4 (Closed Alpha) — v0.3.0 deployed. Vault table title always visible, completion moved to detail view.
+Phase 4 (Closed Alpha) — v0.3.2 deployed. Swipe gestures fixed for cleaner interaction, vault borders now high-contrast in both themes.
 
 ## Completed this session
-- **Vault table fixed title** (v0.3.0): `table-layout: fixed` with explicit column widths—title always readable even with long last-note text. All cells truncate with ellipsis.
-- **Spark/idea completion in detail view** (v0.3.0):
-  - Removed spark done toggle from Work screen (display-only ○/✓ now)
-  - Added tappable ○/✓ toggles in vault detail view via `toggleSparkInDetail()`
-  - Added "Mark as done" / "Mark as active" button to idea detail screen
-  - New "Done" state badge with green styling
-- **Previous (v0.2.0–0.2.1)**: Refresh button, swipe animation fixes
+- **Swipe vertical scroll fix** (v0.3.2): Added touchmove listener with horizontal vs vertical detection (`deltaX > deltaY`). Prevents default scroll only when gesture is clearly horizontal (>10px). Solves "drifting" swipe when not perfectly horizontal.
+- **Vault table border contrast** (v0.3.2): Replaced hardcoded `rgba(255,255,255,0.05)` borders with theme-aware `var(--border)`. Now high-contrast in both dark mode and light mode (matching settings screen).
+- **Previous (v0.3.0–0.3.1)**: Vault title fixed, spark/idea completion moved to detail view, idea deletion moved to detail view with confirmation
 
 ## Working features
 ✓ Vault table: title column always fixed & visible (no horizontal scroll-off)
