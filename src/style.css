@@ -392,7 +392,7 @@ p {
     padding: 8px;
     color: var(--muted);
     font-weight: 500;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+    border-bottom: var(--border);
 }
 
 .vault-table th:nth-child(1) { width: 24px; }
@@ -404,7 +404,7 @@ p {
 
 .vault-table td {
     padding: 8px;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    border-bottom: var(--border);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

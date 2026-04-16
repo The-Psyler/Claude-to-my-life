@@ -277,6 +277,7 @@ function goBack() { navigateTo('home'); }
     const SWIPE_SCREENS = ['home', 'vault', 'settings'];
     const THRESHOLD = 50; // px minimum horizontal swipe
     let startX = 0;
+    let startY = 0;
 
     function currentSwipeScreen() {
         return SWIPE_SCREENS.find(s =>
@@ -286,7 +287,18 @@ function goBack() { navigateTo('home'); }
 
     document.addEventListener('touchstart', e => {
         startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
     }, { passive: true });
+
+    document.addEventListener('touchmove', e => {
+        const deltaX = Math.abs(e.touches[0].clientX - startX);
+        const deltaY = Math.abs(e.touches[0].clientY - startY);
+
+        // Only prevent scroll if horizontal movement is clearly greater than vertical
+        if (deltaX > deltaY && deltaX > 10) {
+            e.preventDefault();
+        }
+    }, { passive: false });
 
     document.addEventListener('touchend', e => {
         const delta = e.changedTouches[0].clientX - startX;
