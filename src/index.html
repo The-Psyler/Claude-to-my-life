@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#534AB7">
     <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
     <meta name="description" content="CTML - Claude to My Life: A productivity app for capturing ideas and managing daily focus">
     <title>CTML - Claude to My Life</title>
     <link rel="stylesheet" href="style.css">
@@ -355,12 +356,12 @@
             </div>
 
             <div class="settings-section">
-                <div class="settings-label">Install</div>
-                <button class="btn btn-secondary" onclick="showWelcome()">How to install</button>
+                <div class="settings-label" data-i18n="settings_install">Install</div>
+                <button class="btn btn-secondary" onclick="showWelcome()" data-i18n="settings_install_how">How to install</button>
             </div>
 
             <div class="settings-section">
-                <div class="settings-label">Sync</div>
+                <div class="settings-label" data-i18n="settings_sync">Sync</div>
                 <button class="btn btn-secondary" onclick="refreshApp()" data-i18n="settings_refresh">Refresh app</button>
             </div>
 
@@ -369,11 +370,17 @@
                 <button class="btn btn-danger" onclick="openResetModal()" data-i18n="settings_reset">Reset all data</button>
             </div>
 
+            <div class="settings-section">
+                <div class="settings-label" data-i18n="settings_support">Support</div>
+                <a class="btn btn-secondary" href="https://ko-fi.com/YOUR_USERNAME" target="_blank" rel="noopener noreferrer" data-i18n="settings_donate">Buy me a coffee ☕</a>
+                <div class="settings-about-text" style="margin-top:8px;" data-i18n="settings_donate_hint">If CTML helps you, a tip is welcome — never required.</div>
+            </div>
+
             <div class="settings-section settings-about">
                 <div class="settings-label" data-i18n="settings_about">About</div>
                 <div class="settings-about-text">
                     <strong>CTML</strong> — Claude to My Life<br>
-                    <span data-i18n="settings_version">Version</span> 0.3.5
+                    <span data-i18n="settings_version">Version</span> 0.3.6
                 </div>
             </div>
         </div>
@@ -382,8 +389,8 @@
         <!-- Delete idea confirmation modal -->
         <div id="delete-idea-modal" class="modal-overlay" onclick="if(event.target===this)closeDeleteModal()">
             <div class="modal">
-                <h2>Delete this idea?</h2>
-                <p style="font-size:14px;color:var(--muted);margin-bottom:16px;">This will permanently delete the idea and all its notes and sparks. This cannot be undone.</p>
+                <h2 data-i18n="delete_idea_title">Delete this idea?</h2>
+                <p style="font-size:14px;color:var(--muted);margin-bottom:16px;" data-i18n="delete_idea_warning">This will permanently delete the idea and all its notes and sparks. This cannot be undone.</p>
                 <div class="modal-actions">
                     <button class="btn btn-secondary" onclick="closeDeleteModal()" data-i18n="btn_cancel">Cancel</button>
                     <button class="btn btn-danger" onclick="actuallyDeleteIdea()" data-i18n="btn_delete_idea">Delete idea</button>

@@ -236,7 +236,8 @@ function navigateTo(screen) {
         renderHomeFocus();
         renderKarma();
     } else if (screen === 'morning') {
-        if (state.dayLocked) {
+        const today = _sessionDate || todayISO();
+        if (state.dayLocked && state.lastBootDate !== today) {
             state.dayLocked = false;
             applyLockedState();
             saveState();
@@ -1064,7 +1065,7 @@ async function unlockDay() {
     const today = _sessionDate || todayISO();
     // Can only unlock if a new day has arrived
     if (state.lastBootDate === today) {
-        showToast('Come back tomorrow', 'error');
+        showToast(t('toast_come_back'), 'error');
         return;
     }
     state.dayLocked = false;
@@ -1230,7 +1231,7 @@ function toggleTheme() {
 }
 
 function refreshApp() {
-    showToast('Refreshing...', 'info');
+    showToast(t('toast_refreshing'), 'info');
     setTimeout(() => {
         location.reload();
     }, 300);

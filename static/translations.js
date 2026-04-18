@@ -113,9 +113,15 @@ const translations = {
     settings_language: 'Language',
     settings_theme: 'Theme',
     settings_toggle_theme: 'Toggle light / dark',
+    settings_install: 'Install',
+    settings_install_how: 'How to install',
     settings_refresh: 'Refresh app',
+    settings_sync: 'Sync',
     settings_data: 'Data',
     settings_reset: 'Reset all data',
+    settings_support: 'Support',
+    settings_donate: 'Buy me a coffee ☕',
+    settings_donate_hint: 'If CTML helps you, a tip is welcome — never required.',
     settings_about: 'About',
     settings_version: 'Version',
 
@@ -123,6 +129,8 @@ const translations = {
     reset_title: 'Reset all data?',
     reset_warning: 'This will permanently delete all ideas, reflections, karma, and settings. This cannot be undone.',
     reset_confirm: 'Delete everything',
+    delete_idea_title: 'Delete this idea?',
+    delete_idea_warning: 'This will permanently delete the idea and all its notes and sparks. This cannot be undone.',
 
     // ── Buttons (shared) ──
     btn_back: 'Back',
@@ -157,6 +165,8 @@ const translations = {
     toast_day_unlocked: 'Day unlocked',
     toast_will_attach: 'Will attach when you close the day',
     toast_new_day: 'New day detected — refresh to start fresh',
+    toast_come_back: 'Come back tomorrow',
+    toast_refreshing: 'Refreshing...',
 
     // ── Dynamic labels ──
     label_focus: 'Focus',
@@ -275,9 +285,15 @@ const translations = {
     settings_language: 'Nyelv',
     settings_theme: 'Téma',
     settings_toggle_theme: 'Világos / sötét váltás',
+    settings_install: 'Telepítés',
+    settings_install_how: 'Telepítés menete',
     settings_refresh: 'Alkalmazás frissítése',
+    settings_sync: 'Szinkron',
     settings_data: 'Adatok',
     settings_reset: 'Összes adat törlése',
+    settings_support: 'Támogatás',
+    settings_donate: 'Vegyél nekem egy kávét ☕',
+    settings_donate_hint: 'Ha a CTML segít neked, a borravaló szívesen fogadott — soha nem kötelező.',
     settings_about: 'Névjegy',
     settings_version: 'Verzió',
 
@@ -285,6 +301,8 @@ const translations = {
     reset_title: 'Összes adat törlése?',
     reset_warning: 'Ez véglegesen töröl minden ötletet, reflexiót, karmát és beállítást. Ez nem visszavonható.',
     reset_confirm: 'Mindent törlök',
+    delete_idea_title: 'Törlöd ezt az ötletet?',
+    delete_idea_warning: 'Ez véglegesen törli az ötletet és annak minden jegyzetét és szikráját. Ez nem visszavonható.',
 
     // ── Gombok (közös) ──
     btn_back: 'Vissza',
@@ -319,6 +337,8 @@ const translations = {
     toast_day_unlocked: 'Nap feloldva',
     toast_will_attach: 'Csatolva lesz a nap lezárásakor',
     toast_new_day: 'Új nap érkezett — frissíts az induláshoz',
+    toast_come_back: 'Gyere vissza holnap',
+    toast_refreshing: 'Frissítés...',
 
     // ── Dinamikus címkék ──
     label_focus: 'Fókusz',
