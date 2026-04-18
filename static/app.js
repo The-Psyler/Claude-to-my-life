@@ -1077,12 +1077,6 @@ async function closeDay() {
 }
 
 async function unlockDay() {
-    const today = _sessionDate || todayISO();
-    // Can only unlock if a new day has arrived
-    if (state.lastBootDate === today) {
-        showToast(t('toast_come_back'), 'error');
-        return;
-    }
     state.dayLocked = false;
     await saveState();
     applyLockedState();
@@ -1109,9 +1103,6 @@ function applyLockedState() {
     const morningCard    = document.getElementById('mode-card-morning');
 
     if (state.dayLocked) {
-        const today = _sessionDate || todayISO();
-        const canUnlock = state.lastBootDate !== today; // Can unlock only if new day arrived
-
         // Evening screen
         if (eveningHeading) eveningHeading.textContent  = t('evening_day_closed');
         if (karmaDisplay)   karmaDisplay.textContent    = t('evening_today_complete');
@@ -1119,9 +1110,9 @@ function applyLockedState() {
         if (closeDayBtn)  { closeDayBtn.disabled = true;  closeDayBtn.style.opacity  = '0.4'; }
         if (unlockBtn) {
             unlockBtn.style.display = 'block';
-            unlockBtn.disabled = !canUnlock;
-            unlockBtn.style.opacity = canUnlock ? '1' : '0.4';
-            unlockBtn.style.cursor = canUnlock ? 'pointer' : 'not-allowed';
+            unlockBtn.disabled = false;
+            unlockBtn.style.opacity = '1';
+            unlockBtn.style.cursor = 'pointer';
         }
 
         // Home screen
@@ -1239,8 +1230,9 @@ function toggleTheme() {
     localStorage.setItem('ctml_theme', next);
 }
 
-function refreshApp() {
+async function refreshApp() {
     showToast(t('toast_refreshing'), 'info');
+    try { await saveState(); } catch (e) {}
     setTimeout(() => {
         location.reload();
     }, 300);
@@ -1291,7 +1283,7 @@ async function submitFeedback() {
         name: name || 'Anonymous',
         message,
         language: lang,
-        version: '0.3.10',
+        version: '0.3.11',
         timestamp: new Date().toISOString()
     };
 
@@ -1309,7 +1301,7 @@ async function submitFeedback() {
         const subject = encodeURIComponent('CTML Feedback [' + type + ']');
         const body = encodeURIComponent(
             message + '\n\n—\nName: ' + (name || 'Anonymous') +
-            '\nVersion: 0.3.10\nLanguage: ' + lang
+            '\nVersion: 0.3.11\nLanguage: ' + lang
         );
         window.location.href = 'mailto:elemereross.ss@gmail.com?subject=' + subject + '&body=' + body;
         showToast(t('feedback_fallback'), 'info');

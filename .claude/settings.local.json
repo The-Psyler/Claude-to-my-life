@@ -28,7 +28,9 @@
       "Bash(magick -version)",
       "Bash(npm ls *)",
       "Bash(pip install *)",
-      "Bash(python3 *)"
+      "Bash(python3 *)",
+      "Bash(git diff *)",
+      "Read(//tmp/**)"
     ]
   }
 }
