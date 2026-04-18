@@ -1005,3 +1005,18 @@ p {
     color: var(--muted);
     line-height: 1.6;
 }
+
+/* Home screen bulb mark */
+.home-bulb-mark {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 28px;
+    margin-bottom: 8px;
+    opacity: 0.35;
+}
+.home-bulb-mark svg {
+    width: 36px;
+    height: 36px;
+    color: var(--muted);
+}
