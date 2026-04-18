@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ctml-v2';
+const CACHE_NAME = 'ctml-v3';
 
 self.addEventListener('install', () => {
   self.skipWaiting();

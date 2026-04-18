@@ -730,7 +730,7 @@ async function startDay() {
 // ============================================================
 
 async function saveIdea() {
-    if (state.dayLocked) { showToast(t('toast_come_back') || 'Day is locked', 'info'); return; }
+    if (state.dayLocked) return;
     const titleInput = document.getElementById('idea-title');
     if (!titleInput || !titleInput.value.trim()) {
         showToast(t('toast_enter_title'), 'error');
@@ -760,7 +760,7 @@ async function saveIdea() {
 }
 
 async function saveIdeaQuick() {
-    if (state.dayLocked) { showToast(t('toast_come_back') || 'Day is locked', 'info'); return; }
+    if (state.dayLocked) return;
     const titleInput = document.getElementById('idea-title');
     if (!titleInput || !titleInput.value.trim()) {
         showToast(t('toast_enter_title'), 'error');
@@ -825,7 +825,7 @@ function toggleCard(card) {
 }
 
 async function deleteIdea(id) {
-    if (state.dayLocked) { showToast(t('toast_come_back') || 'Day is locked', 'info'); return; }
+    if (state.dayLocked) return;
     const idx = state.vault.findIndex(v => v.id === id);
     if (idx === -1) return;
     const title = state.vault[idx].title;
@@ -853,7 +853,7 @@ function editIdea(id) {
 }
 
 async function saveEdit() {
-    if (state.dayLocked) { showToast(t('toast_come_back') || 'Day is locked', 'info'); return; }
+    if (state.dayLocked) return;
     const id  = parseInt(document.getElementById('idea-edit-id').value, 10);
     const idx = state.vault.findIndex(v => v.id === id);
     if (idx === -1) return;
@@ -891,7 +891,7 @@ function closeEditModal() {
 
 // Called from Work on It expanded card
 async function setFocus(ideaId) {
-    if (state.dayLocked) { showToast(t('toast_come_back') || 'Day is locked', 'info'); return; }
+    if (state.dayLocked) return;
     const idea = state.vault.find(v => v.id === ideaId);
     if (!idea) return;
     state.focus = {
@@ -922,7 +922,7 @@ function clearMorningVaultSelection() {
 }
 
 async function saveNextAction(ideaId) {
-    if (state.dayLocked) { showToast(t('toast_come_back') || 'Day is locked', 'info'); return; }
+    if (state.dayLocked) return;
     const input = document.getElementById('next-action-input-' + ideaId);
     const val   = input?.value.trim();
     if (!val) { showToast(t('toast_next_empty'), 'error'); return; }
@@ -941,7 +941,7 @@ async function saveNextAction(ideaId) {
 // ============================================================
 
 async function logProgress(ideaId) {
-    if (state.dayLocked) { showToast(t('toast_come_back') || 'Day is locked', 'info'); return; }
+    if (state.dayLocked) return;
     const textarea = document.getElementById('work-log-input-' + ideaId);
     const note     = textarea?.value.trim();
     if (!note) { showToast(t('toast_write_first'), 'error'); return; }
@@ -1012,7 +1012,7 @@ async function toggleIdeaDone() {
 }
 
 async function logSparkNote(ideaId, sparkId) {
-    if (state.dayLocked) { showToast(t('toast_come_back') || 'Day is locked', 'info'); return; }
+    if (state.dayLocked) return;
     const textarea = document.getElementById('spark-note-input-' + sparkId);
     const note     = textarea?.value.trim();
     if (!note) { showToast(t('toast_write_first'), 'error'); return; }
@@ -1040,7 +1040,7 @@ async function logSparkNote(ideaId, sparkId) {
 // ============================================================
 
 async function closeDay() {
-    if (state.dayLocked) { showToast(t('toast_come_back') || 'Day is locked', 'info'); return; }
+    if (state.dayLocked) return;
 
     const textarea   = document.getElementById('evening-reflection-textarea');
     const reflection = textarea?.value.trim() || '';
@@ -1291,7 +1291,7 @@ async function submitFeedback() {
         name: name || 'Anonymous',
         message,
         language: lang,
-        version: '0.3.9',
+        version: '0.3.10',
         timestamp: new Date().toISOString()
     };
 
@@ -1309,7 +1309,7 @@ async function submitFeedback() {
         const subject = encodeURIComponent('CTML Feedback [' + type + ']');
         const body = encodeURIComponent(
             message + '\n\n—\nName: ' + (name || 'Anonymous') +
-            '\nVersion: 0.3.9\nLanguage: ' + lang
+            '\nVersion: 0.3.10\nLanguage: ' + lang
         );
         window.location.href = 'mailto:elemereross.ss@gmail.com?subject=' + subject + '&body=' + body;
         showToast(t('feedback_fallback'), 'info');
@@ -1325,7 +1325,7 @@ async function confirmResetData() {
 }
 
 function confirmDeleteIdea() {
-    if (state.dayLocked) { showToast(t('toast_come_back') || 'Day is locked', 'info'); return; }
+    if (state.dayLocked) return;
     document.getElementById('delete-idea-modal').classList.add('active');
 }
 
