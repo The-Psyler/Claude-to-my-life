@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#534AB7">
     <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/icon-180.png">
     <link rel="icon" type="image/svg+xml" href="icons/bulb.svg">
     <meta name="description" content="CTML - Claude to My Life: A productivity app for capturing ideas and managing daily focus">
     <title>CTML - Claude to My Life</title>
@@ -179,7 +179,8 @@
                        placeholder="Type it, or pick from your vault below..."
                        aria-label="Today's focus"
                        oninput="clearMorningVaultSelection()"
-                       style="margin-bottom:0;">
+                       style="margin-bottom:0;"
+                       data-lock-input>
             </div>
 
             <!-- Vault picker -->
@@ -210,7 +211,7 @@
                 <div class="karma-row-text" id="morning-karma-text">— karma</div>
             </div>
 
-            <button class="btn btn-primary" onclick="startDay()" data-i18n="morning_start">Start the day</button>
+            <button class="btn btn-primary" onclick="startDay()" data-i18n="morning_start" data-lock-input>Start the day</button>
         </div>
 
         <!-- Screen 3: Capture Idea -->
@@ -219,11 +220,11 @@
             <h1 data-i18n="capture_title">What's the idea?</h1>
             <p data-i18n="capture_subtitle">Name it. The rest can wait.</p>
 
-            <input type="text" class="input" id="idea-title" data-i18n-placeholder="capture_placeholder" placeholder="Give it a name..." aria-label="Idea title">
-            <textarea class="textarea" id="idea-note" data-i18n-placeholder="capture_note_placeholder" placeholder="One sentence is enough." aria-label="Idea note"></textarea>
+            <input type="text" class="input" id="idea-title" data-i18n-placeholder="capture_placeholder" placeholder="Give it a name..." aria-label="Idea title" data-lock-input>
+            <textarea class="textarea" id="idea-note" data-i18n-placeholder="capture_note_placeholder" placeholder="One sentence is enough." aria-label="Idea note" data-lock-input></textarea>
 
-            <button class="btn btn-teal" onclick="saveIdea()" aria-label="Save idea" data-i18n="capture_save">Save to Vault</button>
-            <a href="#" class="btn btn-secondary" onclick="saveIdeaQuick()" role="button" aria-label="Quick save" data-i18n="capture_quick">Just save the name →</a>
+            <button class="btn btn-teal" onclick="saveIdea()" aria-label="Save idea" data-i18n="capture_save" data-lock-input>Save to Vault</button>
+            <a href="#" class="btn btn-secondary" onclick="saveIdeaQuick()" role="button" aria-label="Quick save" data-i18n="capture_quick" data-lock-input>Just save the name →</a>
         </div>
 
         <!-- Screen 4: Work on It -->
@@ -253,7 +254,8 @@
             <textarea class="textarea" id="evening-reflection-textarea"
                       data-i18n-placeholder="evening_reflection_placeholder"
                       placeholder="One thing, or a few words. Whatever feels true."
-                      aria-label="Evening reflection"></textarea>
+                      aria-label="Evening reflection"
+                      data-lock-input></textarea>
 
             <!-- Past reflections (collapsible) -->
             <details style="margin-bottom:16px;">
@@ -279,7 +281,7 @@
             <button id="unlock-day-btn" class="btn btn-green" onclick="unlockDay()" style="display:none;" data-i18n="evening_locked">
                 ⚠️ Day is locked — need to add something? Unlock it →
             </button>
-            <button class="btn btn-coral" onclick="closeDay()" id="close-day-btn" data-i18n="evening_close">Close the day</button>
+            <button class="btn btn-coral" onclick="closeDay()" id="close-day-btn" data-i18n="evening_close" data-lock-input>Close the day</button>
         </div>
 
         <!-- Screen 6: Vault -->
@@ -323,7 +325,7 @@
                 </select>
                 <input type="text" class="input" id="idea-edit-next" data-i18n-placeholder="edit_next_action" placeholder="Next action" data-i18n-aria="edit_next_action" aria-label="Next action">
                 <div class="modal-actions">
-                    <button class="btn btn-primary" onclick="saveEdit()" data-i18n="btn_save">Save</button>
+                    <button class="btn btn-primary" onclick="saveEdit()" data-i18n="btn_save" data-lock-input>Save</button>
                     <button class="btn btn-secondary" onclick="closeEditModal()" style="border:1px solid rgba(255,255,255,0.1);margin-top:0;" data-i18n="btn_cancel">Cancel</button>
                 </div>
             </div>
@@ -339,7 +341,7 @@
             <div id="idea-detail-branches"></div>
             <div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-bottom:16px;" data-i18n="detail_work_log">Work log</div>
             <div id="idea-detail-log"></div>
-            <button id="idea-detail-delete-btn" class="btn btn-danger" onclick="confirmDeleteIdea()" style="margin-top:24px;" data-i18n="btn_delete_idea">Delete idea</button>
+            <button id="idea-detail-delete-btn" class="btn btn-danger" onclick="confirmDeleteIdea()" style="margin-top:24px;" data-i18n="btn_delete_idea" data-lock-input>Delete idea</button>
         </div>
 
         <!-- Screen 8: Settings -->
@@ -395,7 +397,7 @@
                 <div class="settings-label" data-i18n="settings_about">About</div>
                 <div class="settings-about-text">
                     <strong>CTML</strong> — Claude to My Life<br>
-                    <span data-i18n="settings_version">Version</span> 0.3.8
+                    <span data-i18n="settings_version">Version</span> 0.3.9
                 </div>
             </div>
         </div>
@@ -438,7 +440,7 @@
                 <p style="font-size:14px;color:var(--muted);margin-bottom:16px;" data-i18n="delete_idea_warning">This will permanently delete the idea and all its notes and sparks. This cannot be undone.</p>
                 <div class="modal-actions">
                     <button class="btn btn-secondary" onclick="closeDeleteModal()" data-i18n="btn_cancel">Cancel</button>
-                    <button class="btn btn-danger" onclick="actuallyDeleteIdea()" data-i18n="btn_delete_idea">Delete idea</button>
+                    <button class="btn btn-danger" onclick="actuallyDeleteIdea()" data-i18n="btn_delete_idea" data-lock-input>Delete idea</button>
                 </div>
             </div>
         </div>

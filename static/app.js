@@ -480,9 +480,11 @@ function renderWorkList() {
                                   id="spark-note-input-${s.id}"
                                   placeholder="${escapeHtml(t('work_spark_note_placeholder'))}"
                                   onclick="event.stopPropagation()"
-                                  rows="2"></textarea>
+                                  rows="2"
+                                  data-lock-input></textarea>
                         <button class="work-log-btn"
-                                onclick="event.stopPropagation(); logSparkNote(${idea.id}, ${s.id})">
+                                onclick="event.stopPropagation(); logSparkNote(${idea.id}, ${s.id})"
+                                data-lock-input>
                             ${escapeHtml(t('work_log_progress'))}
                         </button>
                     </div>
@@ -521,15 +523,18 @@ function renderWorkList() {
                            id="next-action-input-${idea.id}"
                            value="${escapeHtml(idea.nextAction)}"
                            placeholder="${escapeHtml(t('work_next_placeholder'))}"
-                           onclick="event.stopPropagation()">
+                           onclick="event.stopPropagation()"
+                           data-lock-input>
                     <button class="work-log-btn"
-                            onclick="event.stopPropagation(); saveNextAction(${idea.id})">
+                            onclick="event.stopPropagation(); saveNextAction(${idea.id})"
+                            data-lock-input>
                         ${escapeHtml(t('work_update_next'))}
                     </button>
                 </div>
                 <div class="expanded-action">
                     <button class="expanded-action-btn ${isFocused ? 'is-focus' : ''}"
-                            onclick="event.stopPropagation(); setFocus(${idea.id})">
+                            onclick="event.stopPropagation(); setFocus(${idea.id})"
+                            data-lock-input>
                         ${isFocused ? escapeHtml(t('work_is_focus')) : escapeHtml(t('work_set_focus'))}
                     </button>
                 </div>
@@ -553,9 +558,11 @@ function renderWorkList() {
                               id="work-log-input-${idea.id}"
                               placeholder="${escapeHtml(t('work_progress_placeholder'))}"
                               onclick="event.stopPropagation()"
-                              rows="2"></textarea>
+                              rows="2"
+                              data-lock-input></textarea>
                     <button class="work-log-btn"
-                            onclick="event.stopPropagation(); logProgress(${idea.id})">
+                            onclick="event.stopPropagation(); logProgress(${idea.id})"
+                            data-lock-input>
                         ${escapeHtml(t('work_log_progress'))}
                     </button>
                     <div class="work-log-entries" id="work-log-entries-${idea.id}">
@@ -723,6 +730,7 @@ async function startDay() {
 // ============================================================
 
 async function saveIdea() {
+    if (state.dayLocked) { showToast(t('toast_come_back') || 'Day is locked', 'info'); return; }
     const titleInput = document.getElementById('idea-title');
     if (!titleInput || !titleInput.value.trim()) {
         showToast(t('toast_enter_title'), 'error');
@@ -752,6 +760,7 @@ async function saveIdea() {
 }
 
 async function saveIdeaQuick() {
+    if (state.dayLocked) { showToast(t('toast_come_back') || 'Day is locked', 'info'); return; }
     const titleInput = document.getElementById('idea-title');
     if (!titleInput || !titleInput.value.trim()) {
         showToast(t('toast_enter_title'), 'error');
@@ -816,6 +825,7 @@ function toggleCard(card) {
 }
 
 async function deleteIdea(id) {
+    if (state.dayLocked) { showToast(t('toast_come_back') || 'Day is locked', 'info'); return; }
     const idx = state.vault.findIndex(v => v.id === id);
     if (idx === -1) return;
     const title = state.vault[idx].title;
@@ -843,6 +853,7 @@ function editIdea(id) {
 }
 
 async function saveEdit() {
+    if (state.dayLocked) { showToast(t('toast_come_back') || 'Day is locked', 'info'); return; }
     const id  = parseInt(document.getElementById('idea-edit-id').value, 10);
     const idx = state.vault.findIndex(v => v.id === id);
     if (idx === -1) return;
@@ -880,6 +891,7 @@ function closeEditModal() {
 
 // Called from Work on It expanded card
 async function setFocus(ideaId) {
+    if (state.dayLocked) { showToast(t('toast_come_back') || 'Day is locked', 'info'); return; }
     const idea = state.vault.find(v => v.id === ideaId);
     if (!idea) return;
     state.focus = {
@@ -910,6 +922,7 @@ function clearMorningVaultSelection() {
 }
 
 async function saveNextAction(ideaId) {
+    if (state.dayLocked) { showToast(t('toast_come_back') || 'Day is locked', 'info'); return; }
     const input = document.getElementById('next-action-input-' + ideaId);
     const val   = input?.value.trim();
     if (!val) { showToast(t('toast_next_empty'), 'error'); return; }
@@ -928,6 +941,7 @@ async function saveNextAction(ideaId) {
 // ============================================================
 
 async function logProgress(ideaId) {
+    if (state.dayLocked) { showToast(t('toast_come_back') || 'Day is locked', 'info'); return; }
     const textarea = document.getElementById('work-log-input-' + ideaId);
     const note     = textarea?.value.trim();
     if (!note) { showToast(t('toast_write_first'), 'error'); return; }
@@ -998,6 +1012,7 @@ async function toggleIdeaDone() {
 }
 
 async function logSparkNote(ideaId, sparkId) {
+    if (state.dayLocked) { showToast(t('toast_come_back') || 'Day is locked', 'info'); return; }
     const textarea = document.getElementById('spark-note-input-' + sparkId);
     const note     = textarea?.value.trim();
     if (!note) { showToast(t('toast_write_first'), 'error'); return; }
@@ -1025,7 +1040,7 @@ async function logSparkNote(ideaId, sparkId) {
 // ============================================================
 
 async function closeDay() {
-    if (state.dayLocked) return;
+    if (state.dayLocked) { showToast(t('toast_come_back') || 'Day is locked', 'info'); return; }
 
     const textarea   = document.getElementById('evening-reflection-textarea');
     const reflection = textarea?.value.trim() || '';
@@ -1108,7 +1123,6 @@ function applyLockedState() {
             unlockBtn.style.opacity = canUnlock ? '1' : '0.4';
             unlockBtn.style.cursor = canUnlock ? 'pointer' : 'not-allowed';
         }
-        if (backBtn)      { backBtn.disabled = true;      backBtn.style.opacity      = '0.3'; backBtn.style.cursor = 'not-allowed'; }
 
         // Home screen
         if (homeBanner)     homeBanner.style.display    = 'block';
@@ -1118,8 +1132,6 @@ function applyLockedState() {
         }
         if (morningCard) {
             morningCard.style.opacity = '0.45';
-            morningCard.style.pointerEvents = 'none';
-            morningCard.style.cursor = 'not-allowed';
         }
     } else {
         // Evening screen
@@ -1131,14 +1143,11 @@ function applyLockedState() {
         if (karmaPill)      karmaPill.style.display     = 'inline-block';
         if (closeDayBtn)  { closeDayBtn.disabled = false; closeDayBtn.style.opacity  = '1'; }
         if (unlockBtn)      unlockBtn.style.display     = 'none';
-        if (backBtn)      { backBtn.disabled = false;     backBtn.style.opacity      = '1'; backBtn.style.cursor = 'pointer'; }
 
         // Home screen
         if (homeBanner)     homeBanner.style.display    = 'none';
         if (morningCard) {
             morningCard.style.opacity = '1';
-            morningCard.style.pointerEvents = 'auto';
-            morningCard.style.cursor = 'pointer';
         }
     }
 }
@@ -1282,7 +1291,7 @@ async function submitFeedback() {
         name: name || 'Anonymous',
         message,
         language: lang,
-        version: '0.3.8',
+        version: '0.3.9',
         timestamp: new Date().toISOString()
     };
 
@@ -1300,7 +1309,7 @@ async function submitFeedback() {
         const subject = encodeURIComponent('CTML Feedback [' + type + ']');
         const body = encodeURIComponent(
             message + '\n\n—\nName: ' + (name || 'Anonymous') +
-            '\nVersion: 0.3.8\nLanguage: ' + lang
+            '\nVersion: 0.3.9\nLanguage: ' + lang
         );
         window.location.href = 'mailto:elemereross.ss@gmail.com?subject=' + subject + '&body=' + body;
         showToast(t('feedback_fallback'), 'info');
@@ -1316,6 +1325,7 @@ async function confirmResetData() {
 }
 
 function confirmDeleteIdea() {
+    if (state.dayLocked) { showToast(t('toast_come_back') || 'Day is locked', 'info'); return; }
     document.getElementById('delete-idea-modal').classList.add('active');
 }
 

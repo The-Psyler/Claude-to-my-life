@@ -22,7 +22,13 @@
       "Bash(npm run:*)",
       "Bash(awk -F/ '{if \\(NF==1\\) print $0; else {dir=$1\"/\"; if \\(prev!=dir\\) {print dir; prev=dir}; print \"  └─ \" $2}}')",
       "Bash(git restore *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(magick --version)",
+      "Bash(python -c \"import PIL; print\\('Pillow OK', PIL.__version__\\)\")",
+      "Bash(magick -version)",
+      "Bash(npm ls *)",
+      "Bash(pip install *)",
+      "Bash(python3 *)"
     ]
   }
 }

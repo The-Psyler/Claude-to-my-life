@@ -34,6 +34,18 @@
     --bg: #E5EDE6;
 }
 
+/* Input actions blocked when day is locked */
+[data-locked] [data-lock-input] {
+    pointer-events: none;
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+[data-locked] input[data-lock-input],
+[data-locked] textarea[data-lock-input] {
+    pointer-events: none;
+    opacity: 0.4;
+}
+
 * {
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
