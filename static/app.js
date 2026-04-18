@@ -1115,6 +1115,13 @@ function applyLockedState() {
             unlockBtn.style.cursor = 'pointer';
         }
 
+        const refreshBtn = document.getElementById('refresh-app-btn');
+        if (refreshBtn) {
+            refreshBtn.disabled = true;
+            refreshBtn.style.opacity = '0.4';
+            refreshBtn.style.cursor = 'not-allowed';
+        }
+
         // Home screen
         if (homeBanner)     homeBanner.style.display    = 'block';
         if (homeBannerKarma) {
@@ -1134,6 +1141,13 @@ function applyLockedState() {
         if (karmaPill)      karmaPill.style.display     = 'inline-block';
         if (closeDayBtn)  { closeDayBtn.disabled = false; closeDayBtn.style.opacity  = '1'; }
         if (unlockBtn)      unlockBtn.style.display     = 'none';
+
+        const refreshBtn = document.getElementById('refresh-app-btn');
+        if (refreshBtn) {
+            refreshBtn.disabled = false;
+            refreshBtn.style.opacity = '1';
+            refreshBtn.style.cursor = 'pointer';
+        }
 
         // Home screen
         if (homeBanner)     homeBanner.style.display    = 'none';
@@ -1231,6 +1245,7 @@ function toggleTheme() {
 }
 
 async function refreshApp() {
+    if (state.dayLocked) return;
     showToast(t('toast_refreshing'), 'info');
     try { await saveState(); } catch (e) {}
     setTimeout(() => {
@@ -1283,7 +1298,7 @@ async function submitFeedback() {
         name: name || 'Anonymous',
         message,
         language: lang,
-        version: '0.3.11',
+        version: '0.3.12',
         timestamp: new Date().toISOString()
     };
 
@@ -1301,7 +1316,7 @@ async function submitFeedback() {
         const subject = encodeURIComponent('CTML Feedback [' + type + ']');
         const body = encodeURIComponent(
             message + '\n\n—\nName: ' + (name || 'Anonymous') +
-            '\nVersion: 0.3.11\nLanguage: ' + lang
+            '\nVersion: 0.3.12\nLanguage: ' + lang
         );
         window.location.href = 'mailto:elemereross.ss@gmail.com?subject=' + subject + '&body=' + body;
         showToast(t('feedback_fallback'), 'info');
