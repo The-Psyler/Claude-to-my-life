@@ -382,6 +382,11 @@
             </div>
 
             <div class="settings-section">
+                <div class="settings-label" data-i18n="settings_feedback">Feedback</div>
+                <button class="btn btn-secondary" onclick="openFeedbackModal()" data-i18n="settings_feedback_btn">Send feedback</button>
+            </div>
+
+            <div class="settings-section">
                 <div class="settings-label" data-i18n="settings_data">Data</div>
                 <button class="btn btn-danger" onclick="openResetModal()" data-i18n="settings_reset">Reset all data</button>
             </div>
@@ -390,7 +395,37 @@
                 <div class="settings-label" data-i18n="settings_about">About</div>
                 <div class="settings-about-text">
                     <strong>CTML</strong> — Claude to My Life<br>
-                    <span data-i18n="settings_version">Version</span> 0.3.7
+                    <span data-i18n="settings_version">Version</span> 0.3.8
+                </div>
+            </div>
+        </div>
+
+        <!-- Feedback modal -->
+        <div id="feedback-modal" class="modal-overlay" onclick="if(event.target===this)closeFeedbackModal()">
+            <div class="modal">
+                <h2 data-i18n="feedback_title">Send feedback</h2>
+                <p style="font-size:13px;color:var(--muted);margin-bottom:12px;" data-i18n="feedback_subtitle">Bug, idea, or anything else — I read every message.</p>
+
+                <div style="margin-bottom:12px;">
+                    <div style="font-size:12px;font-weight:500;margin-bottom:6px;" data-i18n="feedback_type_label">Type</div>
+                    <div class="settings-radio-group">
+                        <label class="settings-radio"><input type="radio" name="feedback-type" value="bug" checked><span data-i18n="feedback_type_bug">Bug</span></label>
+                        <label class="settings-radio"><input type="radio" name="feedback-type" value="idea"><span data-i18n="feedback_type_idea">Idea</span></label>
+                        <label class="settings-radio"><input type="radio" name="feedback-type" value="other"><span data-i18n="feedback_type_other">Other</span></label>
+                    </div>
+                </div>
+
+                <div style="margin-bottom:12px;">
+                    <input type="text" class="input" id="feedback-name" data-i18n-placeholder="feedback_name_placeholder" placeholder="Your name (optional)">
+                </div>
+
+                <div style="margin-bottom:16px;">
+                    <textarea class="input" id="feedback-message" rows="5" data-i18n-placeholder="feedback_message_placeholder" placeholder="What's on your mind?" style="resize:vertical;min-height:100px;"></textarea>
+                </div>
+
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" onclick="closeFeedbackModal()" data-i18n="btn_cancel">Cancel</button>
+                    <button class="btn btn-primary" onclick="submitFeedback()" data-i18n="feedback_send">Send</button>
                 </div>
             </div>
         </div>

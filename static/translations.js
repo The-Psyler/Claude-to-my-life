@@ -125,6 +125,22 @@ const translations = {
     settings_about: 'About',
     settings_version: 'Version',
 
+    // ── Feedback ──
+    settings_feedback: 'Feedback',
+    settings_feedback_btn: 'Send feedback',
+    feedback_title: 'Send feedback',
+    feedback_subtitle: 'Bug, idea, or anything else — I read every message.',
+    feedback_type_label: 'Type',
+    feedback_type_bug: 'Bug',
+    feedback_type_idea: 'Idea',
+    feedback_type_other: 'Other',
+    feedback_name_placeholder: 'Your name (optional)',
+    feedback_message_placeholder: 'What\'s on your mind?',
+    feedback_send: 'Send',
+    feedback_empty: 'Write something first',
+    feedback_sent: 'Thanks — feedback sent',
+    feedback_fallback: 'Opening email — send it from there',
+
     // ── Reset modal ──
     reset_title: 'Reset all data?',
     reset_warning: 'This will permanently delete all ideas, reflections, karma, and settings. This cannot be undone.',
@@ -296,6 +312,22 @@ const translations = {
     settings_donate_hint: 'Ha a CTML segít neked, a borravaló szívesen fogadott — soha nem kötelező.',
     settings_about: 'Névjegy',
     settings_version: 'Verzió',
+
+    // ── Visszajelzés ──
+    settings_feedback: 'Visszajelzés',
+    settings_feedback_btn: 'Visszajelzés küldése',
+    feedback_title: 'Visszajelzés küldése',
+    feedback_subtitle: 'Hiba, ötlet vagy bármi más — minden üzenetet elolvasok.',
+    feedback_type_label: 'Típus',
+    feedback_type_bug: 'Hiba',
+    feedback_type_idea: 'Ötlet',
+    feedback_type_other: 'Egyéb',
+    feedback_name_placeholder: 'Neved (nem kötelező)',
+    feedback_message_placeholder: 'Mi jár a fejedben?',
+    feedback_send: 'Küldés',
+    feedback_empty: 'Írj valamit előbb',
+    feedback_sent: 'Köszönöm — visszajelzés elküldve',
+    feedback_fallback: 'Email megnyitása — onnan küldd el',
 
     // ── Törlés modal ──
     reset_title: 'Összes adat törlése?',

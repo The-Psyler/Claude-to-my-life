@@ -1,14 +1,15 @@
-# HANDOFF — 2026-04-18 (v0.3.7 SVG Lightbulb Icon)
+# HANDOFF — 2026-04-18 (v0.3.8 User Feedback Form)
 
 ## Status
-Phase 4 (Closed Alpha) — v0.3.7 deployed. Lightbulb SVG icon added as PWA icon, favicon, and decorative mark on home screen. All previous features stable.
+Phase 4 (Closed Alpha) — v0.3.8 deployed. User feedback modal added with Formspree integration + mailto fallback. EN/HU translations complete.
 
-## Completed this session (v0.3.7)
-- **SVG bulb.svg**: Created and registered in manifest.json (any size, SVG format)
-- **Favicon**: Added `<link rel="icon">` pointing to bulb.svg
-- **Home screen mark**: Subtle bulb decorative mark below mode buttons (35% opacity, muted color)
-- **CSS**: Added `.home-bulb-mark` styling with proper spacing and SVG sizing
-- **Version bump** to 0.3.7 in package.json and index.html
+## Completed this session (v0.3.8)
+- **Feedback modal**: HTML structure mirrors reset-modal pattern (`.active` class toggle)
+- **Settings section**: New "Feedback" button between Support and Data sections
+- **JS handlers**: openFeedbackModal(), closeFeedbackModal(), submitFeedback() with Formspree POST
+- **Fallback**: If Formspree fails, mailto opens with pre-filled subject & body
+- **Translations**: EN/HU keys for modal, toast messages (feedback_sent, feedback_fallback)
+- **Version bump** to 0.3.8 in package.json and index.html
 
 ## Working features
 ✓ Vault table: title column always fixed & visible (no horizontal scroll-off)

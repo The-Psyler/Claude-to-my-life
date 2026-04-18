@@ -1247,6 +1247,67 @@ function closeResetModal() {
     document.getElementById('reset-modal').classList.remove('active');
 }
 
+// ── Settings: Feedback ──
+
+function openFeedbackModal() {
+    const modal = document.getElementById('feedback-modal');
+    modal.classList.add('active');
+    // Reset form fields each open
+    document.getElementById('feedback-name').value = '';
+    document.getElementById('feedback-message').value = '';
+    const bug = document.querySelector('input[name="feedback-type"][value="bug"]');
+    if (bug) bug.checked = true;
+    setTimeout(() => document.getElementById('feedback-message').focus(), 50);
+}
+
+function closeFeedbackModal() {
+    document.getElementById('feedback-modal').classList.remove('active');
+}
+
+async function submitFeedback() {
+    const typeInput = document.querySelector('input[name="feedback-type"]:checked');
+    const type = typeInput ? typeInput.value : 'other';
+    const name = document.getElementById('feedback-name').value.trim();
+    const message = document.getElementById('feedback-message').value.trim();
+
+    if (!message) {
+        showToast(t('feedback_empty'), 'error');
+        return;
+    }
+
+    const lang = currentLang || localStorage.getItem('ctml_lang') || document.documentElement.lang || 'en';
+
+    const payload = {
+        type,
+        name: name || 'Anonymous',
+        message,
+        language: lang,
+        version: '0.3.8',
+        timestamp: new Date().toISOString()
+    };
+
+    try {
+        const res = await fetch('https://formspree.io/f/xlgabvoy', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        if (!res.ok) throw new Error('Formspree non-2xx: ' + res.status);
+        showToast(t('feedback_sent'), 'success');
+        closeFeedbackModal();
+    } catch (e) {
+        // Offline / blocked / failed — fall back to mailto
+        const subject = encodeURIComponent('CTML Feedback [' + type + ']');
+        const body = encodeURIComponent(
+            message + '\n\n—\nName: ' + (name || 'Anonymous') +
+            '\nVersion: 0.3.8\nLanguage: ' + lang
+        );
+        window.location.href = 'mailto:elemereross.ss@gmail.com?subject=' + subject + '&body=' + body;
+        showToast(t('feedback_fallback'), 'info');
+        closeFeedbackModal();
+    }
+}
+
 async function confirmResetData() {
     await db.ideas.clear();
     await db.settings.clear();
