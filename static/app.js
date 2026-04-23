@@ -255,10 +255,11 @@ async function navigateTo(screen) {
         renderEveningKarma();
         renderReflectionHistory();
         const closeDayBtn = document.getElementById('close-day-btn');
-        if (closeDayBtn && !state.lastBootDate) {
-            closeDayBtn.disabled = true;
-            closeDayBtn.style.opacity = '0.4';
-            closeDayBtn.title = t('toast_no_boot');
+        if (closeDayBtn && !state.dayLocked) {
+            const needsBoot = !state.lastBootDate;
+            closeDayBtn.disabled = needsBoot;
+            closeDayBtn.style.opacity = needsBoot ? '0.4' : '1';
+            closeDayBtn.title = needsBoot ? t('toast_no_boot') : '';
         }
     } else if (screen === 'idea-detail') {
         renderIdeaDetail();
@@ -1316,7 +1317,7 @@ async function submitFeedback() {
         name: name || 'Anonymous',
         message,
         language: lang,
-        version: '0.5.2',
+        version: '0.5.3',
         timestamp: new Date().toISOString()
     };
 
