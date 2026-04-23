@@ -1309,7 +1309,7 @@ async function submitFeedback() {
         name: name || 'Anonymous',
         message,
         language: lang,
-        version: '0.4.0',
+        version: '0.5.0',
         timestamp: new Date().toISOString()
     };
 
