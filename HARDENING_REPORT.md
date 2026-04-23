@@ -60,6 +60,70 @@ These were flagged by the agent but **verified in source as already-correct or o
 - All edits are surgical (no function bodies rewritten, no architectural changes).
 - Branch `hardening-v0.4.0` is independent of `main` — `main` is untouched.
 
+---
+
+## How to test this branch BEFORE pushing
+
+You normally test only the deployed GitHub Pages version on your phone after an update. That is the wrong loop for a hardening branch — you want to catch regressions while they are still cheap to revert. Three escalating ways to do it, pick whichever fits the moment.
+
+### Option 1 — Desktop browser, dev server (fastest, ~5 sec to start)
+
+```bash
+git checkout hardening-v0.4.0
+npm run dev
+```
+
+Open the printed URL (usually `http://localhost:5173/Claude-to-my-life/`) in Chrome or Edge. Hot-reload is on, so any further tweaks reflect instantly. Run through the 6 manual test scenarios above. Open DevTools → Console; **the console must be empty during normal use** (any red message = regression).
+
+Caveat: the service worker is not active in dev mode, so cache/SW behavior cannot be tested here. For SW behavior use Option 2.
+
+### Option 2 — Desktop browser, production preview (closest to real PWA)
+
+```bash
+npm run build
+npm run preview
+```
+
+This serves the exact `dist/` bundle that would be pushed. Open the printed URL, then in DevTools → Application:
+
+- **Service Workers** → confirm `sw.js` is `activated` and the cache shows `ctml-v5`.
+- **Application → Storage → IndexedDB → CTMLDB** → walk through ideas/settings tables to confirm reads/writes.
+- Use the Network tab "Offline" toggle to test offline behavior.
+
+You can even install it as a real PWA from this preview: address bar → install icon. It then behaves identically to the deployed app, but pulls from `localhost`.
+
+### Option 3 — Real phone on same Wi-Fi (no push needed)
+
+This is the test loop you actually want.
+
+```bash
+npm run build
+npm run preview -- --host
+```
+
+Vite prints a `Network:` URL like `http://192.168.x.x:4173/Claude-to-my-life/`. On your phone (same Wi-Fi), open that URL in Chrome (Android) or Safari (iPhone). On Android Chrome you can "Add to Home screen" and it installs as a PWA pointing at your laptop.
+
+Caveats:
+- **Service worker requires HTTPS or localhost.** On a phone over LAN it counts as neither, so SW will not register and offline mode will not work. Storage (IndexedDB) still works, so all the persistence fixes (C1/C2/C3/H1/H5/M3) can be validated.
+- For full HTTPS testing on phone, use `npx serve dist -L --ssl-cert ...` with a self-signed cert, or expose via `ngrok http 4173` (cloud tunnel, gives you an HTTPS URL).
+- The `base: '/Claude-to-my-life/'` path in `vite.config.js` means you must include the trailing slash in the URL on phone or it 404s.
+
+### Recommended loop for this branch
+
+1. Run **Option 1** while reading code — fastest iteration.
+2. Run **Option 2** before declaring done — confirms the prod build path.
+3. Run **Option 3** at least once — confirms it still works in mobile WebView form factors.
+4. Only **then** merge to `main` and push. The current GitHub Pages deploy is unchanged because the branch was never pushed.
+
+### How to revert if something is wrong
+
+```bash
+git checkout main         # back to the deployed version, untouched
+git branch -D hardening-v0.4.0   # only if you also want to discard the branch
+```
+
+Or to revert just one fix while keeping the others, `git log` on the branch and `git revert <hash>` the offending commit.
+
 ### Manual test plan (recommended before merge)
 
 Run through on a real browser, ideally a freshly-installed PWA:
