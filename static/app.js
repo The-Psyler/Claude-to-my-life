@@ -29,11 +29,11 @@ function applyTranslations() {
     });
 }
 
-function setLanguage(lang) {
+async function setLanguage(lang) {
     currentLang = lang;
     localStorage.setItem('ctml_lang', lang);
     applyTranslations();
-    saveState();
+    await saveState();
 }
 
 // ============================================================
@@ -223,7 +223,7 @@ async function migrateOldStorage() {
 // NAVIGATION
 // ============================================================
 
-function navigateTo(screen) {
+async function navigateTo(screen) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById('screen-' + screen).classList.add('active');
 
@@ -237,10 +237,10 @@ function navigateTo(screen) {
         renderKarma();
     } else if (screen === 'morning') {
         const today = _sessionDate || todayISO();
-        if (state.dayLocked && state.lastBootDate !== today) {
+        if (state.dayLocked && (!state.lastBootDate || state.lastBootDate !== today)) {
             state.dayLocked = false;
             applyLockedState();
-            saveState();
+            await saveState();
         }
         _pendingMorningIdeaId = null;
         renderMorningFocus();
@@ -333,8 +333,8 @@ function renderAll() {
     renderMorningVaultPicker();
     renderWorkList();
     renderVault();
-    renderPlaybook();
-    if (state.dayLocked) applyLockedState();
+    if (typeof renderPlaybook === 'function') renderPlaybook();
+    applyLockedState();
 }
 
 function renderKarma() {
@@ -730,7 +730,7 @@ async function startDay() {
 // ============================================================
 
 async function saveIdea() {
-    if (state.dayLocked) return;
+    if (guardLocked()) return;
     const titleInput = document.getElementById('idea-title');
     if (!titleInput || !titleInput.value.trim()) {
         showToast(t('toast_enter_title'), 'error');
@@ -760,7 +760,7 @@ async function saveIdea() {
 }
 
 async function saveIdeaQuick() {
-    if (state.dayLocked) return;
+    if (guardLocked()) return;
     const titleInput = document.getElementById('idea-title');
     if (!titleInput || !titleInput.value.trim()) {
         showToast(t('toast_enter_title'), 'error');
@@ -825,7 +825,7 @@ function toggleCard(card) {
 }
 
 async function deleteIdea(id) {
-    if (state.dayLocked) return;
+    if (guardLocked()) return;
     const idx = state.vault.findIndex(v => v.id === id);
     if (idx === -1) return;
     const title = state.vault[idx].title;
@@ -853,7 +853,7 @@ function editIdea(id) {
 }
 
 async function saveEdit() {
-    if (state.dayLocked) return;
+    if (guardLocked()) return;
     const id  = parseInt(document.getElementById('idea-edit-id').value, 10);
     const idx = state.vault.findIndex(v => v.id === id);
     if (idx === -1) return;
@@ -891,7 +891,7 @@ function closeEditModal() {
 
 // Called from Work on It expanded card
 async function setFocus(ideaId) {
-    if (state.dayLocked) return;
+    if (guardLocked()) return;
     const idea = state.vault.find(v => v.id === ideaId);
     if (!idea) return;
     state.focus = {
@@ -922,7 +922,7 @@ function clearMorningVaultSelection() {
 }
 
 async function saveNextAction(ideaId) {
-    if (state.dayLocked) return;
+    if (guardLocked()) return;
     const input = document.getElementById('next-action-input-' + ideaId);
     const val   = input?.value.trim();
     if (!val) { showToast(t('toast_next_empty'), 'error'); return; }
@@ -941,7 +941,7 @@ async function saveNextAction(ideaId) {
 // ============================================================
 
 async function logProgress(ideaId) {
-    if (state.dayLocked) return;
+    if (guardLocked()) return;
     const textarea = document.getElementById('work-log-input-' + ideaId);
     const note     = textarea?.value.trim();
     if (!note) { showToast(t('toast_write_first'), 'error'); return; }
@@ -1006,13 +1006,18 @@ async function toggleIdeaDone() {
     const idea = state.vault.find(v => v.id === _currentIdeaId);
     if (!idea) return;
     idea.state = idea.state === 'Done' ? 'Active' : 'Done';
+    // Keep focus in sync if this idea is the current focus
+    if (state.focus.ideaId === idea.id) {
+        state.focus.title = idea.title;
+    }
     await saveState();
     renderIdeaDetail();
     renderVault();
+    renderHomeFocus();
 }
 
 async function logSparkNote(ideaId, sparkId) {
-    if (state.dayLocked) return;
+    if (guardLocked()) return;
     const textarea = document.getElementById('spark-note-input-' + sparkId);
     const note     = textarea?.value.trim();
     if (!note) { showToast(t('toast_write_first'), 'error'); return; }
@@ -1081,6 +1086,12 @@ async function unlockDay() {
     await saveState();
     applyLockedState();
     showToast(t('toast_day_unlocked'), 'info');
+}
+
+function guardLocked() {
+    if (!state.dayLocked) return false;
+    showToast(t('toast_day_locked'), 'error');
+    return true;
 }
 
 function applyLockedState() {
@@ -1298,7 +1309,7 @@ async function submitFeedback() {
         name: name || 'Anonymous',
         message,
         language: lang,
-        version: '0.3.12',
+        version: '0.5.0',
         timestamp: new Date().toISOString()
     };
 
@@ -1316,7 +1327,7 @@ async function submitFeedback() {
         const subject = encodeURIComponent('CTML Feedback [' + type + ']');
         const body = encodeURIComponent(
             message + '\n\n—\nName: ' + (name || 'Anonymous') +
-            '\nVersion: 0.3.12\nLanguage: ' + lang
+            '\nVersion: 0.4.0\nLanguage: ' + lang
         );
         window.location.href = 'mailto:elemereross.ss@gmail.com?subject=' + subject + '&body=' + body;
         showToast(t('feedback_fallback'), 'info');
@@ -1332,7 +1343,7 @@ async function confirmResetData() {
 }
 
 function confirmDeleteIdea() {
-    if (state.dayLocked) return;
+    if (guardLocked()) return;
     document.getElementById('delete-idea-modal').classList.add('active');
 }
 
@@ -1423,13 +1434,32 @@ function renderCurrentScreen() {
 function dismissWelcome() {
     localStorage.setItem('ctml_welcomeDismissed', 'true');
     document.getElementById('screen-welcome').classList.remove('active');
-    document.getElementById('screen-home').classList.add('active');
-    document.querySelector('.nav-bar').style.display = '';
+    // First-run flow: chain into how-to. Subsequent re-opens go straight home.
+    if (!localStorage.getItem('ctml_howtoDismissed')) {
+        document.getElementById('screen-howto').classList.add('active');
+        document.querySelector('.nav-bar').style.display = 'none';
+    } else {
+        document.getElementById('screen-home').classList.add('active');
+        document.querySelector('.nav-bar').style.display = '';
+    }
 }
 
 function showWelcome() {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById('screen-welcome').classList.add('active');
+    document.querySelector('.nav-bar').style.display = 'none';
+}
+
+function dismissHowto() {
+    localStorage.setItem('ctml_howtoDismissed', 'true');
+    document.getElementById('screen-howto').classList.remove('active');
+    document.getElementById('screen-home').classList.add('active');
+    document.querySelector('.nav-bar').style.display = '';
+}
+
+function showHowto() {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-howto').classList.add('active');
     document.querySelector('.nav-bar').style.display = 'none';
 }
 
@@ -1467,14 +1497,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // Persistence Sentinel: force-save when tab is hidden (browser switch, close, Alt+Tab)
 // Atomic Ceremony: detect date drift when tab becomes visible again
-document.addEventListener('visibilitychange', () => {
+document.addEventListener('visibilitychange', async () => {
     if (document.visibilityState === 'hidden') {
-        saveState();
+        await saveState();
     } else if (document.visibilityState === 'visible' && _sessionDate) {
         if (todayISO() !== _sessionDate) {
             showToast(t('toast_new_day'), 'info');
         }
     }
+});
+
+// Close BroadcastChannel on page unload to avoid orphaned listeners across reloads
+window.addEventListener('pagehide', () => {
+    if (_bc) try { _bc.close(); } catch (e) {}
 });
 
 document.addEventListener('keydown', (e) => {
