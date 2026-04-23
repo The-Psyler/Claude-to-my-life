@@ -1274,6 +1274,51 @@ async function refreshApp() {
 
 // ── Settings: Reset Data ──
 
+function exportData() {
+    const payload = {
+        version: '0.5.4',
+        exportedAt: todayISO(),
+        karma: state.karma,
+        focus: state.focus,
+        vault: state.vault,
+        reflections: state.reflections,
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = 'ctml-backup-' + todayISO() + '.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast(t('settings_export') + ' ✓', 'success');
+}
+
+function importData() {
+    const input = document.getElementById('import-file-input');
+    if (input) input.click();
+}
+
+async function handleImportFile(event) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    event.target.value = '';
+    try {
+        const text    = await file.text();
+        const parsed  = JSON.parse(text);
+        if (!parsed.vault || !Array.isArray(parsed.vault)) throw new Error('Invalid backup file');
+        if (!confirm(t('settings_import_confirm'))) return;
+        if (typeof parsed.karma      === 'number')  state.karma      = parsed.karma;
+        if (parsed.focus)                            state.focus      = parsed.focus;
+        if (Array.isArray(parsed.vault))             state.vault      = parsed.vault;
+        if (Array.isArray(parsed.reflections))       state.reflections = parsed.reflections;
+        await saveState();
+        showToast(t('settings_import') + ' ✓', 'success');
+        renderAll();
+    } catch (e) {
+        showToast('Import failed — invalid file', 'error');
+    }
+}
+
 function openResetModal() {
     document.getElementById('reset-modal').classList.add('active');
 }
@@ -1317,7 +1362,7 @@ async function submitFeedback() {
         name: name || 'Anonymous',
         message,
         language: lang,
-        version: '0.5.3',
+        version: '0.5.4',
         timestamp: new Date().toISOString()
     };
 

@@ -406,61 +406,87 @@
         <div id="screen-settings" class="screen">
             <h1 data-i18n="settings_title">Settings</h1>
 
-            <div class="settings-section">
-                <div class="settings-label" data-i18n="settings_language">Language</div>
-                <div class="settings-radio-group">
-                    <label class="settings-radio">
-                        <input type="radio" name="lang" value="en" checked onchange="setLanguage('en')">
-                        <span>English</span>
-                    </label>
-                    <label class="settings-radio">
-                        <input type="radio" name="lang" value="hu" onchange="setLanguage('hu')">
-                        <span>Magyar</span>
-                    </label>
+            <!-- ── Preferences ── -->
+            <div class="settings-group">
+                <div class="settings-group-header">Preferences</div>
+
+                <div class="settings-section">
+                    <div class="settings-label" data-i18n="settings_language">Language</div>
+                    <div class="settings-radio-group">
+                        <label class="settings-radio">
+                            <input type="radio" name="lang" value="en" checked onchange="setLanguage('en')">
+                            <span>English</span>
+                        </label>
+                        <label class="settings-radio">
+                            <input type="radio" name="lang" value="hu" onchange="setLanguage('hu')">
+                            <span>Magyar</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <div class="settings-label" data-i18n="settings_theme">Theme</div>
+                    <button class="btn btn-secondary settings-theme-btn" onclick="toggleTheme()" data-i18n="settings_toggle_theme">Toggle light / dark</button>
                 </div>
             </div>
 
-            <div class="settings-section">
-                <div class="settings-label" data-i18n="settings_theme">Theme</div>
-                <button class="btn btn-secondary settings-theme-btn" onclick="toggleTheme()" data-i18n="settings_toggle_theme">Toggle light / dark</button>
+            <!-- ── Help ── -->
+            <div class="settings-group">
+                <div class="settings-group-header">Help</div>
+
+                <div class="settings-section">
+                    <div class="settings-label" data-i18n="settings_howto">How to use</div>
+                    <button class="btn btn-secondary" onclick="showHowto()" data-i18n="settings_howto_btn">Open guide</button>
+                </div>
+
+                <div class="settings-section">
+                    <div class="settings-label" data-i18n="settings_install">Install</div>
+                    <button class="btn btn-secondary" onclick="showWelcome()" data-i18n="settings_install_how">How to install</button>
+                </div>
             </div>
 
-            <div class="settings-section">
-                <div class="settings-label" data-i18n="settings_howto">How to use</div>
-                <button class="btn btn-secondary" onclick="showHowto()" data-i18n="settings_howto_btn">Open guide</button>
+            <!-- ── Data ── -->
+            <div class="settings-group">
+                <div class="settings-group-header" data-i18n="settings_data">Data</div>
+
+                <div class="settings-section">
+                    <div class="settings-label" data-i18n="settings_backup">Backup</div>
+                    <div style="display:flex;gap:8px;">
+                        <button class="btn btn-secondary" onclick="exportData()" data-i18n="settings_export">Export JSON</button>
+                        <button class="btn btn-secondary" onclick="importData()" data-i18n="settings_import">Import JSON</button>
+                    </div>
+                    <input type="file" id="import-file-input" accept=".json" style="display:none;" onchange="handleImportFile(event)">
+                </div>
+
+                <div class="settings-section">
+                    <div class="settings-label" data-i18n="settings_sync">Sync</div>
+                    <button id="refresh-app-btn" class="btn btn-secondary" onclick="refreshApp()" data-i18n="settings_refresh">Refresh app</button>
+                </div>
+
+                <div class="settings-section">
+                    <div class="settings-label" data-i18n="settings_data">Reset</div>
+                    <button class="btn btn-danger" onclick="openResetModal()" data-i18n="settings_reset">Reset all data</button>
+                </div>
             </div>
 
-            <div class="settings-section">
-                <div class="settings-label" data-i18n="settings_install">Install</div>
-                <button class="btn btn-secondary" onclick="showWelcome()" data-i18n="settings_install_how">How to install</button>
-            </div>
+            <!-- ── About & Support ── -->
+            <div class="settings-group">
+                <div class="settings-group-header">About &amp; Support</div>
 
-            <div class="settings-section">
-                <div class="settings-label" data-i18n="settings_sync">Sync</div>
-                <button id="refresh-app-btn" class="btn btn-secondary" onclick="refreshApp()" data-i18n="settings_refresh">Refresh app</button>
-            </div>
+                <div class="settings-section settings-about">
+                    <div class="settings-about-text">
+                        <strong>CTML</strong> — Claude to My Life<br>
+                        <span data-i18n="settings_version">Version</span> 0.5.4
+                    </div>
+                </div>
 
-            <div class="settings-section">
-                <div class="settings-label" data-i18n="settings_support">Support</div>
-                <a class="btn btn-secondary" href="https://ko-fi.com/ee_thepsyler" target="_blank" rel="noopener noreferrer" style="display:block;margin:0 auto;max-width:fit-content;" data-i18n="settings_donate">Buy me a coffee ☕</a>
-                <div class="settings-about-text" style="margin-top:12px;text-align:center;" data-i18n="settings_donate_hint">If CTML helps you, a tip is welcome — never required.</div>
-            </div>
+                <div class="settings-section">
+                    <a class="btn btn-secondary" href="https://ko-fi.com/ee_thepsyler" target="_blank" rel="noopener noreferrer" style="display:block;text-align:center;" data-i18n="settings_donate">Buy me a coffee ☕</a>
+                    <div class="settings-about-text" style="margin-top:8px;text-align:center;" data-i18n="settings_donate_hint">If CTML helps you, a tip is welcome — never required.</div>
+                </div>
 
-            <div class="settings-section">
-                <div class="settings-label" data-i18n="settings_feedback">Feedback</div>
-                <button class="btn btn-secondary" onclick="openFeedbackModal()" data-i18n="settings_feedback_btn">Send feedback</button>
-            </div>
-
-            <div class="settings-section">
-                <div class="settings-label" data-i18n="settings_data">Data</div>
-                <button class="btn btn-danger" onclick="openResetModal()" data-i18n="settings_reset">Reset all data</button>
-            </div>
-
-            <div class="settings-section settings-about">
-                <div class="settings-label" data-i18n="settings_about">About</div>
-                <div class="settings-about-text">
-                    <strong>CTML</strong> — Claude to My Life<br>
-                    <span data-i18n="settings_version">Version</span> 0.5.3
+                <div class="settings-section">
+                    <button class="btn btn-secondary" onclick="openFeedbackModal()" data-i18n="settings_feedback_btn">Send feedback</button>
                 </div>
             </div>
         </div>

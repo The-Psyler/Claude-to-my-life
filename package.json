@@ -1,12 +1,12 @@
 {
   "name": "ctml",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "private": true,
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "playwright test"
+    "test": "npx playwright test --reporter=line"
   },
   "devDependencies": {
     "@playwright/test": "^1.59.1",
