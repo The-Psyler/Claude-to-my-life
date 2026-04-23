@@ -254,6 +254,12 @@ async function navigateTo(screen) {
         renderEveningAttachOption();
         renderEveningKarma();
         renderReflectionHistory();
+        const closeDayBtn = document.getElementById('close-day-btn');
+        if (closeDayBtn && !state.lastBootDate) {
+            closeDayBtn.disabled = true;
+            closeDayBtn.style.opacity = '0.4';
+            closeDayBtn.title = t('toast_no_boot');
+        }
     } else if (screen === 'idea-detail') {
         renderIdeaDetail();
     } else if (screen === 'vault') {
@@ -1046,6 +1052,7 @@ async function logSparkNote(ideaId, sparkId) {
 
 async function closeDay() {
     if (state.dayLocked) return;
+    if (!state.lastBootDate) { showToast(t('toast_no_boot'), 'error'); return; }
 
     const textarea   = document.getElementById('evening-reflection-textarea');
     const reflection = textarea?.value.trim() || '';
@@ -1309,7 +1316,7 @@ async function submitFeedback() {
         name: name || 'Anonymous',
         message,
         language: lang,
-        version: '0.5.1',
+        version: '0.5.2',
         timestamp: new Date().toISOString()
     };
 

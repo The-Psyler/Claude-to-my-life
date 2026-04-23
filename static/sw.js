@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ctml-v7';
+const CACHE_NAME = 'ctml-v8';
 
 const IMAGE_RE = /\.(png|jpe?g|gif|svg|webp|woff2?|ttf)$/i;
 
