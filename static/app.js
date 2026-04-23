@@ -29,11 +29,11 @@ function applyTranslations() {
     });
 }
 
-function setLanguage(lang) {
+async function setLanguage(lang) {
     currentLang = lang;
     localStorage.setItem('ctml_lang', lang);
     applyTranslations();
-    saveState();
+    await saveState();
 }
 
 // ============================================================
@@ -223,7 +223,7 @@ async function migrateOldStorage() {
 // NAVIGATION
 // ============================================================
 
-function navigateTo(screen) {
+async function navigateTo(screen) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById('screen-' + screen).classList.add('active');
 
@@ -237,10 +237,10 @@ function navigateTo(screen) {
         renderKarma();
     } else if (screen === 'morning') {
         const today = _sessionDate || todayISO();
-        if (state.dayLocked && state.lastBootDate !== today) {
+        if (state.dayLocked && (!state.lastBootDate || state.lastBootDate !== today)) {
             state.dayLocked = false;
             applyLockedState();
-            saveState();
+            await saveState();
         }
         _pendingMorningIdeaId = null;
         renderMorningFocus();
@@ -1006,9 +1006,14 @@ async function toggleIdeaDone() {
     const idea = state.vault.find(v => v.id === _currentIdeaId);
     if (!idea) return;
     idea.state = idea.state === 'Done' ? 'Active' : 'Done';
+    // Keep focus in sync if this idea is the current focus
+    if (state.focus.ideaId === idea.id) {
+        state.focus.title = idea.title;
+    }
     await saveState();
     renderIdeaDetail();
     renderVault();
+    renderHomeFocus();
 }
 
 async function logSparkNote(ideaId, sparkId) {
@@ -1298,7 +1303,7 @@ async function submitFeedback() {
         name: name || 'Anonymous',
         message,
         language: lang,
-        version: '0.3.12',
+        version: '0.4.0',
         timestamp: new Date().toISOString()
     };
 
@@ -1316,7 +1321,7 @@ async function submitFeedback() {
         const subject = encodeURIComponent('CTML Feedback [' + type + ']');
         const body = encodeURIComponent(
             message + '\n\n—\nName: ' + (name || 'Anonymous') +
-            '\nVersion: 0.3.12\nLanguage: ' + lang
+            '\nVersion: 0.4.0\nLanguage: ' + lang
         );
         window.location.href = 'mailto:elemereross.ss@gmail.com?subject=' + subject + '&body=' + body;
         showToast(t('feedback_fallback'), 'info');
@@ -1467,14 +1472,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // Persistence Sentinel: force-save when tab is hidden (browser switch, close, Alt+Tab)
 // Atomic Ceremony: detect date drift when tab becomes visible again
-document.addEventListener('visibilitychange', () => {
+document.addEventListener('visibilitychange', async () => {
     if (document.visibilityState === 'hidden') {
-        saveState();
+        await saveState();
     } else if (document.visibilityState === 'visible' && _sessionDate) {
         if (todayISO() !== _sessionDate) {
             showToast(t('toast_new_day'), 'info');
         }
     }
+});
+
+// Close BroadcastChannel on page unload to avoid orphaned listeners across reloads
+window.addEventListener('pagehide', () => {
+    if (_bc) try { _bc.close(); } catch (e) {}
 });
 
 document.addEventListener('keydown', (e) => {
