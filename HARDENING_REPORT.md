@@ -8,6 +8,15 @@
 
 ## What was done
 
+### Onboarding (added 2026-04-23)
+
+- New **How-to-use** screen (`#screen-howto` in `src/index.html`), modelled on the existing welcome screen — Hungarian + English sections, six bullet points covering each tab plus two "things to know" notes about local-only storage and day-lock behaviour.
+- First-run flow now chains: **welcome → "Continue →" → how-to → "Got it →" → home**, gated by two independent localStorage flags (`ctml_welcomeDismissed`, `ctml_howtoDismissed`).
+- New **Settings → How to use → Open guide** entry re-opens the how-to screen on demand without consuming the flag, alongside the existing "How to install" re-opener.
+- Three small JS helpers added (`dismissHowto`, `showHowto`, plus a one-line tweak to `dismissWelcome` to chain into how-to on first run). Two new translation keys: `settings_howto`, `settings_howto_btn` (HU + EN).
+
+To re-trigger the full first-run flow during testing: in DevTools console, `localStorage.removeItem('ctml_welcomeDismissed'); localStorage.removeItem('ctml_howtoDismissed');` then reload.
+
 ### CRITICAL — missing `await saveState()`
 All three direct violations of the project's own storage rule are fixed.
 

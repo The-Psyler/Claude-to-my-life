@@ -1428,13 +1428,32 @@ function renderCurrentScreen() {
 function dismissWelcome() {
     localStorage.setItem('ctml_welcomeDismissed', 'true');
     document.getElementById('screen-welcome').classList.remove('active');
-    document.getElementById('screen-home').classList.add('active');
-    document.querySelector('.nav-bar').style.display = '';
+    // First-run flow: chain into how-to. Subsequent re-opens go straight home.
+    if (!localStorage.getItem('ctml_howtoDismissed')) {
+        document.getElementById('screen-howto').classList.add('active');
+        document.querySelector('.nav-bar').style.display = 'none';
+    } else {
+        document.getElementById('screen-home').classList.add('active');
+        document.querySelector('.nav-bar').style.display = '';
+    }
 }
 
 function showWelcome() {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById('screen-welcome').classList.add('active');
+    document.querySelector('.nav-bar').style.display = 'none';
+}
+
+function dismissHowto() {
+    localStorage.setItem('ctml_howtoDismissed', 'true');
+    document.getElementById('screen-howto').classList.remove('active');
+    document.getElementById('screen-home').classList.add('active');
+    document.querySelector('.nav-bar').style.display = '';
+}
+
+function showHowto() {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-howto').classList.add('active');
     document.querySelector('.nav-bar').style.display = 'none';
 }
 

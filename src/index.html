@@ -63,6 +63,64 @@
             </div>
         </div>
 
+        <!-- ============================================================
+             HOW-TO SCREEN — Shown once after welcome on first visit.
+             Re-openable anytime from Settings → How to use.
+             To force it again: clear localStorage key "ctml_howtoDismissed".
+             ============================================================ -->
+        <div id="screen-howto" class="screen">
+            <div class="welcome-content">
+
+                <p class="welcome-scroll-hint">Scroll down for English</p>
+
+                <!-- ── Hungarian ── -->
+                <section class="welcome-section">
+                    <h1>Használati útmutató</h1>
+                    <p>Az appnak hat füle van alul. Mindegyik a napi rituálé egy lépése.</p>
+                    <ul>
+                        <li><strong>Home</strong> — a kezdőképernyő. Mutatja a mai fókuszt és a karmát.</li>
+                        <li><strong>Morning</strong> — indítsd a napot. Válassz fókuszt a vaultból, vagy írj újat. Ez rögzíti a szándékot.</li>
+                        <li><strong>Capture</strong> — kapd el az ötleteket, ahogy jönnek. Elég a cím; jegyzet opcionális. Ne agyald túl.</li>
+                        <li><strong>Work</strong> — naplózd a haladást bármelyik vault-ötleten. Koppints egy ötletre, és írj hozzá munkanaplót, vagy bontsd kisebb „szikrákra".</li>
+                        <li><strong>Vault</strong> — minden valaha rögzített ötleted. Koppints egy sorra a teljes előzményhez.</li>
+                        <li><strong>Evening</strong> — zárd le a napot. Írj reflexiót, opcionálisan csatold a mai fókuszhoz, majd zárd le a napot. A nap zárva marad reggelig.</li>
+                    </ul>
+
+                    <h2>Két dolog, amit érdemes tudni</h2>
+                    <ul>
+                        <li>Minden a te eszközödön marad — nincs szerver, nincs fiók, nincs felhő szinkron.</li>
+                        <li>Ha lezártad a napot, a szerkesztés tiltva marad másnap reggelig. Ez szándékos.</li>
+                    </ul>
+                    <p>Az útmutatót bármikor újra megnyithatod: <strong>Settings → Használati útmutató</strong>.</p>
+                </section>
+
+                <hr class="welcome-divider">
+
+                <!-- ── English ── -->
+                <section class="welcome-section">
+                    <h1>How to use</h1>
+                    <p>The app has six tabs along the bottom. Each one is a step in the daily loop.</p>
+                    <ul>
+                        <li><strong>Home</strong> — your dashboard. Shows today's focus and karma.</li>
+                        <li><strong>Morning</strong> — start your day. Pick a focus from your vault or type a fresh one. Locks in your intent.</li>
+                        <li><strong>Capture</strong> — drop ideas as they hit you. Title is enough; a note is optional. Don't overthink it.</li>
+                        <li><strong>Work</strong> — log progress on any vault idea. Tap an idea to add a work-log entry or break it into smaller "sparks".</li>
+                        <li><strong>Vault</strong> — every idea you've ever captured. Tap a row to see its full history.</li>
+                        <li><strong>Evening</strong> — wrap the day. Add a reflection, optionally attach it to today's focus, then close the day. The day stays locked until tomorrow.</li>
+                    </ul>
+
+                    <h2>Two things to know</h2>
+                    <ul>
+                        <li>Everything lives on your device — no server, no account, no cloud sync.</li>
+                        <li>Once you close the day, edits are blocked until the next morning. This is on purpose.</li>
+                    </ul>
+                    <p>You can re-open this guide anytime from <strong>Settings → How to use</strong>.</p>
+                </section>
+
+                <button class="btn btn-primary welcome-continue-btn" onclick="dismissHowto()">Got it →</button>
+            </div>
+        </div>
+
         <!-- Screen 1: Home -->
         <div id="screen-home" class="screen active">
             <div style="display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:20px;">
@@ -365,6 +423,11 @@
             <div class="settings-section">
                 <div class="settings-label" data-i18n="settings_theme">Theme</div>
                 <button class="btn btn-secondary settings-theme-btn" onclick="toggleTheme()" data-i18n="settings_toggle_theme">Toggle light / dark</button>
+            </div>
+
+            <div class="settings-section">
+                <div class="settings-label" data-i18n="settings_howto">How to use</div>
+                <button class="btn btn-secondary" onclick="showHowto()" data-i18n="settings_howto_btn">Open guide</button>
             </div>
 
             <div class="settings-section">
