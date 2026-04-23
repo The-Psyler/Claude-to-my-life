@@ -333,8 +333,8 @@ function renderAll() {
     renderMorningVaultPicker();
     renderWorkList();
     renderVault();
-    renderPlaybook();
-    if (state.dayLocked) applyLockedState();
+    if (typeof renderPlaybook === 'function') renderPlaybook();
+    applyLockedState();
 }
 
 function renderKarma() {
